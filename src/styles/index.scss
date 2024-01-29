@@ -1,0 +1,75 @@
+/**
+ * index
+ * 样式入口，引入其他所有基础style的定义，并提供一些公用的css
+ */
+
+@import "./custom-element/index.scss";
+@import "./mixins.scss";
+@import "./util.scss";
+
+html,
+body {
+  height: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  // background: #f5f7f9;
+  color: #333;
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
+  sans-serif;
+}
+
+label {
+  font-weight: 500;
+}
+
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+#app {
+  height: 100%;
+  min-height: auto;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+a:focus,
+a:active {
+  outline: none;
+}
+
+a,
+a:focus,
+a:hover {
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+}
+
+div:focus {
+  outline: none;
+}
+
+/* 清空内边距 */
+.no-padding {
+  padding: 0 !important;
+}
+
+/* 清除浮动 */
+.clearfix {
+  &:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: "";
+    clear: both;
+    height: 0;
+  }
+}
+
