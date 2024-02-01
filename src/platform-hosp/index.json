@@ -1,0 +1,76 @@
+{
+  "name": "platform-hosp",
+  "label": "医院",
+  "components": [
+    {
+      "name": "person-manage",
+      "label": "人员管理",
+      "icon": "Tickets",
+      "children": [
+        {
+          "name": "dept-list-tree",
+          "label": "科室列表树",
+          "icon": "Tickets"
+        },
+        {
+          "name": "base-info-sets",
+          "label": "人员基础信息集",
+          "icon": "Tickets"
+        },
+        {
+          "name": "extra-info-sets",
+          "label": "人员附属信息集",
+          "icon": "Tickets"
+        }
+      ]
+    },
+    {
+      "name": "business",
+      "label": "业务办理",
+      "icon": "Tickets",
+      "children": [
+        {
+          "name": "menu-list-tree",
+          "label": "业务菜单树",
+          "icon": "Tickets"
+        },
+        {
+          "name": "flow-step",
+          "label": "业务流程条",
+          "icon": "Tickets"
+        }
+      ]
+    }
+  ],
+  "templates": [
+    {
+      "name": "person-manage-template",
+      "label": "人员管理模板",
+      "icon": "Tickets",
+      "children": [
+        {
+          "name": "person-manage-1",
+          "label": "人员管理列表模板",
+          "icon": "Tickets"
+        }
+      ]
+    },
+    {
+      "name": "business-template",
+      "label": "业务办理模板",
+      "icon": "Tickets",
+      "children": [
+        {
+          "name": "business-1",
+          "label": "业务办理列表模板",
+          "icon": "Tickets"
+        },
+        {
+          "name": "business-1",
+          "label": "业务办理申请模板",
+          "icon": "Tickets"
+        }
+      ]
+    }
+  ]
+}

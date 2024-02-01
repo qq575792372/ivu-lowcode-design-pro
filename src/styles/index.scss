@@ -2,8 +2,7 @@
  * index
  * 样式入口，引入其他所有基础style的定义，并提供一些公用的css
  */
-
-@import "./custom-element/index.scss";
+@import "./custom-element.scss";
 @import "./mixins.scss";
 @import "./util.scss";
 
@@ -28,9 +27,21 @@ html {
   box-sizing: border-box;
 }
 
+body {
+  height: 100%;
+  margin: 0;
+  background-color: var(--bg-standard-color);
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, PingFang SC, Hiragino Sans GB, noto sans, Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif;
+}
+
 #app {
   height: 100%;
-  min-height: auto;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 *,

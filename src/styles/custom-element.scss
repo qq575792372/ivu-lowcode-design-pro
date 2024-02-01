@@ -2,12 +2,6 @@
  * 自定义element组件样式，覆盖默认
  * 组件大小：default=32px, large=40px, small=24px
  */
-@use "sass:math";
-@use "sass:map";
-
-// 引入对应的变量
-@import "./variables.scss";
-
 
 /* el-input */
 .el-input {
@@ -38,7 +32,7 @@
 }
 
 /* el-button */
-.el-button {
+.el-button1 {
   transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
   box-shadow: none;
   border-radius: 2px !important;
