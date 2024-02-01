@@ -8,3 +8,6 @@ store.use(piniaPluginPersistedstate);
 
 // 导出store
 export default store;
+
+// 导出模块
+export { default as usePlatformStore } from "@/store/modules/platform";

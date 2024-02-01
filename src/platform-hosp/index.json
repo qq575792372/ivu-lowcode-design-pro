@@ -1,6 +1,7 @@
 {
   "name": "platform-hosp",
   "label": "医院",
+  "sort": 1,
   "components": [
     {
       "name": "person-manage",

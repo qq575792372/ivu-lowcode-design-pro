@@ -1,17 +1,18 @@
 <template>
   <el-container class="app-layout">
+    {{ designer }}
     <el-header class="layout-header">
       <Header />
     </el-header>
     <el-container class="layout-container">
       <el-aside class="layout-sidebar">
-        <Sidebar />
+        <Sidebar :designer="designer" />
       </el-aside>
       <el-main class="layout-main">
-        <Designer />
+        <Designer :designer="designer" />
       </el-main>
       <el-aside class="layout-setting">
-        <Setting />
+        <Setting :designer="designer" />
       </el-aside>
     </el-container>
   </el-container>
@@ -21,6 +22,13 @@ import Header from "@/layout/header/index.vue";
 import Sidebar from "@/layout/sidebar/index.vue";
 import Designer from "@/components/designer/index.vue";
 import Setting from "@/layout/setting/index.vue";
+
+import { reactive, watch } from "vue";
+
+const designer = reactive({ widgets: [] });
+watch(designer, (val) => {
+  console.log("jianting", val);
+});
 </script>
 <style lang="scss" scoped>
 .app-layout {

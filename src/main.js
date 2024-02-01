@@ -15,6 +15,11 @@ import store from "./store";
 
 app.use(store);
 
+// 引入低代码平台插件
+import usePlatform from "@/plugins/platform/index";
+
+app.use(usePlatform);
+
 // 引入样式主文件
 import "@/styles/index.scss";
 // 引入主题样式

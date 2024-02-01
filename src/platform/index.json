@@ -1,6 +1,7 @@
 {
   "name": "platform",
   "label": "基础",
+  "sort": 0,
   "components": [
     {
       "name": "container",
