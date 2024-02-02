@@ -1,18 +1,17 @@
 <template>
   <el-container class="app-layout">
-    {{ designer }}
     <el-header class="layout-header">
       <Header />
     </el-header>
     <el-container class="layout-container">
       <el-aside class="layout-sidebar">
-        <Sidebar :designer="designer" />
+        <Sidebar :designer />
       </el-aside>
       <el-main class="layout-main">
-        <Designer :designer="designer" />
+        <Designer :designer />
       </el-main>
       <el-aside class="layout-setting">
-        <Setting :designer="designer" />
+        <Setting :designer />
       </el-aside>
     </el-container>
   </el-container>
@@ -23,11 +22,11 @@ import Sidebar from "@/layout/sidebar/index.vue";
 import Designer from "@/components/designer/index.vue";
 import Setting from "@/layout/setting/index.vue";
 
-import { reactive, watch } from "vue";
-
-const designer = reactive({ widgets: [] });
-watch(designer, (val) => {
-  console.log("jianting", val);
+const props = defineProps({
+  designer: {
+    type: Object,
+    default: () => ({}),
+  },
 });
 </script>
 <style lang="scss" scoped>

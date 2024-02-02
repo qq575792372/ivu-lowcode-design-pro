@@ -15,11 +15,12 @@ import store from "./store";
 
 app.use(store);
 
-// 引入低代码平台插件
+// 使用低代码平台插件注册
 import usePlatform from "@/plugins/platform/index";
 
 app.use(usePlatform);
 
+console.log("整个vue数据", app);
 // 引入样式主文件
 import "@/styles/index.scss";
 // 引入主题样式

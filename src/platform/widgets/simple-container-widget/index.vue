@@ -1,5 +1,9 @@
 <template>
-  <div>test</div>
+  <div>simple-container-widget页面</div>
 </template>
-<script setup></script>
+<script setup>
+defineOptions({
+  name: "SimpleContainerWidget",
+});
+</script>
 <style lang="scss" scoped></style>

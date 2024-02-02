@@ -1,6 +1,6 @@
 {
-  "type": "select",
-  "label": "下拉框",
+  "type": "textarea",
+  "label": "文本域",
   "widgets": [],
   "props": {
     "name": "",

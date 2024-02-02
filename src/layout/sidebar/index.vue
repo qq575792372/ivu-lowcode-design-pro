@@ -1,37 +1,39 @@
 <template>
   <div class="sidebar-container">
-    <el-tabs v-model="activePlatform" class="sidebar-tabs" @tab-click="handleClick">
+    <el-tabs v-model="activePlatform" class="sidebar-tabs">
       <el-tab-pane v-for="platform in platformList" :key="platform.name" :label="platform.label" :name="platform.name">
         <el-collapse v-model="activeComponents" class="platform-collapse">
           <!--组件库-->
           <el-collapse-item title="组件库" name="components" class="components">
             <el-collapse class="components-collapse">
               <el-collapse-item
-                v-for="item in platform.components"
+                v-for="(item, index) in platform.components"
                 :key="item.name"
                 :title="item.label"
                 :name="item.name"
                 :icon="item.icon"
                 class="components-collapse-item"
               >
+                <!--组件元素名称-->
                 <template #title>
                   <el-icon>
                     <component :is="item.icon" />
                   </el-icon>
                   {{ item.label }}
                 </template>
+
                 <!--拖拽的组件元素-->
                 <Container
-                  v-for="(widget, index) in item.children"
-                  :key="widget.name"
                   class="custom-dnd-container"
                   behaviour="copy"
                   orientation="horizontal"
                   group-name="widgets"
-                  @drop="onDrop"
+                  :get-child-payload="(index) => getChildPayload(index, item.children, platform.name)"
+                  @drag-start="onDragStart"
+                  @drag-end="onDragEnd"
                 >
-                  <Draggable>
-                    <el-tag style="margin: 4px; cursor: default; user-select: none">
+                  <Draggable v-for="(widget, widgetIndex) in item.children" :key="widgetIndex">
+                    <el-tag>
                       <el-icon :size="16">
                         <component :is="widget.icon" />
                       </el-icon>
@@ -73,25 +75,41 @@ import { computed, defineProps, toRefs } from "vue";
 import { Container, Draggable } from "vue3-smooth-dnd";
 import { usePlatformStore } from "@/store";
 
+// 定义props
+const props = defineProps({
+  designer: {
+    type: Object,
+    default: () => ({}),
+  },
+});
+
+// 获取到平台的配置
 const platformStore = new usePlatformStore();
 const platformList = computed(() => platformStore.getPlatformList);
 
+// 默认展开的折叠
 const activePlatform = platformList.value[0].name;
 const activeComponents = ["components"];
 
-const props = defineProps({
-  designer: Object,
-});
-
-const designer = toRefs(props.designer);
-
 /**
- * 拖拽左侧组件到右边
- * @param res
+ * 拖拽的组件数据
+ * @param index 拖拽组件的下标
+ * @param widgets 当前拖拽容器中的组件列表
+ * @param platformName 当前拖拽容器所属的平台名称
+ * @returns {Object} 返回当前拖拽的组件信息
  */
-const onDrop = (res) => {
-  console.log(11, res);
-  designer.widgets = [111];
+const getChildPayload = (index, widgets, platformName) => {
+  console.log("getChildPayload", index, widgets, platformName);
+  let widget = widgets[index];
+  widget.platformName = platformName;
+  return widget;
+};
+
+const onDragStart = (res) => {
+  // console.log("onDragStart", res);
+};
+const onDragEnd = (res) => {
+  // console.log("onDragEnd", res);
 };
 </script>
 <style lang="scss" scoped>
@@ -150,6 +168,7 @@ const onDrop = (res) => {
 
     .el-collapse-item__content {
       background: var(--bg-standard-color);
+      padding: 0;
 
       .components-collapse,
       .templates-collapse {
@@ -177,9 +196,6 @@ const onDrop = (res) => {
           .el-collapse-item__content {
             display: flex;
             padding: 0;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            margin-top: -8px;
           }
         }
       }
@@ -188,12 +204,18 @@ const onDrop = (res) => {
 
   // dnd拖拽样式
   .custom-dnd-container {
-    display: block;
-    width: calc(50% - 4px);
-    margin-top: 8px;
+    display: flex;
+    overflow: hidden;
+    height: 100%;
+    flex: 1;
+    margin-top: -8px;
+    justify-content: space-between;
+    flex-wrap: wrap;
 
     .smooth-dnd-draggable-wrapper {
       display: block;
+      width: calc(50% - 4px);
+      margin-top: 8px;
 
       :deep(.el-tag) {
         width: 100%;

@@ -1,6 +1,6 @@
 {
-  "type": "select",
-  "label": "下拉框",
+  "type": "button",
+  "label": "按钮",
   "widgets": [],
   "props": {
     "name": "",
@@ -12,7 +12,7 @@
   },
   "events": [
     {
-      "name": "change",
+      "name": "click",
       "args": [
         "row",
         "rowIndex"
