@@ -39,14 +39,26 @@ export function createDesigner(vueInstance) {
     /**
      * 选中组件
      */
-    setSelected(widget) {},
+    setSelected(widget) {
+      if (widget) {
+        this.selectedId = widget.id;
+        this.selectedWidgetName = widget.name;
+        this.selectedWidget = widget;
+      } else {
+        this.clearSelected();
+      }
+    },
     /**
      * 清空选中的组件
      */
-    clearSelected() {},
+    clearSelected() {
+      this.selectedId = null;
+      this.selectedWidgetName = null;
+      this.selectedWidget = null;
+    },
 
     /**
-     * 获得当前设计器组件信息
+     * 通过类型或者名称获得设计器组件信息
      * @param typeName 类型名称，可以通过左侧菜单的name或者组件中的type获得
      */
     getWidget(typeName) {
@@ -73,6 +85,13 @@ export function createDesigner(vueInstance) {
      * @param origin
      */
     removeWidget(origin) {},
+
+    /**
+     * 通过设计器组件获取组件名称
+     */
+    getComponentName(widget) {
+      return widget.type + "-widget";
+    },
 
     /**
      * 获取历史数据

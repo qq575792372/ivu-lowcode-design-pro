@@ -1,49 +1,82 @@
 <template>
   <div class="designer-container">
-    {{ props.designer.widgets }}
-    <Container
-      class="custom-dnd-container"
-      orientation="horizontal"
-      group-name="widgets"
-      :get-child-payload="(index) => getChildPayload(index, props.designer.widgets)"
-      @drop="onDrop($event)"
+    {{ widgets.map((v) => v.id) }}
+    <VueDraggable
+      v-model="widgets"
+      class="custom-vue-draggable"
+      :group="{ name: 'designer-group' }"
+      :animation="150"
+      handle=".widget-drag-handler"
+      chosen-class="widget-chosen-class"
+      drag-class="widget-drag-class"
+      ghost-class="widget-ghost-class"
+      @update="onUpdate"
+      @add="onAdd"
     >
-      <Draggable v-for="(widget, widgetIndex) in props.designer.widgets" :key="widget.name">
-        {{ widget.name }}
-        <component :is="widget.componentName" />
-      </Draggable>
-    </Container>
+      <div
+        v-for="(widget, widgetIndex) in widgets"
+        :key="widgetIndex"
+        :class="{ selected: widget.id === props.designer.selectedId }"
+        class="widget-wrapper"
+        @click.stop="handleSelected(widget)"
+      >
+        <div v-if="widget.id === props.designer.selectedId" class="widget-drag-handler">
+          <el-icon>
+            <Rank />
+          </el-icon>
+          {{ widget.label }}
+        </div>
+        <component :is="props.designer.getComponentName(widget)" />
+        <div v-if="widget.id === props.designer.selectedId" class="widget-drag-action">
+          <el-icon :size="18">
+            <Back />
+          </el-icon>
+          <el-icon :size="16">
+            <Top />
+          </el-icon>
+          <el-icon :size="16">
+            <Bottom />
+          </el-icon>
+          <el-icon :size="16">
+            <CopyDocument />
+          </el-icon>
+          <el-icon :size="16">
+            <Delete />
+          </el-icon>
+        </div>
+      </div>
+    </VueDraggable>
   </div>
 </template>
 <script setup>
-import { Container, Draggable } from "vue3-smooth-dnd";
+import { computed } from "vue";
+import { VueDraggable } from "vue-draggable-plus";
 
+// props
 const props = defineProps({ designer: { type: Object, default: () => ({}) } });
 
-/**
- * 拖拽的组件数据
- * @param index 拖拽组件的下标
- * @param widgets 当前拖拽容器中的组件列表
- * @returns {Object} 返回当前拖拽的组件信息
- */
-const getChildPayload = (index, widgets) => {
-  console.log("getChildPayload", index, widgets);
-  let widget = widgets[index];
-  return widget;
+// computed
+const widgets = computed(() => {
+  return props.designer.widgets;
+});
+
+const handleSelected = (widget) => {
+  console.log(11, widget);
+  props.designer.setSelected(widget);
 };
-
+const onAdd = (event) => {
+  console.log("onAdd", event);
+};
 /**
- * 拖拽结束
+ * 拖拽排序更新
  * @param event
+ * @returns {Promise<void>}
  */
-const onDrop = async (event) => {
-  const widget = event.payload;
-  console.log("designer设计器", event);
-  console.log("widget", widget);
-  widget.componentName = widget.name + "-widget";
-  props.designer.widgets.push(widget);
-
-  console.log(322, props.designer.getWidget(widget.name));
+const onUpdate = async (event) => {
+  console.log("更新", event);
+  const { newIndex, oldIndex } = event;
+  const currRow = props.designer.widgets.splice(oldIndex, 1)[0];
+  props.designer.widgets.splice(newIndex, 0, currRow);
 };
 </script>
 <style lang="scss" scoped>
@@ -51,10 +84,102 @@ const onDrop = async (event) => {
   height: 100%;
   padding: var(--cmp-large-padding);
 
-  .custom-dnd-container {
-    height: 100%;
+  // 定义设计面板中的拖拽容器
+  .custom-vue-draggable {
     width: 100%;
-    overflow: hidden;
+    height: 100%;
+
+    // 设计器元素
+    .widget-wrapper {
+      margin-bottom: 4px;
+      position: relative;
+
+      &:hover {
+        outline: dashed 2px var(--primary-color);
+      }
+
+      &.selected {
+        outline: solid 2px var(--primary-color);
+      }
+
+      // 被选中项的样式
+      &.widget-chosen-class {
+        outline: solid 2px var(--primary-color);
+      }
+
+      // 拖拽项样式
+      &.widget-drag-class {
+        overflow: hidden;
+        cursor: move;
+
+        .widget-drag-action {
+          display: none;
+        }
+      }
+
+      // 拖拽停靠位置样式
+      &.widget-ghost-class {
+        height: 0px;
+        overflow: hidden;
+        position: relative;
+
+        &::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          background: var(--primary-color);
+          z-index: 1;
+        }
+      }
+
+      // 拖拽把柄
+      .widget-drag-handler {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        font-size: var(--font-size-12);
+        background: var(--primary-color);
+        color: var(--text-white-color);
+        display: inline-flex;
+        align-items: center;
+        height: 20px;
+        line-height: 20px;
+        padding: 0 8px 0 4px;
+        opacity: 0.8;
+        cursor: move;
+
+        .el-icon {
+          margin-right: 2px;
+        }
+      }
+
+      // 拖拽操作
+      .widget-drag-action {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        z-index: 1;
+        background: var(--primary-color);
+        color: var(--text-white-color);
+        display: inline-flex;
+        align-items: center;
+        height: 20px;
+        line-height: 20px;
+        padding: 0 8px 0 4px;
+
+        .el-icon {
+          cursor: pointer;
+
+          &:not(:last-child) {
+            margin-right: 4px;
+          }
+        }
+      }
+    }
   }
 }
 </style>

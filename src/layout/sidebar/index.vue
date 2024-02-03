@@ -7,40 +7,37 @@
           <el-collapse-item title="组件库" name="components" class="components">
             <el-collapse class="components-collapse">
               <el-collapse-item
-                v-for="(item, index) in platform.components"
-                :key="item.name"
-                :title="item.label"
-                :name="item.name"
-                :icon="item.icon"
+                v-for="(module, index) in platform.components"
+                :key="module.name"
+                :title="module.label"
+                :name="module.name"
+                :icon="module.icon"
                 class="components-collapse-item"
               >
                 <!--组件元素名称-->
                 <template #title>
                   <el-icon>
-                    <component :is="item.icon" />
+                    <component :is="module.icon" />
                   </el-icon>
-                  {{ item.label }}
+                  {{ module.label }}
                 </template>
-
                 <!--拖拽的组件元素-->
-                <Container
-                  class="custom-dnd-container"
-                  behaviour="copy"
-                  orientation="horizontal"
-                  group-name="widgets"
-                  :get-child-payload="(index) => getChildPayload(index, item.children, platform.name)"
-                  @drag-start="onDragStart"
-                  @drag-end="onDragEnd"
+                <VueDraggable
+                  v-model="module.children"
+                  class="custom-vue-draggable"
+                  :group="{ name: 'designer-group', pull: 'clone', put: false }"
+                  :clone="onClone"
+                  :sort="false"
                 >
-                  <Draggable v-for="(widget, widgetIndex) in item.children" :key="widgetIndex">
+                  <div v-for="(widget, widgetIndex) in module.children" :key="widgetIndex" class="draggable-item">
                     <el-tag>
                       <el-icon :size="16">
                         <component :is="widget.icon" />
                       </el-icon>
                       {{ widget.label }}
                     </el-tag>
-                  </Draggable>
-                </Container>
+                  </div>
+                </VueDraggable>
               </el-collapse-item>
             </el-collapse>
           </el-collapse-item>
@@ -71,9 +68,10 @@
   </div>
 </template>
 <script setup>
+import { getUUID } from "@lime-util/util";
 import { computed, defineProps, toRefs } from "vue";
-import { Container, Draggable } from "vue3-smooth-dnd";
 import { usePlatformStore } from "@/store";
+import { VueDraggable } from "vue-draggable-plus";
 
 // 定义props
 const props = defineProps({
@@ -94,22 +92,17 @@ const activeComponents = ["components"];
 /**
  * 拖拽的组件数据
  * @param index 拖拽组件的下标
- * @param widgets 当前拖拽容器中的组件列表
- * @param platformName 当前拖拽容器所属的平台名称
- * @returns {Object} 返回当前拖拽的组件信息
- */
-const getChildPayload = (index, widgets, platformName) => {
-  console.log("getChildPayload", index, widgets, platformName);
-  let widget = widgets[index];
-  widget.platformName = platformName;
-  return widget;
-};
 
-const onDragStart = (res) => {
-  // console.log("onDragStart", res);
-};
-const onDragEnd = (res) => {
-  // console.log("onDragEnd", res);
+ */
+const onClone = (target) => {
+  // 拖拽时根据名称获取到对应的设计组件信息
+  let newWidget = JSON.parse(JSON.stringify(props.designer.getWidget(target.name)));
+  // 生成唯一名称
+  let primaryKey = `${target.name}-${getUUID(16)}`;
+  newWidget.id = primaryKey;
+  newWidget.name = primaryKey;
+  console.log(33, newWidget);
+  return newWidget;
 };
 </script>
 <style lang="scss" scoped>
@@ -202,8 +195,8 @@ const onDragEnd = (res) => {
     }
   }
 
-  // dnd拖拽样式
-  .custom-dnd-container {
+  // vue-draggable-plus拖拽样式
+  .custom-vue-draggable {
     display: flex;
     overflow: hidden;
     height: 100%;
@@ -212,7 +205,7 @@ const onDragEnd = (res) => {
     justify-content: space-between;
     flex-wrap: wrap;
 
-    .smooth-dnd-draggable-wrapper {
+    .draggable-item {
       display: block;
       width: calc(50% - 4px);
       margin-top: 8px;
@@ -223,6 +216,7 @@ const onDragEnd = (res) => {
         height: 32px;
         line-height: 32px;
         margin: 0 !important;
+        transition: all 0.15s;
         background: var(--bg-white-color);
         border: solid 1px var(--border-standard-color);
         border-radius: var(--cmp-border-radius);
@@ -230,6 +224,12 @@ const onDragEnd = (res) => {
         color: var(--text-content-color);
         padding: 0 12px;
         cursor: default;
+
+        &:hover {
+          background: var(--el-tag-bg-color);
+          color: var(--primary-color);
+          border: solid 1px var(--border-deep-color);
+        }
 
         .el-tag__content {
           overflow: hidden;

@@ -3,7 +3,7 @@
 </template>
 <script setup>
 defineOptions({
-  name: "HospBusinessMenuListTreeWidget",
+  name: "HospPersonManageBaseInfoSetsWidget",
 });
 </script>
 <style lang="scss" scoped></style>

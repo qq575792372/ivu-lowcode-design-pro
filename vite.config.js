@@ -1,6 +1,6 @@
 import { defineConfig, loadEnv } from "vite";
-import { resolve } from "path";
 import vue from "@vitejs/plugin-vue";
+import { resolve } from "path";
 
 // 按需加载 element-plus
 import AutoImport from "unplugin-auto-import/vite";

@@ -9,17 +9,17 @@
       "icon": "Tickets",
       "children": [
         {
-          "name": "dept-list-tree",
+          "name": "hosp-person-manage-dept-list-tree",
           "label": "科室列表树",
           "icon": "Tickets"
         },
         {
-          "name": "base-info-sets",
+          "name": "hosp-person-manage-base-info-sets",
           "label": "人员基础信息集",
           "icon": "Tickets"
         },
         {
-          "name": "extra-info-sets",
+          "name": "hosp-person-manage-extra-info-sets",
           "label": "人员附属信息集",
           "icon": "Tickets"
         }
@@ -31,12 +31,12 @@
       "icon": "Tickets",
       "children": [
         {
-          "name": "menu-list-tree",
+          "name": "hosp-business-menu-list-tree",
           "label": "业务菜单树",
           "icon": "Tickets"
         },
         {
-          "name": "flow-step",
+          "name": "hosp-business-flow-step",
           "label": "业务流程条",
           "icon": "Tickets"
         }

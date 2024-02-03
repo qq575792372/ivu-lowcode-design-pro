@@ -8,6 +8,7 @@ module.exports = {
     node: true,
     es6: true,
   },
+  globals: { defineOptions: "writable" },
   parser: "vue-eslint-parser",
   parserOptions: {
     ecmaVersion: 2022, // 使用的 ECMAScript  版本
@@ -32,5 +33,6 @@ module.exports = {
     "vue/multi-word-component-names": "off", // vue忽略文件名建议的短横单词分割
     "vue/no-reserved-component-names": "off", // vue忽略不能使用html标签当组件名的规则
     "vue/comment-directive": "off",
+    "vue/no-mutating-props": "off", // 忽略不能修改props
   },
 };

@@ -1,22 +1,16 @@
 {
-  "type": "select",
-  "label": "下拉框",
+  "type": "input",
+  "label": "输入框",
   "widgets": [],
   "props": {
     "name": "",
     "className": "",
-    "defaultValue": "",
-    "dsEnable": false,
-    "dsName": "",
-    "options": []
+    "defaultValue": ""
   },
   "events": [
     {
       "name": "change",
-      "args": [
-        "row",
-        "rowIndex"
-      ],
+      "args": ["row", "rowIndex"],
       "code": "(row, rowIndex) => { /*这里事件内容*/ }"
     }
   ],

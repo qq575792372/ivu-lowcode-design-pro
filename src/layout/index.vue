@@ -48,6 +48,9 @@ const props = defineProps({
   }
 
   .layout-container {
+    height: 100%;
+    overflow: hidden;
+
     .layout-sidebar {
       width: 300px;
       background: var(--bg-white-color);
