@@ -19,7 +19,7 @@ service.interceptors.request.use(
 
     // 设置token
     if (store.getters.token) {
-      config.headers["X-Token"] = getToken();
+      config.headers["X-Token"] = 123;
     }
     return config;
   },

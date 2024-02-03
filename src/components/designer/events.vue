@@ -1,4 +1,5 @@
-index.vue<template>
+index.vue
+<template>
   <div>test</div>
 </template>
 <script setup></script>
