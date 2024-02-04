@@ -1,8 +1,7 @@
 <template>
   <div class="setting-container">
-    {{ settingActiveName }}
     <el-tabs v-model="settingActiveName">
-      <el-tab-pane label="组件配置" name="props">
+      <el-tab-pane v-if="widget" label="组件配置" name="props">
         <Props :designer :widget />
       </el-tab-pane>
       <el-tab-pane label="数据接口" name="data-source">

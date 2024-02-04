@@ -44,7 +44,6 @@ export function createDesigner(vueInstance) {
      * 选中组件
      */
     setSelected(widget) {
-      console.log(9999, widget);
       if (widget) {
         this.selectedId = widget.id;
         this.selectedWidgetName = widget.name;
@@ -123,7 +122,6 @@ export function createDesigner(vueInstance) {
     },
     /**
      * 清空当前组件
-     * @param origin
      */
     removeWidget(widgets, widgetIndex) {
       widgets.splice(widgetIndex, 1);

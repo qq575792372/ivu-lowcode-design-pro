@@ -5,6 +5,8 @@
   </div>
 </template>
 <script setup>
+import ComponentDrag from "./component-drag.vue";
+
 // props
 const props = defineProps({ designer: { type: Object, default: () => ({}) } });
 </script>

@@ -100,8 +100,7 @@ const onClone = (target) => {
   // 生成唯一名称
   let uniqueKey = `${target.name}-${getUUID(16)}`;
   newWidget.id = uniqueKey;
-  newWidget.name = uniqueKey;
-  console.log(33, newWidget);
+  newWidget.props.name = uniqueKey;
   return newWidget;
 };
 </script>

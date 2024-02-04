@@ -5,12 +5,16 @@
   "props": {
     "name": "",
     "className": "",
-    "defaultValue": ""
+    "defaultValue": "",
+    "inputCustomEditor": ""
   },
   "events": [
     {
       "name": "change",
-      "args": ["row", "rowIndex"],
+      "args": [
+        "row",
+        "rowIndex"
+      ],
       "code": "(row, rowIndex) => { /*这里事件内容*/ }"
     }
   ],

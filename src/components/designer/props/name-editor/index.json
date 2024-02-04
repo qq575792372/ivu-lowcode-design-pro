@@ -1,5 +1,6 @@
 {
   "name": "name",
-  "label": "名称",
+  "label": "唯一名称",
+  "placeholder": "请输入",
   "group": "base"
 }

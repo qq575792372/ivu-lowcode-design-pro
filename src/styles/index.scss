@@ -146,20 +146,20 @@ div:focus {
 
     // 拖拽停靠位置样式
     &.widget-ghost-class {
-      height: 0;
-      overflow: hidden;
-      position: relative;
+      /*       height: 0;
+            overflow: hidden;
+            position: relative; */
 
-      &::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: var(--primary-color);
-        z-index: 1;
-      }
+      /*       &::after {
+              content: "";
+              position: absolute;
+              top: 0;
+              bottom: 0;
+              left: 0;
+              right: 0;
+              background: var(--primary-color);
+              z-index: 1;
+            } */
     }
 
     // 拖拽把柄

@@ -11,20 +11,20 @@
     drag-class="widget-drag-class"
     ghost-class="widget-ghost-class"
     @update="onUpdate"
-    @add="onAdd"
+    @add="onAdd($event, parentWidgets)"
   >
     <div
-      v-for="(widget, widgetIndex) in parentWidgets"
-      :key="widgetIndex"
-      :class="{ selected: widget.id === props.designer.selectedId }"
+      v-for="(subWidget, subWidgetIndex) in parentWidgets"
+      :key="subWidget.id"
+      :class="{ selected: subWidget.id === props.designer.selectedId }"
       class="widget-wrapper"
-      @click.stop="handleSelectedWidget(widget)"
+      @click.stop="handleSelectedWidget(subWidget)"
     >
       <ComponentRender
         :designer
-        :widget
+        :widget="subWidget"
         :parent-widget="parentWidget"
-        :index-of-parent-widgets="widgetIndex"
+        :index-of-parent-widgets="subWidgetIndex"
         :parent-widgets="parentWidgets"
       />
     </div>
@@ -49,7 +49,6 @@ const props = defineProps({
  * @param widget
  */
 const handleSelectedWidget = (widget) => {
-  console.log(11, widget);
   props.designer.setSelected(widget);
 };
 
@@ -58,18 +57,19 @@ const handleSelectedWidget = (widget) => {
  * 拖拽增加
  * @param event
  */
-const onAdd = (event) => {
-  console.log("onAdd", event);
+const onAdd = (event, parentWidgets) => {
+  const { newIndex } = event;
+  props.designer.setSelected(props.parentWidgets[newIndex]);
 };
 /**
  * 拖拽更新
  * @param event
  */
 const onUpdate = async (event) => {
-  console.log("更新", event);
   const { newIndex, oldIndex } = event;
-  const currRow = props.designer.widgets.splice(oldIndex, 1)[0];
-  props.designer.widgets.splice(newIndex, 0, currRow);
+  console.log("拖拽排序", "oldIndex：" + event.oldIndex, "newIndex：" + event.newIndex);
+  const currRow = props.parentWidgets.splice(oldIndex, 1)[0];
+  props.parentWidgets.splice(newIndex, 0, currRow);
 };
 </script>
 <style lang="scss" scoped></style>
