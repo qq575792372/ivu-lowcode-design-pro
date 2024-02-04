@@ -84,3 +84,128 @@ div:focus {
   }
 }
 
+// 定义设计面板中的拖拽容器公用样式
+.custom-vue-draggable {
+  width: 100%;
+  height: 100%;
+
+  // 拖拽容器内无组件的默认提示
+  &.no-widget {
+    position: relative;
+    background: rgba(246, 247, 249, 0.5);
+    min-height: 40px;
+
+    &::before {
+      content: "请拖拽组件到此处";
+      color: #8591a2;
+      font-size: 12px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+
+  // 设计器元素
+  .widget-wrapper {
+    // 调这个margin加大间距，可以更好拖入一点
+    margin-bottom: 4px;
+    position: relative;
+
+    &:hover {
+      outline: dashed 1px var(--primary-color);
+    }
+
+    &.selected {
+      outline: solid 1px var(--primary-color);
+    }
+
+    // 被选中项的样式
+    &.widget-chosen-class {
+      outline: solid 2px var(--primary-color);
+
+      .widget-drag-handler {
+        opacity: 1;
+      }
+    }
+
+    // 拖拽项样式
+    &.widget-drag-class {
+      overflow: hidden;
+      cursor: move;
+
+      .widget-drag-handler {
+        opacity: 1;
+      }
+
+      .widget-drag-action {
+        display: none;
+      }
+    }
+
+    // 拖拽停靠位置样式
+    &.widget-ghost-class {
+      height: 0;
+      overflow: hidden;
+      position: relative;
+
+      &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: var(--primary-color);
+        z-index: 1;
+      }
+    }
+
+    // 拖拽把柄
+    .widget-drag-handler {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      font-size: var(--font-size-12);
+      background: var(--primary-color);
+      color: var(--text-white-color);
+      display: inline-flex;
+      align-items: center;
+      height: 20px;
+      line-height: 20px;
+      padding: 0 8px 0 4px;
+      opacity: 0.7;
+      cursor: move;
+
+      .el-icon {
+        margin-right: 2px;
+      }
+    }
+
+    // 拖拽操作
+    .widget-drag-action {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      z-index: 1;
+      background: var(--primary-color);
+      color: var(--text-white-color);
+      display: inline-flex;
+      align-items: center;
+      height: 20px;
+      line-height: 20px;
+      padding: 0 4px 0 4px;
+
+      .el-icon {
+        cursor: pointer;
+
+        &:not(:last-child) {
+          margin-right: 4px;
+        }
+      }
+    }
+  }
+}
+

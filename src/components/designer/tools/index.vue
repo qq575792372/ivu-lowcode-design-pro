@@ -1,10 +1,10 @@
 <template>
   <div class="tools-container">
-    <Undo />
-    <Redo />
-    <LayerTree />
-    <Clear />
-    <Preview />
+    <Undo :designer />
+    <Redo :designer />
+    <LayerTree :designer />
+    <Clear :designer />
+    <Preview :designer />
     <el-dropdown class="more-button">
       <el-button>
         <el-icon class="el-icon--right">
@@ -13,9 +13,9 @@
       </el-button>
       <template #dropdown>
         <el-dropdown-menu>
-          <ImportJson />
-          <ExportJson />
-          <ExportSFC />
+          <ImportJson :designer />
+          <ExportJson :designer />
+          <ExportSFC :designer />
         </el-dropdown-menu>
       </template>
     </el-dropdown>
@@ -30,6 +30,10 @@ import Preview from "./preview.vue";
 import ImportJson from "./import-json.vue";
 import ExportJson from "./export-json.vue";
 import ExportSFC from "./export-SFC.vue";
+
+const props = defineProps({
+  designer: { type: Object, default: () => ({}) },
+});
 </script>
 <style lang="scss" scoped>
 .more-button {

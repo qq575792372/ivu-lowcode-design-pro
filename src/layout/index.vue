@@ -1,7 +1,7 @@
 <template>
   <el-container class="app-layout">
     <el-header class="layout-header">
-      <Header />
+      <Header :designer />
     </el-header>
     <el-container class="layout-container">
       <el-aside class="layout-sidebar">

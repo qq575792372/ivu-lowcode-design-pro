@@ -98,9 +98,9 @@ const onClone = (target) => {
   // 拖拽时根据名称获取到对应的设计组件信息
   let newWidget = JSON.parse(JSON.stringify(props.designer.getWidget(target.name)));
   // 生成唯一名称
-  let primaryKey = `${target.name}-${getUUID(16)}`;
-  newWidget.id = primaryKey;
-  newWidget.name = primaryKey;
+  let uniqueKey = `${target.name}-${getUUID(16)}`;
+  newWidget.id = uniqueKey;
+  newWidget.name = uniqueKey;
   console.log(33, newWidget);
   return newWidget;
 };

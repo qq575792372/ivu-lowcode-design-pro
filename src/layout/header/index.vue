@@ -3,10 +3,14 @@
     <img src="../../assets/images/logo.png" />
     <span class="title">低代码设计平台</span>
   </div>
-  <Tools />
+  <Tools :designer />
 </template>
 <script setup>
 import Tools from "@/components/designer/tools/index.vue";
+
+const props = defineProps({
+  designer: { type: Object, default: () => ({}) },
+});
 </script>
 <style lang="scss" scoped>
 .header-title {

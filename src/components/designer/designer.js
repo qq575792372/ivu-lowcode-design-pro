@@ -1,4 +1,5 @@
 import { usePlatformStore } from "@/store";
+import { getUUID, cloneDeep } from "@lime-util/util";
 
 export function createDesigner(vueInstance) {
   const platformStore = usePlatformStore();
@@ -25,7 +26,10 @@ export function createDesigner(vueInstance) {
     /**
      * 清空设计器
      */
-    clearDesigner() {},
+    clearDesigner() {
+      this.clearSelected();
+      this.widgets = [];
+    },
 
     /**
      * 加载json组件数据
@@ -40,6 +44,7 @@ export function createDesigner(vueInstance) {
      * 选中组件
      */
     setSelected(widget) {
+      console.log(9999, widget);
       if (widget) {
         this.selectedId = widget.id;
         this.selectedWidgetName = widget.name;
@@ -76,15 +81,53 @@ export function createDesigner(vueInstance) {
      */
     setWidget(typeName) {},
     /**
-     * 复制当前组件
-     * @param origin
+     * 选中父组件
      */
-    copyWidget(origin) {},
+    selectedParentWidget(parentWidget) {
+      this.setSelected(parentWidget);
+    },
+    /**
+     * 向上移动组件
+     */
+    moveUpWidget(widgets, widgetIndex) {
+      if (widgetIndex === 0) {
+        console.warn("已经是在第一个");
+        return;
+      }
+      widgets.splice(widgetIndex - 1, 0, widgets.splice(widgetIndex, 1)[0]);
+    },
+    /**
+     * 向下移动组件
+     */
+    moveDownWidget(widgets, widgetIndex) {
+      if (widgetIndex === widgets.length - 1) {
+        console.warn("已经是在最后一个");
+        return;
+      }
+      widgets.splice(widgetIndex + 1, 0, widgets.splice(widgetIndex, 1)[0]);
+    },
+    /**
+     * 复制当前组件
+     */
+    copyWidget(widgets, widgetIndex) {
+      // 生成新的组件
+      let newWidget = cloneDeep(widgets[widgetIndex]);
+      let uniqueKey = `${newWidget.type}-${getUUID(16)}`;
+      newWidget.id = uniqueKey;
+      newWidget.name = uniqueKey;
+
+      // 插入到该复制组件的后面
+      widgets.splice(widgetIndex + 1, 0, newWidget);
+      this.clearSelected();
+      this.setSelected(newWidget);
+    },
     /**
      * 清空当前组件
      * @param origin
      */
-    removeWidget(origin) {},
+    removeWidget(widgets, widgetIndex) {
+      widgets.splice(widgetIndex, 1);
+    },
 
     /**
      * 通过设计器组件获取组件名称
