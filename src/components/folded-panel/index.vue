@@ -1,5 +1,5 @@
 <template>
-  <div class="folded-panel-container">
+  <div class="folded-panel-container" :class="[direction, { 'is-folded': isFolded }]">
     <div class="folded-panel-content">
       <slot />
     </div>
@@ -12,11 +12,13 @@
 import { ref, computed, defineProps, defineEmits } from "vue";
 
 const props = defineProps({
+  // 收缩的方向，left和right
   direction: {
     type: String,
     default: "left",
   },
 });
+
 const emit = defineEmits(["change-folded"]);
 let isFolded = ref(false);
 const iconClass = computed(() => {
@@ -44,7 +46,7 @@ const handleChangeFolded = () => {
   box-sizing: border-box;
 
   // 已收缩
-  &.folded {
+  &.is-folded {
     width: 24px !important;
     overflow: hidden;
 
@@ -52,7 +54,7 @@ const handleChangeFolded = () => {
       width: 0;
     }
 
-    .folded-pane-content {
+    .folded-panel-content {
       display: none;
     }
 
@@ -69,12 +71,12 @@ const handleChangeFolded = () => {
       left: 0;
     }
 
-    .folded-pane-content {
+    .folded-panel-content {
       padding-right: 0;
     }
 
-    &.folded {
-      .folded-pane-icon {
+    &.is-folded {
+      .folded-panel-icon {
         left: 0;
       }
     }

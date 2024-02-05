@@ -1,10 +1,10 @@
 <template>
-  <div class="props-wrapper">
-    <el-form size="small" :label-width="80" label-position="left" class="custom-form">
-      <el-form-item label="ID">
+  <div class="props-container">
+    <el-form :label-width="100" label-position="left" class="custom-form">
+      <el-form-item label="ID" label-width="80">
         {{ props.widget.id }}
       </el-form-item>
-      <el-collapse v-model="activeName">
+      <el-collapse v-model="activeName" class="custom-collapse">
         <el-collapse-item title="基本属性" name="base">
           <template v-for="(item, index) in baseProps" :key="index">
             <component :is="item.componentName" :item="item" :designer :widget />
@@ -65,13 +65,22 @@ const customProps = computed(() => {
 });
 </script>
 <style lang="scss" scoped>
+.props-container {
+  padding: 12px 0;
+}
+
+:deep(.custom-collapse) {
+  .el-collapse-item__content {
+    padding-top: 8px !important;
+  }
+}
+
 :deep(.custom-form) {
   .el-form-item {
     margin-bottom: var(--cmp-margin);
 
     .el-form-item__label {
       height: auto;
-      line-height: 1.2;
     }
   }
 }

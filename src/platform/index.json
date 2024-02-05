@@ -147,7 +147,8 @@
     "industry": [
       {
         "name": "medical",
-        "label": "医疗行业"
+        "label": "医疗行业",
+        "children": []
       }
     ],
     "project": [

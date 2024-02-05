@@ -1,6 +1,6 @@
 <template>
   <div class="setting-container">
-    <el-tabs v-model="settingActiveName">
+    <el-tabs v-model="settingActiveName" class="custom-tabs">
       <el-tab-pane v-if="widget" label="组件配置" name="props">
         <Props :designer :widget />
       </el-tab-pane>
@@ -34,6 +34,7 @@ const widget = computed(() => {
 <style lang="scss" scoped>
 .setting-container {
   height: 100%;
+  width: 360px;
   padding: var(--cmp-large-padding);
 }
 </style>

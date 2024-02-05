@@ -35,12 +35,6 @@ dependencies:
   vue-draggable-plus:
     specifier: ^0.3.5
     version: 0.3.5(@types/sortablejs@1.15.7)
-  vue-smooth-dnd:
-    specifier: ^0.8.1
-    version: 0.8.1
-  vue3-smooth-dnd:
-    specifier: ^0.0.4
-    version: 0.0.4(vue@3.4.15)
 
 devDependencies:
   '@babel/preset-env':
@@ -5416,10 +5410,6 @@ packages:
       is-fullwidth-code-point: 4.0.0
     dev: true
 
-  /smooth-dnd@0.12.1:
-    resolution: {integrity: sha512-Dndj/MOG7VP83mvzfGCLGzV2HuK1lWachMtWl/Iuk6zV7noDycIBnflwaPuDzoaapEl3Pc4+ybJArkkx9sxPZg==}
-    dev: false
-
   /snapdragon-node@2.1.1:
     resolution: {integrity: sha512-O27l4xaMYt/RSQ5TR3vpWCAB5Kb/czIcqUFOM/C4fYcLnbZUc1PkjTAMjof2pBWaSTwOUd6qUHcFGVGj7aIwnw==}
     engines: {node: '>=0.10.0'}
@@ -6157,21 +6147,6 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
-
-  /vue-smooth-dnd@0.8.1:
-    resolution: {integrity: sha512-eZVVPTwz4A1cs0+CjXx/ihV+gAl3QBoWQnU6+23Gp59t0WBU99z7ducBQ4FvjBamqOlg8SDOE5eFHQedxwB4Wg==}
-    dependencies:
-      smooth-dnd: 0.12.1
-    dev: false
-
-  /vue3-smooth-dnd@0.0.4(vue@3.4.15):
-    resolution: {integrity: sha512-aPfPnUcF7cRlX/5pJeqam51NltzW5qsQNiJuAY/s73nJ9/yRKNpNNOItjpK11GusEkiK957Uf+e8ERUCabapSg==}
-    peerDependencies:
-      vue: ^3.0.11
-    dependencies:
-      smooth-dnd: 0.12.1
-      vue: 3.4.15(typescript@4.9.5)
-    dev: false
 
   /vue@3.4.15(typescript@4.9.5):
     resolution: {integrity: sha512-jC0GH4KkWLWJOEQjOpkqU1bQsBwf4R1rsFtw5GQJbjHVKWDzO6P0nWWBTmjp1xSemAioDFj1jdaK1qa3DnMQoQ==}

@@ -91,11 +91,13 @@ div:focus {
 
     .el-tabs__nav-wrap::after {
       height: 1px;
+      z-index: 0;
       background: var(--border-standard-color);
     }
 
     .el-tabs__active-bar {
       background: var(--primary-color);
+      z-index: 0;
     }
 
     .el-tabs__item {
@@ -114,11 +116,19 @@ div:focus {
   border: none;
 
   .el-collapse-item {
+    &.is-active {
+
+    }
+
     .el-collapse-item__header {
       font-size: var(--font-size-14);
       font-weight: var(--font-weight-bold);
       color: var(--text-content-color);
       border-bottom: 1px solid var(--border-standard-color);
+
+      .el-icon {
+        margin-right: 4px;
+      }
     }
 
     .el-collapse-item__wrap {
@@ -155,8 +165,50 @@ div:focus {
     }
   }
 
+  // 左侧菜单中拖拽的元素标签样式
+  .widget-drag-tag {
+    display: inline-flex;
+    height: 32px;
+    text-align: left;
+    line-height: 32px;
+    margin: 0 !important;
+    justify-content: flex-start;
+    transition: all 0.15s;
+    background: var(--bg-white-color);
+    border: solid 1px var(--border-standard-color);
+    border-radius: var(--cmp-border-radius);
+    font-size: var(--font-size-14);
+    color: var(--text-content-color);
+    padding: 0 8px;
+    cursor: default;
 
-  // 设计器元素
+    &:hover {
+      background: var(--el-tag-bg-color);
+      color: var(--primary-color);
+      border: solid 1px var(--border-deep-color);
+
+      .el-icon {
+        color: var(--primary-color);
+      }
+    }
+
+    .el-tag__content {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .el-icon {
+      color: var(--text-content-color);
+      height: auto;
+      width: auto;
+      vertical-align: middle;
+      position: relative;
+      top: -2px;
+      cursor: default;
+    }
+  }
+
+  // 设计器组件元素样式
   .widget-wrapper {
     // 调这个margin加大间距，可以更好拖入一点
     margin-bottom: 4px;
@@ -166,9 +218,11 @@ div:focus {
       outline: dashed 1px var(--primary-color);
     }
 
+    // 设计器组件选中的样式
     &.selected {
       outline: solid 1px var(--primary-color);
     }
+
 
     // 被选中项的样式
     &.widget-chosen-class {

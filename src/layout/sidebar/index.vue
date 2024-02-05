@@ -14,7 +14,7 @@
                 >
                   <!--组件元素名称-->
                   <template #title>
-                    <el-icon>
+                    <el-icon :size="16">
                       <component :is="module.icon" />
                     </el-icon>
                     {{ module.label }}
@@ -28,7 +28,7 @@
                     :sort="false"
                   >
                     <div v-for="(widget, widgetIndex) in module.children" :key="widgetIndex" class="draggable-item">
-                      <el-tag>
+                      <el-tag class="widget-drag-tag">
                         <el-icon :size="16">
                           <component :is="widget.icon" />
                         </el-icon>
@@ -41,7 +41,20 @@
             </div>
           </el-collapse-item>
           <el-collapse-item title="行业组件" name="industry">
-            <el-select class="margin-bottom-12" />
+            <el-select
+              v-model="industryComponentName"
+              placeholder="请选择"
+              class="margin-bottom-12"
+              @change="handleIndustryComponentChange"
+            >
+              <el-option label="全部" value="" />
+              <el-option
+                v-for="(item, index) in platformComponents.industry"
+                :key="index"
+                :label="item.label"
+                :value="item.name"
+              />
+            </el-select>
             <div class="module">
               <el-collapse class="custom-collapse no-bg">
                 <el-collapse-item
@@ -52,7 +65,7 @@
                 >
                   <!--组件元素名称-->
                   <template #title>
-                    <el-icon>
+                    <el-icon :size="16">
                       <component :is="module.icon" />
                     </el-icon>
                     {{ module.label }}
@@ -66,7 +79,7 @@
                     :sort="false"
                   >
                     <div v-for="(widget, widgetIndex) in module.children" :key="widgetIndex" class="draggable-item">
-                      <el-tag>
+                      <el-tag class="widget-drag-tag">
                         <el-icon :size="16">
                           <component :is="widget.icon" />
                         </el-icon>
@@ -79,7 +92,20 @@
             </div>
           </el-collapse-item>
           <el-collapse-item title="项目组件" name="project">
-            <el-select class="margin-bottom-12" />
+            <el-select
+              v-model="projectComponentName"
+              placeholder="请选择"
+              class="margin-bottom-12"
+              @change="handleProjectComponentChange"
+            >
+              <el-option label="全部" value="" />
+              <el-option
+                v-for="(item, index) in platformComponents.project"
+                :key="index"
+                :label="item.label"
+                :value="item.name"
+              />
+            </el-select>
             <div class="module">
               <el-collapse class="custom-collapse no-bg">
                 <el-collapse-item
@@ -104,7 +130,7 @@
                     :sort="false"
                   >
                     <div v-for="(widget, widgetIndex) in module.children" :key="widgetIndex" class="draggable-item">
-                      <el-tag>
+                      <el-tag class="widget-drag-tag">
                         <el-icon :size="16">
                           <component :is="widget.icon" />
                         </el-icon>
@@ -119,73 +145,118 @@
         </el-collapse>
       </el-tab-pane>
       <el-tab-pane label="模板库" name="templates" class="templates">
-        <el-collapse-item title="基础模板" name="base">啊啊</el-collapse-item>
-        <el-collapse-item title="行业模板" name="industry">啊啊</el-collapse-item>
-        <el-collapse-item title="项目模板" name="project">啊啊</el-collapse-item>
-      </el-tab-pane>
-    </el-tabs>
-
-    <el-tabs v-if="false" v-model="activePlatform" class="sidebar-tabs">
-      <el-tab-pane v-for="platform in platformList" :key="platform.name" :label="platform.label" :name="platform.name">
-        <el-collapse v-model="activeComponents" class="platform-collapse">
-          <!--组件库-->
-          <el-collapse-item title="组件库" name="components" class="components">
-            <el-collapse class="components-collapse">
-              <el-collapse-item
-                v-for="(module, index) in platform.components"
-                :key="module.name"
-                :title="module.label"
-                :name="module.name"
-                :icon="module.icon"
-                class="components-collapse-item"
-              >
-                <!--组件元素名称-->
-                <template #title>
-                  <el-icon>
-                    <component :is="module.icon" />
-                  </el-icon>
-                  {{ module.label }}
-                </template>
-                <!--拖拽的组件元素-->
-                <VueDraggable
-                  v-model="module.children"
-                  class="custom-vue-draggable"
-                  :group="{ name: 'designer-group', pull: 'clone', put: false }"
-                  :clone="onClone"
-                  :sort="false"
+        <el-collapse v-model="activeTemplatesNames" class="custom-collapse">
+          <el-collapse-item title="基础模板" name="base">
+            <div class="module">
+              <el-collapse class="custom-collapse no-bg">
+                <el-collapse-item
+                  v-for="(module, moduleIndex) in baseTemplateList"
+                  :key="moduleIndex"
+                  :title="module.label"
+                  :name="module.name"
                 >
-                  <div v-for="(widget, widgetIndex) in module.children" :key="widgetIndex" class="draggable-item">
-                    <el-tag>
-                      <el-icon :size="16">
-                        <component :is="widget.icon" />
-                      </el-icon>
-                      {{ widget.label }}
-                    </el-tag>
+                  <!--组件元素名称-->
+                  <template #title>
+                    <el-icon :size="16">
+                      <component :is="module.icon" />
+                    </el-icon>
+                    {{ module.label }}
+                  </template>
+                  <!--模板列表-->
+                  <div v-for="(template, templateIndex) in module.children" :key="templateIndex" class="template-list">
+                    <el-icon :size="16">
+                      <component :is="template.icon" />
+                    </el-icon>
+                    {{ template.label }}
+                    <el-button type="text">使用</el-button>
                   </div>
-                </VueDraggable>
-              </el-collapse-item>
-            </el-collapse>
+                </el-collapse-item>
+              </el-collapse>
+            </div>
           </el-collapse-item>
-
-          <!--模板库-->
-          <el-collapse-item title="模板库" name="templates" class="templates">
-            <el-collapse clas="templates-collapse">
-              <el-collapse-item
-                v-for="item in platform.templates"
-                :key="item.name"
-                :title="item.label"
-                :name="item.name"
-                :icon="item.icon"
-                class="templates-collapse-item"
-              >
-                <template #title>
-                  <el-icon>
-                    <component :is="item.icon" />
-                  </el-icon>
-                  {{ item.label }}
-                </template>
-              </el-collapse-item>
-            </el-collapse>
+          <el-collapse-item title="行业模板" name="industry">
+            <el-select
+              v-model="industryTemplateName"
+              placeholder="请选择"
+              class="margin-bottom-12"
+              @change="handleIndustryTemplateChange"
+            >
+              <el-option label="全部" value="" />
+              <el-option
+                v-for="(item, index) in platformTemplates.industry"
+                :key="index"
+                :label="item.label"
+                :value="item.name"
+              />
+            </el-select>
+            <div class="module">
+              <el-collapse class="custom-collapse no-bg">
+                <el-collapse-item
+                  v-for="(module, moduleIndex) in industryTemplateList"
+                  :key="moduleIndex"
+                  :title="module.label"
+                  :name="module.name"
+                >
+                  <!--组件元素名称-->
+                  <template #title>
+                    <el-icon :size="16">
+                      <component :is="module.icon" />
+                    </el-icon>
+                    {{ module.label }}
+                  </template>
+                  <!--模板列表-->
+                  <div v-for="(template, templateIndex) in module.children" :key="templateIndex" class="template-list">
+                    <el-icon :size="16">
+                      <component :is="template.icon" />
+                    </el-icon>
+                    {{ template.label }}
+                    <el-button type="text">使用</el-button>
+                  </div>
+                </el-collapse-item>
+              </el-collapse>
+            </div>
+          </el-collapse-item>
+          <el-collapse-item title="项目模板" name="project">
+            <el-select
+              v-model="projectTemplateName"
+              placeholder="请选择"
+              class="margin-bottom-12"
+              @change="handleProjectTemplateChange"
+            >
+              <el-option label="全部" value="" />
+              <el-option
+                v-for="(item, index) in platformTemplates.project"
+                :key="index"
+                :label="item.label"
+                :value="item.name"
+              />
+            </el-select>
+            <div class="module">
+              <el-collapse class="custom-collapse no-bg">
+                <el-collapse-item
+                  v-for="(module, moduleIndex) in projectTemplateList"
+                  :key="moduleIndex"
+                  :title="module.label"
+                  :name="module.name"
+                >
+                  <!--组件元素名称-->
+                  <template #title>
+                    <el-icon :size="16">
+                      <component :is="module.icon" />
+                    </el-icon>
+                    {{ module.label }}
+                  </template>
+                  <!--模板列表-->
+                  <div v-for="(template, templateIndex) in module.children" :key="templateIndex" class="template-list">
+                    <el-icon :size="16">
+                      <component :is="template.icon" />
+                    </el-icon>
+                    {{ template.label }}
+                    <el-button type="text">使用</el-button>
+                  </div>
+                </el-collapse-item>
+              </el-collapse>
+            </div>
           </el-collapse-item>
         </el-collapse>
       </el-tab-pane>
@@ -194,7 +265,7 @@
 </template>
 <script setup>
 import { getUUID } from "@lime-util/util";
-import { computed, defineProps, toRefs } from "vue";
+import { computed, defineProps, ref, watch, watchEffect } from "vue";
 import { usePlatformStore } from "@/store";
 import { VueDraggable } from "vue-draggable-plus";
 
@@ -212,23 +283,57 @@ const platformComponents = computed(() => platformStore.getPlatformComponents);
 const platformTemplates = computed(() => platformStore.getPlatformTemplates);
 
 // 默认展开的折叠
-const activeLibName = "components";
-const activeComponentNames = ["base"];
-const activeTemplatesNames = ["base"];
+let activeLibName = "components";
+let activeComponentNames = ["base"];
+let activeTemplatesNames = ["base"];
 
+/* 组件库 */
 // 基础组件
-const baseComponentList = platformComponents.value.base;
+let baseComponentList = platformComponents.value.base;
 // 行业组件
-const industryComponentList = platformComponents.value.industry;
+let industryComponentList = ref(platformComponents.value.industry);
+let industryComponentName = ref("");
+let handleIndustryComponentChange = (val) => {
+  if (val) {
+    industryComponentList.value = platformComponents.value.industry.filter((v) => v.name === val);
+  } else {
+    industryComponentList.value = platformComponents.value.industry;
+  }
+};
 // 项目组件
-const projectComponentList = platformComponents.value.project;
+let projectComponentList = ref(platformComponents.value.project);
+let projectComponentName = ref("");
+let handleProjectComponentChange = (val) => {
+  if (val) {
+    projectComponentList.value = platformComponents.value.project.filter((v) => v.name === val);
+  } else {
+    projectComponentList.value = platformComponents.value.project;
+  }
+};
 
+/* 模板库 */
 // 基础模板
-const baseTemplateList = platformTemplates.value.base;
+let baseTemplateList = platformTemplates.value.base;
 // 行业模板
-const industryTemplateList = platformTemplates.value.industry;
+let industryTemplateList = ref(platformTemplates.value.industry);
+let industryTemplateName = ref("");
+let handleIndustryTemplateChange = (val) => {
+  if (val) {
+    industryTemplateList.value = platformTemplates.value.industry.filter((v) => v.name === val);
+  } else {
+    industryTemplateList.value = platformTemplates.value.industry;
+  }
+};
 // 项目模板
-const projectTemplateList = platformTemplates.value.project;
+let projectTemplateList = ref(platformTemplates.value.project);
+let projectTemplateName = ref("");
+let handleProjectTemplateChange = (val) => {
+  if (val) {
+    projectTemplateList.value = platformTemplates.value.project.filter((v) => v.name === val);
+  } else {
+    projectTemplateList.value = platformTemplates.value.project;
+  }
+};
 
 /**
  * 拖拽的组件数据
@@ -248,6 +353,7 @@ const onClone = (target) => {
 <style lang="scss" scoped>
 .sidebar-container {
   height: 100%;
+  width: 300px;
   padding: var(--cmp-large-padding);
 
   // 组件库和模板库
@@ -264,6 +370,11 @@ const onClone = (target) => {
 
         .el-collapse-item__wrap {
           border: none;
+          height: 100%;
+
+          .el-collapse-item__content {
+            height: 100%;
+          }
         }
       }
     }
@@ -296,6 +407,31 @@ const onClone = (target) => {
     }
   }
 
+  // 模板列表
+  .template-list {
+    background: var(--bg-white-color);
+    display: flex;
+    align-items: center;
+    transition: all 0.15s;
+    background: var(--bg-white-color);
+    font-size: var(--font-size-14);
+    color: var(--text-content-color);
+    padding: 0 8px;
+    cursor: default;
+
+    &:not(:last-child) {
+      border-bottom: solid 1px var(--border-standard-color);
+    }
+
+    .el-icon {
+      margin-right: 4px;
+    }
+
+    .el-button {
+      margin-left: auto;
+    }
+  }
+
   // vue-draggable-plus拖拽样式
   .custom-vue-draggable {
     display: flex;
@@ -311,41 +447,8 @@ const onClone = (target) => {
       width: calc(50% - 4px);
       margin-top: 8px;
 
-      :deep(.el-tag) {
-        width: 100%;
-        justify-content: left;
-        height: 32px;
-        line-height: 32px;
-        margin: 0 !important;
-        transition: all 0.15s;
-        background: var(--bg-white-color);
-        border: solid 1px var(--border-standard-color);
-        border-radius: var(--cmp-border-radius);
-        font-size: var(--font-size-14);
-        color: var(--text-content-color);
-        padding: 0 12px;
-        cursor: default;
-
-        &:hover {
-          background: var(--el-tag-bg-color);
-          color: var(--primary-color);
-          border: solid 1px var(--border-deep-color);
-        }
-
-        .el-tag__content {
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-
-        .el-icon {
-          color: var(--primary-color);
-          height: auto;
-          width: auto;
-          vertical-align: middle;
-          position: relative;
-          top: -2px;
-          cursor: default;
-        }
+      .widget-drag-tag {
+        display: flex;
       }
     }
   }

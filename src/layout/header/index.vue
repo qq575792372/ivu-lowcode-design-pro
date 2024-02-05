@@ -1,11 +1,12 @@
 <template>
   <div class="header-title">
     <img src="../../assets/images/logo.png" />
-    <span class="title">低代码设计平台</span>
+    <span class="title">{{ defaultSettings.platformTitle }}</span>
   </div>
   <Tools :designer />
 </template>
 <script setup>
+import defaultSettings from "@/settings";
 import Tools from "@/components/designer/tools/index.vue";
 
 const props = defineProps({
