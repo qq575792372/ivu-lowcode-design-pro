@@ -1,120 +1,196 @@
 {
-  "name": "platform",
-  "label": "基础",
-  "sort": 0,
-  "components": [
-    {
-      "name": "container",
-      "label": "容器",
-      "icon": "Tickets",
-      "children": [
-        {
-          "name": "simple-container",
-          "label": "普通容器",
-          "icon": "Tickets"
-        },
-        {
-          "name": "form-container",
-          "label": "表单容器",
-          "icon": "Tickets"
-        }
-      ]
-    },
-    {
-      "name": "form",
-      "label": "表单",
-      "icon": "Tickets",
-      "children": [
-        {
-          "name": "button",
-          "label": "按钮",
-          "icon": "Tickets"
-        },
-        {
-          "name": "input",
-          "label": "输入框",
-          "icon": "Tickets"
-        },
-        {
-          "name": "textarea",
-          "label": "文本域",
-          "icon": "Tickets"
-        },
-        {
-          "name": "select",
-          "label": "下拉框",
-          "icon": "Tickets"
-        }
-      ]
-    },
-    {
-      "name": "navigation",
-      "label": "导航",
-      "icon": "Tickets"
-    },
-    {
-      "name": "data",
-      "label": "数据展示",
-      "icon": "Tickets",
-      "children": [
-        {
-          "name": "table",
-          "label": "表格",
-          "icon": "Tickets"
-        },
-        {
-          "name": "data-table",
-          "label": "数据表格",
-          "icon": "Tickets"
-        },
-        {
-          "name": "data-list",
-          "label": "数据列表",
-          "icon": "Tickets"
-        }
-      ]
-    },
-    {
-      "name": "feedback",
-      "label": "数据反馈",
-      "icon": "Tickets"
-    }
-  ],
-  "templates": [
-    {
-      "name": "form-template",
-      "label": "表单模板",
-      "icon": "Tickets",
-      "children": [
-        {
-          "name": "form-1",
-          "label": "单列表单",
-          "url": "",
-          "icon": "Tickets"
-        },
-        {
-          "name": "form-2",
-          "label": "多列表单",
-          "icon": "Tickets"
-        },
-        {
-          "name": "form-3",
-          "label": "标签页表单",
-          "icon": "Tickets"
-        }
-      ]
-    },
-    {
-      "name": "list-template",
-      "label": "列表模板",
-      "icon": "Tickets",
-      "children": [
-        {
-          "name": "list-1",
-          "label": "人员列表",
-          "icon": "Tickets"
-        }
-      ]
-    }
-  ]
+  "components": {
+    "base": [
+      {
+        "name": "container",
+        "label": "容器",
+        "icon": "Tickets",
+        "children": [
+          {
+            "name": "simple-container",
+            "label": "普通容器",
+            "icon": "Tickets"
+          },
+          {
+            "name": "form-container",
+            "label": "表单容器",
+            "icon": "Tickets"
+          }
+        ]
+      },
+      {
+        "name": "form",
+        "label": "表单",
+        "icon": "Tickets",
+        "children": [
+          {
+            "name": "button",
+            "label": "按钮",
+            "icon": "Tickets"
+          },
+          {
+            "name": "input",
+            "label": "输入框",
+            "icon": "Tickets"
+          },
+          {
+            "name": "textarea",
+            "label": "文本域",
+            "icon": "Tickets"
+          },
+          {
+            "name": "select",
+            "label": "下拉框",
+            "icon": "Tickets"
+          }
+        ]
+      }
+    ],
+    "industry": [
+      {
+        "name": "medical",
+        "label": "医疗行业",
+        "children": []
+      }
+    ],
+    "project": [
+      {
+        "name": "hosp",
+        "label": "医院项目",
+        "children": [
+          {
+            "name": "person-manage",
+            "label": "人员管理",
+            "icon": "Tickets",
+            "children": [
+              {
+                "name": "hosp-person-manage-dept-list-tree",
+                "label": "科室列表树",
+                "icon": "Tickets"
+              },
+              {
+                "name": "hosp-person-manage-base-info-sets",
+                "label": "人员基础信息集",
+                "icon": "Tickets"
+              },
+              {
+                "name": "hosp-person-manage-extra-info-sets",
+                "label": "人员附属信息集",
+                "icon": "Tickets"
+              }
+            ]
+          },
+          {
+            "name": "business",
+            "label": "业务办理",
+            "icon": "Tickets",
+            "children": [
+              {
+                "name": "hosp-business-menu-list-tree",
+                "label": "业务菜单树",
+                "icon": "Tickets"
+              },
+              {
+                "name": "hosp-business-flow-step",
+                "label": "业务流程条",
+                "icon": "Tickets"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "ga",
+        "label": "公安项目",
+        "children": []
+      }
+    ]
+  },
+  "templates": {
+    "base": [
+      {
+        "name": "form-template",
+        "label": "表单模板",
+        "icon": "Tickets",
+        "children": [
+          {
+            "name": "form-1",
+            "label": "单列表单",
+            "url": "",
+            "icon": "Tickets"
+          },
+          {
+            "name": "form-2",
+            "label": "多列表单",
+            "icon": "Tickets"
+          },
+          {
+            "name": "form-3",
+            "label": "标签页表单",
+            "icon": "Tickets"
+          }
+        ]
+      },
+      {
+        "name": "list-template",
+        "label": "列表模板",
+        "icon": "Tickets",
+        "children": [
+          {
+            "name": "list-1",
+            "label": "人员列表",
+            "icon": "Tickets"
+          }
+        ]
+      }
+    ],
+    "industry": [
+      {
+        "name": "medical",
+        "label": "医疗行业"
+      }
+    ],
+    "project": [
+      {
+        "name": "hosp",
+        "label": "医院项目",
+        "children": [
+          {
+            "name": "person-manage-template",
+            "label": "人员管理模板",
+            "icon": "Tickets",
+            "children": [
+              {
+                "name": "person-manage-1",
+                "label": "人员管理列表模板",
+                "icon": "Tickets"
+              }
+            ]
+          },
+          {
+            "name": "business-template",
+            "label": "业务办理模板",
+            "icon": "Tickets",
+            "children": [
+              {
+                "name": "business-1",
+                "label": "业务办理列表模板",
+                "icon": "Tickets"
+              },
+              {
+                "name": "business-1",
+                "label": "业务办理申请模板",
+                "icon": "Tickets"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "ga",
+        "label": "公安项目",
+        "children": []
+      }
+    ]
+  }
 }

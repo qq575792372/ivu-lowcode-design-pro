@@ -3,15 +3,22 @@ import { defineStore } from "pinia";
 const usePlatformStore = defineStore("platform", {
   state: () => {
     return {
-      platformList: [],
+      // 平台组件库数据
+      platformComponents: [],
+      // 平台模板库数据
+      platformTemplates: [],
     };
   },
   getters: {
-    getPlatformList: (state) => state.platformList,
+    getPlatformComponents: (state) => state.platformComponents,
+    getPlatformTemplates: (state) => state.platformTemplates,
   },
   actions: {
-    setPlatformList(platformList) {
-      this.platformList = platformList;
+    setPlatformComponents(platformComponents) {
+      this.platformComponents = platformComponents;
+    },
+    setPlatformTemplates(platformTemplates) {
+      this.platformTemplates = platformTemplates;
     },
   },
   persist: {

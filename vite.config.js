@@ -6,6 +6,7 @@ import { resolve } from "path";
 import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
+import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 
 // 当前目录路径
 const CWD = process.cwd();
@@ -60,6 +61,12 @@ export default defineConfig(({ command, mode }) => {
       },
     },
 
+    /* esbuild配置 */
+    esbuild: {
+      pure: ["console.log"], // 删除 console.log
+      drop: ["debugger"], // 删除 debugger
+    },
+
     /* 插件配置 */
     plugins: [
       vue(),
@@ -69,6 +76,13 @@ export default defineConfig(({ command, mode }) => {
       }),
       Components({
         resolvers: [ElementPlusResolver({ importStyle: "sass" })],
+      }),
+      /* 使用icon插件 */
+      createSvgIconsPlugin({
+        // 指定需要缓存的图标文件夹
+        iconDirs: [resolve(process.cwd(), "src/icons/svg")],
+        // 指定symbolId格式
+        symbolId: "svg-icon-[dir]-[name]",
       }),
     ],
   };

@@ -84,7 +84,56 @@ div:focus {
   }
 }
 
-// 定义设计面板中的拖拽容器公用样式
+// 自定义设计面板中tab的样式
+.custom-tabs {
+  .el-tabs__header {
+    margin: 0;
+
+    .el-tabs__nav-wrap::after {
+      height: 1px;
+      background: var(--border-standard-color);
+    }
+
+    .el-tabs__active-bar {
+      background: var(--primary-color);
+    }
+
+    .el-tabs__item {
+      font-size: var(--font-size-14);
+      color: var(--text-content-color);
+
+      &.is-active {
+        font-weight: var(--font-weight-bold);
+      }
+    }
+  }
+}
+
+// 自定义设计面板中collapse样式
+.custom-collapse {
+  border: none;
+
+  .el-collapse-item {
+    .el-collapse-item__header {
+      font-size: var(--font-size-14);
+      font-weight: var(--font-weight-bold);
+      color: var(--text-content-color);
+      border-bottom: 1px solid var(--border-standard-color);
+    }
+
+    .el-collapse-item__wrap {
+      background: var(--bg-white-color);
+
+      .el-collapse-item__content {
+        padding: 0;
+        border: none;
+      }
+    }
+
+  }
+}
+
+// 自定义设计面板中的拖拽容器公用样式
 .custom-vue-draggable {
   width: 100%;
   height: 100%;

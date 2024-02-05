@@ -16,9 +16,14 @@ import store from "./store";
 app.use(store);
 
 // 使用低代码平台插件注册
-import usePlatform from "@/plugins/platform/index";
+import UsePlatform from "@/plugins/platform/index";
 
-app.use(usePlatform);
+app.use(UsePlatform);
+
+// 使用svg-icon图标
+import SvgIcon from "@/icons/index";
+
+app.use(SvgIcon);
 
 console.log("整个vue数据", app);
 // 引入样式主文件

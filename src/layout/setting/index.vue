@@ -15,7 +15,7 @@
 </template>
 <script setup>
 import { ref, computed } from "vue";
-import Props from "@/components/designer/props/index.vue";
+import Props from "@/components/designer/props.vue";
 import DataSource from "@/components/designer/data-source.vue";
 import Global from "@/components/designer/global.vue";
 

@@ -5,7 +5,9 @@
     </el-header>
     <el-container class="layout-container">
       <el-aside class="layout-sidebar">
-        <Sidebar :designer />
+        <FoldedPanel @change-folded="handleChangeFolded">
+          <Sidebar :designer />
+        </FoldedPanel>
       </el-aside>
       <el-main class="layout-main">
         <Designer :designer />
@@ -21,6 +23,7 @@ import Header from "@/layout/header/index.vue";
 import Sidebar from "@/layout/sidebar/index.vue";
 import Designer from "@/components/designer/index.vue";
 import Setting from "@/layout/setting/index.vue";
+import FoldedPanel from "@/components/folded-panel/index.vue";
 
 const props = defineProps({
   designer: {
@@ -28,6 +31,10 @@ const props = defineProps({
     default: () => ({}),
   },
 });
+
+const handleChangeFolded = () => {
+  console.log(11);
+};
 </script>
 <style lang="scss" scoped>
 .app-layout {

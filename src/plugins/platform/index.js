@@ -21,13 +21,11 @@ export default {
   install(app, options) {
     /* 获取平台展示的数据，放入到缓存中 */
     const platformStore = usePlatformStore();
-    const platformMap = import.meta.glob("/src/platform*/index.json", { eager: true });
-    const platformList = Object.entries(platformMap)
-      .map(([path, component]) => {
-        return component.default;
-      })
-      .sort((a, b) => a.sort - b.sort);
-    platformStore.setPlatformList(platformList);
+    const platformMap = import.meta.glob("/src/platform/index.json", { eager: true });
+    Object.entries(platformMap).map(([path, component]) => {
+      platformStore.setPlatformComponents(component.default.components);
+      platformStore.setPlatformTemplates(component.default.templates);
+    });
 
     /* 设计器组件 */
     // 注册设计器组件
