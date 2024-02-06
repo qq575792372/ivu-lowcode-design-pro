@@ -1,11 +1,12 @@
 <template>
   <el-button icon="Memo" type="primary" text class="margin-right-12" @click="handleClick"></el-button>
-  <el-dialog
+  <el-drawer
     v-model="dialog.visible"
-    draggable
-    :close-on-click-modal="false"
-    title="组件树"
-    width="460px"
+    title="组件层次结构"
+    :size="386"
+    class="custom-drawer"
+    modal-class="custom-drawer-no-modal"
+    direction="rtl"
     append-to-body
   >
     <div>
@@ -22,12 +23,7 @@
         @node-click="handleNodeClick"
       />
     </div>
-    <template #footer>
-      <div class="text-align-center">
-        <el-button @click="dialog.visible = false">取消</el-button>
-      </div>
-    </template>
-  </el-dialog>
+  </el-drawer>
 </template>
 <script setup>
 import { computed, reactive, ref, watch } from "vue";
@@ -52,4 +48,4 @@ const handleNodeClick = (node) => {
   props.designer.setSelected(node);
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss"></style>

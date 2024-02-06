@@ -72,10 +72,10 @@ export default defineConfig(({ command, mode }) => {
       vue(),
       /* 按需引入 element-plus */
       AutoImport({
-        resolvers: [ElementPlusResolver({ importStyle: "sass" })],
+        resolvers: [ElementPlusResolver()],
       }),
       Components({
-        resolvers: [ElementPlusResolver({ importStyle: "sass" })],
+        resolvers: [ElementPlusResolver()],
       }),
       /* 使用icon插件 */
       createSvgIconsPlugin({

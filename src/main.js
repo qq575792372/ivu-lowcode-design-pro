@@ -3,6 +3,11 @@ import App from "./App.vue";
 
 const app = createApp(App);
 
+// element-plus需要手动引入的样式
+import "element-plus/es/components/message/style/css";
+import "element-plus/theme-chalk/el-message-box.css";
+import { ElMessage } from "element-plus";
+
 // 使用 element-plus 图标
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 
@@ -25,11 +30,13 @@ import SvgIcon from "@/icons/index";
 
 app.use(SvgIcon);
 
-console.log("整个vue数据", app);
 // 引入样式主文件
 import "@/styles/index.scss";
 // 引入主题样式
 import "@/theme/default.scss";
+
+// 绑定全局变量
+app.config.globalProperties.$message = ElMessage;
 
 // 挂载实例
 app.mount("#app");

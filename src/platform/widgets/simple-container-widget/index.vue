@@ -1,6 +1,7 @@
 <template>
   <!--容器的用法-->
   <div class="simple-container-widget-wrapper">
+    aaa
     <slot />
   </div>
 </template>

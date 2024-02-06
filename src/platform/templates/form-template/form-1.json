@@ -1,2 +1,103 @@
 {
+  "widgets": [
+    {
+      "type": "button",
+      "label": "按钮",
+      "widgets": [],
+      "props": {
+        "name": "button-4cc6bc102d989c6a",
+        "className": "",
+        "defaultValue": "",
+        "dsEnable": false,
+        "dsName": "",
+        "options": []
+      },
+      "events": [
+        {
+          "name": "click",
+          "args": [
+            "row",
+            "rowIndex"
+          ],
+          "code": "(row, rowIndex) => { /*这里事件内容*/ }"
+        }
+      ],
+      "actions": [
+        {
+          "name": "deleteTable",
+          "label": "删除表格数据",
+          "code": "(target) => { /*这里动作内容，可以获取到this*/ }"
+        }
+      ],
+      "id": "button-4cc6bc102d989c6a"
+    },
+    {
+      "type": "button",
+      "label": "按钮",
+      "widgets": [],
+      "props": {
+        "name": "button-372200944ba2a1d6",
+        "className": "",
+        "defaultValue": "",
+        "dsEnable": false,
+        "dsName": "",
+        "options": []
+      },
+      "events": [
+        {
+          "name": "click",
+          "args": [
+            "row",
+            "rowIndex"
+          ],
+          "code": "(row, rowIndex) => { /*这里事件内容*/ }"
+        }
+      ],
+      "actions": [
+        {
+          "name": "deleteTable",
+          "label": "删除表格数据",
+          "code": "(target) => { /*这里动作内容，可以获取到this*/ }"
+        }
+      ],
+      "id": "button-372200944ba2a1d6"
+    },
+    {
+      "type": "input",
+      "label": "输入框",
+      "widgets": [],
+      "props": {
+        "name": "input-f2f3ca482cad6633",
+        "className": "",
+        "defaultValue": "",
+        "inputCustomEditor": ""
+      },
+      "events": [
+        {
+          "name": "change",
+          "args": [
+            "row",
+            "rowIndex"
+          ],
+          "code": "(row, rowIndex) => { /*这里事件内容*/ }"
+        }
+      ],
+      "actions": [
+        {
+          "name": "deleteTable",
+          "label": "删除表格数据",
+          "code": "(target) => { /*这里动作内容，可以获取到this*/ }"
+        }
+      ],
+      "id": "input-f2f3ca482cad6633"
+    }
+  ],
+  "widgetConfig": {
+    "version": "1.0.0",
+    "globalCss": [],
+    "globalVars": [],
+    "globalFns": [],
+    "globalEvents": [],
+    "dataSources": []
+  }
 }

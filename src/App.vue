@@ -9,7 +9,8 @@ import { reactive, getCurrentInstance } from "vue";
 import { createDesigner } from "@/components/designer/designer";
 import Layout from "@/layout/index.vue";
 
-// 创建设计器
+// 创建设计器，并初始化
 const { proxy } = getCurrentInstance();
 const designer = reactive(createDesigner(proxy));
+designer.initDesigner();
 </script>

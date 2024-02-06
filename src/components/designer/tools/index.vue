@@ -7,7 +7,7 @@
     <Preview :designer />
     <el-dropdown class="more-button">
       <el-button>
-        <el-icon class="el-icon--right">
+        <el-icon>
           <MoreFilled />
         </el-icon>
       </el-button>

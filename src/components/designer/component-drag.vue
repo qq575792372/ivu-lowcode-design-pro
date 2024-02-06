@@ -67,7 +67,6 @@ const onAdd = (event, parentWidgets) => {
  */
 const onUpdate = async (event) => {
   const { newIndex, oldIndex } = event;
-  console.log("拖拽排序", "oldIndex：" + event.oldIndex, "newIndex：" + event.newIndex);
   const currRow = props.parentWidgets.splice(oldIndex, 1)[0];
   props.parentWidgets.splice(newIndex, 0, currRow);
 };

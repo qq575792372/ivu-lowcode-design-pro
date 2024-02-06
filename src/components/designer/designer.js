@@ -3,13 +3,24 @@ import { getUUID, cloneDeep } from "@lime-util/util";
 
 export function createDesigner(vueInstance) {
   const platformStore = usePlatformStore();
-
   return {
     // vue实例
     vueInstance,
 
     // 设计器组件列表
     widgets: [],
+    // 设计器配置
+    widgetConfig: {
+      version: "1.0.0",
+      globalCss: [],
+      globalVars: [],
+      globalFns: [],
+      globalEvents: [],
+      dataSources: [],
+    },
+
+    // 默认的导入模板
+    defaultWidgetTemplate: null,
 
     // 当前选择的组件信息
     selectedId: null,
@@ -22,23 +33,43 @@ export function createDesigner(vueInstance) {
     /**
      * 初始化设计器
      */
-    initDesigner() {},
+    initDesigner() {
+      this.defaultWidgetTemplate = cloneDeep({ widgets: this.widgets, widgetConfig: this.widgetConfig });
+    },
     /**
      * 清空设计器
      */
     clearDesigner() {
       this.clearSelected();
       this.widgets = [];
+      this.widgetConfig = {
+        version: "1.0.0",
+        globalCss: [],
+        globalVars: [],
+        globalFns: [],
+        globalEvents: [],
+        dataSources: [],
+      };
     },
 
     /**
      * 加载json组件数据
      */
-    loadFromJson() {},
+    loadFromJson(jsonData) {
+      if (!!jsonData && !!jsonData.widgets) {
+        this.widgets = jsonData.widgets;
+        this.widgetConfig = { ...this.widgetConfig, ...jsonData.widgetConfig };
+      } else {
+        console.error("no json-data load!");
+      }
+    },
     /**
      * 合并json组件数据
      */
     mergeFromJson() {},
+    /**
+     * 清空设计器数据
+     */
 
     /**
      * 选中组件

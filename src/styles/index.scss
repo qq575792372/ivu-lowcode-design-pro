@@ -111,7 +111,23 @@ div:focus {
   }
 }
 
-// 自定义设计面板中collapse样式
+// 自定义设计面包中el-drawer的样式
+.custom-drawer {
+  .el-drawer__header {
+    margin-bottom: 0;
+    padding: 16px 12px;
+  }
+
+  .el-drawer__body {
+    padding: 12px;
+  }
+}
+
+.custom-drawer-no-modal {
+  background: none;
+}
+
+// 自定义设计面板中el-collapse样式
 .custom-collapse {
   border: none;
 
@@ -155,13 +171,15 @@ div:focus {
     min-height: 40px;
 
     &::before {
-      content: "请拖拽组件到此处";
-      color: #8591a2;
-      font-size: 12px;
+      content: "请从左侧列表中选择组件，然后用鼠标拖动组件放置于此处";
+      color: var(--text-desc-color);
+      font-size: var(--font-size-14);
       position: absolute;
+      text-align: center;
+      left: 0;
+      right: 0;
       top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      transform: translateY(-50%);
     }
   }
 
