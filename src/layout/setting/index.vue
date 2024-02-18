@@ -20,7 +20,7 @@
   </div>
 </template>
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import Props from "@/components/designer/props.vue";
 import Events from "@/components/designer/events.vue";
 import Actions from "@/components/designer/actions.vue";
