@@ -1,0 +1,6 @@
+{
+  "name": "defaultValue",
+  "label": "默认值",
+  "placeholder": "请输入",
+  "group": "base"
+}

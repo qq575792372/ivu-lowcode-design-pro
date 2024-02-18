@@ -14,6 +14,7 @@ declare module 'vue' {
     ComponentRender: typeof import('./src/components/designer/component-render.vue')['default']
     DataSource: typeof import('./src/components/designer/data-source.vue')['default']
     Designer: typeof import('./src/components/designer/index.vue')['default']
+    DesignRender: typeof import('./src/components/designer/design-render.vue')['default']
     ElAlert: typeof import('element-plus/es')['ElAlert']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElButton: typeof import('element-plus/es')['ElButton']

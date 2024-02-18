@@ -9,7 +9,7 @@
     fullscreen
     :close-on-click-modal="false"
   >
-    <Render :data="dialog.data" :designer />
+    <Render :data="dialog.data" />
     <template #footer>
       <div class="text-align-center">
         <el-button @click="dialog.visible = false">取消</el-button>
@@ -30,7 +30,7 @@ const props = defineProps({
 // 声明弹框
 const dialog = ref({
   visible: false,
-  data: [],
+  data: {},
 });
 
 /**
@@ -39,7 +39,6 @@ const dialog = ref({
 const handleClick = () => {
   dialog.value.visible = true;
   dialog.value.data = cloneDeep({ widgets: props.designer.widgets, widgetConfig: props.designer.widgetConfig });
-  console.log(111, dialog.value.data);
 };
 </script>
 <style lang="scss" scoped></style>

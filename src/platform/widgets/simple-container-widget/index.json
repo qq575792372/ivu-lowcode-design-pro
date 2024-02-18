@@ -1,6 +1,6 @@
 {
   "type": "simple-container",
-  "label": "表单容器",
+  "label": "普通容器",
   "widgets": [],
   "props": {
     "name": "",

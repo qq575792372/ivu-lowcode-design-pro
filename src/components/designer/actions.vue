@@ -1,5 +1,3 @@
-<template>
-  <div>test</div>
-</template>
+<template></template>
 <script setup></script>
 <style lang="scss" scoped></style>

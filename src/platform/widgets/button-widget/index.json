@@ -4,20 +4,18 @@
   "widgets": [],
   "props": {
     "name": "",
-    "className": "",
-    "defaultValue": "",
+    "defaultValue": "button",
     "dsEnable": false,
     "dsName": "",
     "options": []
   },
   "events": [
     {
-      "name": "click",
+      "name": "onClick",
       "args": [
-        "row",
-        "rowIndex"
+        "widget"
       ],
-      "code": "(row, rowIndex) => { /*这里事件内容*/ }"
+      "code": "/*这里事件内容*/"
     }
   ],
   "actions": [

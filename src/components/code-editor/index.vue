@@ -182,6 +182,7 @@ onMounted(() => {
       },
     });
   });
+
   // 回调事件
   editor.on("focus", () => {
     emit("focus");

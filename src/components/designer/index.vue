@@ -1,11 +1,15 @@
 <template>
   <div class="designer-container">
-    <!--在设计器入口传入第一层的widgets-->
-    <ComponentDrag :designer :parent-widgets="props.designer.widgets" />
+    <!--在设计器入口传入widgets-->
+    <ComponentRender :designer :parent-widgets="props.designer.widgets" />
   </div>
 </template>
 <script setup>
-import ComponentDrag from "./component-drag.vue";
+import ComponentRender from "./component-render.vue";
+
+defineOptions({
+  name: "Design",
+});
 
 // props
 const props = defineProps({ designer: { type: Object, default: () => ({}) } });

@@ -1,14 +1,6 @@
 <template>
   <div class="name-editor-wrapper">
     <el-form-item :label="item.label">
-      <template #label>
-        {{ item.label }}
-        <el-tooltip content="组件唯一名称，可以允许修改" placement="bottom">
-          <el-icon>
-            <WarningFilled />
-          </el-icon>
-        </el-tooltip>
-      </template>
       <el-input v-model="propModel[item.name]" :placeholder="item.placeholder" />
     </el-form-item>
   </div>

@@ -34,13 +34,6 @@ const props = defineProps({
     default: () => ({}),
   },
 });
-
-// Sidebar折叠
-const sidebarFolded = ref(false);
-const handleChangeSidebarFolded = () => {
-  console.log(11);
-  sidebarFolded.value = !sidebarFolded.value;
-};
 </script>
 <style lang="scss" scoped>
 .app-layout {

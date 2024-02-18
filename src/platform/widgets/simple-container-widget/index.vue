@@ -1,7 +1,6 @@
 <template>
-  <!--容器的用法-->
   <div class="simple-container-widget-wrapper">
-    aaa
+    普通容器
     <slot />
   </div>
 </template>
@@ -12,9 +11,9 @@ defineOptions({
 
 // props
 const props = defineProps({
-  designer: { type: Object, default: () => ({}) },
-  widget: { type: Object, default: () => ({}) },
-  parentWidget: { type: Object, default: () => ({}) },
+  designer: { type: Object, default: () => null },
+  widget: { type: Object, default: () => null },
+  parentWidget: { type: Object, default: () => null },
   parentWidgets: { type: Array, default: () => [] },
   indexOfParentWidgets: { type: Number, default: null },
 });
