@@ -1,5 +1,5 @@
 <template>
-  <div class="name-editor-wrapper">
+  <div class="default-value-editor-wrapper">
     <el-form-item :label="item.label">
       <el-input v-model="propModel[item.name]" :placeholder="item.placeholder" />
     </el-form-item>

@@ -12,10 +12,18 @@ export function createDesigner(vueInstance) {
     // 设计器配置
     widgetConfig: {
       version: "1.0.0",
-      globalCss: [],
+      globalCss: "",
+      globalStyle: "",
       globalVars: [],
-      globalFns: [],
-      globalEvents: [],
+      globalFx: [],
+      globalActions: [
+        {
+          name: "globalCustomAction1",
+          label: "全局自定义动作1",
+          enable: true,
+          code: "(target) => { /*这里动作内容*/ }",
+        },
+      ],
       dataSources: [],
     },
 

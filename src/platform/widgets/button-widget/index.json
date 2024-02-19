@@ -11,18 +11,30 @@
   },
   "events": [
     {
+      "name": "onMounted",
+      "args": [],
+      "code": "",
+      "action": [
+        "deleteTable"
+      ]
+    },
+    {
       "name": "onClick",
       "args": [
         "widget"
       ],
-      "code": "/*这里事件内容*/"
+      "code": "/*事件内容*/ console.log(111,widget);",
+      "action": [
+        "deleteTable"
+      ]
     }
   ],
   "actions": [
     {
       "name": "deleteTable",
       "label": "删除表格数据",
-      "code": "(target) => { /*这里动作内容，可以获取到this*/ }"
+      "enable": true,
+      "code": "/*这里动作内容*/"
     }
   ]
 }

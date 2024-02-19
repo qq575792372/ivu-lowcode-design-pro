@@ -200,7 +200,7 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .code-editor {
-  border: 1px solid var(--border-deep-color);
+  border: 1px solid var(--border-standard-color);
   border-radius: var(--cmp-border-radius);
   overflow: hidden;
 

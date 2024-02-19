@@ -62,9 +62,6 @@ const props = defineProps({
       background: var(--bg-white-color);
       border-radius: 0 var(--cmp-border-radius) var(--cmp-border-radius) 0;
       padding: 0;
-
-      &.is-folded {
-      }
     }
 
     .layout-main {

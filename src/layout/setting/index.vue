@@ -1,22 +1,24 @@
 <template>
   <div class="setting-container">
-    <el-tabs v-model="settingActiveName" class="custom-tabs">
-      <el-tab-pane v-if="widget" label="组件配置" name="props">
-        <el-form :label-width="100" label-position="left" class="custom-form" size="small">
-          <el-collapse v-model="componentConfigActiveNames" class="custom-collapse">
-            <Props :designer :widget />
-            <Events :designer :widget />
-            <Actions :designer :widget />
-          </el-collapse>
-        </el-form>
-      </el-tab-pane>
-      <el-tab-pane label="数据接口" name="data-source">
-        <DataSource :designer :widget />
-      </el-tab-pane>
-      <el-tab-pane label="全局配置" name="global">
-        <Global :designer :widget />
-      </el-tab-pane>
-    </el-tabs>
+    <el-scrollbar>
+      <el-tabs v-model="settingActiveName" class="custom-tabs">
+        <el-tab-pane v-if="widget" label="组件配置" name="props">
+          <el-form :label-width="100" label-position="left" class="custom-form" size="small">
+            <el-collapse v-model="componentConfigActiveNames" class="custom-collapse">
+              <Props :designer :widget />
+              <Events :designer :widget />
+              <Actions :designer :widget />
+            </el-collapse>
+          </el-form>
+        </el-tab-pane>
+        <el-tab-pane label="数据接口" name="data-source">
+          <DataSource :designer :widget />
+        </el-tab-pane>
+        <el-tab-pane label="全局配置" name="global">
+          <Global :designer :widget />
+        </el-tab-pane>
+      </el-tabs>
+    </el-scrollbar>
   </div>
 </template>
 <script setup>

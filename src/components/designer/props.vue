@@ -4,19 +4,22 @@
       {{ props.widget.id }}
     </el-form-item>
     <el-collapse-item title="基本属性" name="base">
-      <template v-for="(item, index) in baseProps" :key="index">
-        <component :is="item.componentName" :item="item" :designer :widget />
-      </template>
+      <div v-for="(item, index) in baseProps" :key="index" class="props-wrapper">
+        <component :is="item.componentName" :item="item" :designer :widget class="props-editor" />
+        <el-button class="props-fx" type="text" text plain @click="handleClick(event, eventIndex)">fx</el-button>
+      </div>
     </el-collapse-item>
     <el-collapse-item title="高级属性" name="advanced">
-      <template v-for="(item, index) in advancedProps" :key="index">
-        <component :is="item.componentName" :item="item" :designer :widget />
-      </template>
+      <div v-for="(item, index) in advancedProps" :key="index" class="props-wrapper">
+        <component :is="item.componentName" :item="item" :designer :widget class="props-editor" />
+        <el-button class="props-fx" type="text" text plain @click="handleClick(event, eventIndex)">fx</el-button>
+      </div>
     </el-collapse-item>
     <el-collapse-item title="自定义属性" name="custom">
-      <template v-for="(item, index) in customProps" :key="index">
-        <component :is="item.componentName" :item="item" :designer :widget />
-      </template>
+      <div v-for="(item, index) in customProps" :key="index" class="props-wrapper">
+        <component :is="item.componentName" :item="item" :designer :widget class="props-editor" />
+        <el-button class="props-fx" type="text" text plain @click="handleClick(event, eventIndex)">fx</el-button>
+      </div>
     </el-collapse-item>
   </div>
 </template>
@@ -62,5 +65,17 @@ const customProps = computed(() => {
 </script>
 <style lang="scss" scoped>
 .props-container {
+  .props-wrapper {
+    display: flex;
+
+    .props-editor {
+      flex: 1;
+      margin-right: var(--cmp-margin);
+    }
+
+    .props-fx {
+      margin-left: auto;
+    }
+  }
 }
 </style>

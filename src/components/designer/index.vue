@@ -1,7 +1,9 @@
 <template>
   <div class="designer-container">
-    <!--在设计器入口传入widgets-->
-    <ComponentRender :designer :parent-widgets="props.designer.widgets" />
+    <div class="widget-canvas">
+      <!--在设计器入口传入widgets-->
+      <ComponentRender :designer :parent-widgets="props.designer.widgets" />
+    </div>
   </div>
 </template>
 <script setup>
@@ -16,7 +18,13 @@ const props = defineProps({ designer: { type: Object, default: () => ({}) } });
 </script>
 <style lang="scss" scoped>
 .designer-container {
+  overflow: hidden;
   height: 100%;
-  padding: var(--cmp-large-padding);
+
+  .widget-canvas {
+    height: 100%;
+    overflow: auto;
+    padding: var(--cmp-padding);
+  }
 }
 </style>
