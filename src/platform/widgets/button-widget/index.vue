@@ -4,11 +4,12 @@
   </div>
 </template>
 <script setup>
-import { getEvent, getEventFn } from "@/utils/events";
+import useEvents from "@/hooks/events";
 
 defineOptions({
   name: "ButtonWidget",
 });
+
 // props
 const props = defineProps({
   designer: { type: Object, default: () => null },
@@ -18,9 +19,17 @@ const props = defineProps({
   indexOfParentWidgets: { type: Number, default: null },
 });
 
+// 获取组件事件的hooks
+const { executeEvent, executeEventAction } = useEvents({ props });
+
+/**
+ * 点击事件
+ */
 const handleClick = () => {
-  let eventFn = getEventFn(props.widget, "onClick");
-  eventFn(props.widget);
+  // 执行元素的事件
+  executeEvent(props.widget, "onClick");
+  // 执行元素事件绑定的动作
+  executeEventAction(props.widget, "onClick");
 };
 </script>
 <style lang="scss" scoped></style>

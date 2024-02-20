@@ -1,8 +1,8 @@
 <template>
   <div class="setting-container">
-    <el-scrollbar>
-      <el-tabs v-model="settingActiveName" class="custom-tabs">
-        <el-tab-pane v-if="widget" label="组件配置" name="props">
+    <el-tabs v-model="settingActiveName" class="custom-tabs">
+      <el-tab-pane v-if="widget" label="组件配置" name="props">
+        <el-scrollbar>
           <el-form :label-width="100" label-position="left" class="custom-form" size="small">
             <el-collapse v-model="componentConfigActiveNames" class="custom-collapse">
               <Props :designer :widget />
@@ -10,24 +10,28 @@
               <Actions :designer :widget />
             </el-collapse>
           </el-form>
-        </el-tab-pane>
-        <el-tab-pane label="数据接口" name="data-source">
-          <DataSource :designer :widget />
-        </el-tab-pane>
-        <el-tab-pane label="全局配置" name="global">
+        </el-scrollbar>
+      </el-tab-pane>
+      <el-tab-pane label="数据接口" name="data-source">
+        <el-scrollbar>
+          <DataSources :designer :widget />
+        </el-scrollbar>
+      </el-tab-pane>
+      <el-tab-pane label="全局配置" name="global">
+        <el-scrollbar>
           <Global :designer :widget />
-        </el-tab-pane>
-      </el-tabs>
-    </el-scrollbar>
+        </el-scrollbar>
+      </el-tab-pane>
+    </el-tabs>
   </div>
 </template>
 <script setup>
 import { ref, computed, watch } from "vue";
-import Props from "@/components/designer/props.vue";
-import Events from "@/components/designer/events.vue";
-import Actions from "@/components/designer/actions.vue";
-import DataSource from "@/components/designer/data-source.vue";
-import Global from "@/components/designer/global.vue";
+import Props from "@/components/designer/settings/props.vue";
+import Events from "@/components/designer/settings/events.vue";
+import Actions from "@/components/designer/settings/actions.vue";
+import DataSources from "@/components/designer/settings/data-sources/index.vue";
+import Global from "@/components/designer/settings/global/index.vue";
 
 defineOptions({ name: "Setting" });
 // props
@@ -48,7 +52,7 @@ const widget = computed(() => {
 <style lang="scss" scoped>
 .setting-container {
   height: 100%;
-  width: 360px;
+  width: 320px;
   padding: var(--cmp-large-padding);
 
   // 属性配置中重新定义折叠框样式

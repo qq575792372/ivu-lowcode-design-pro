@@ -1,8 +1,12 @@
-import { usePlatformStore } from "@/store";
+import { usePlatformStore, useDesignerStore } from "@/store";
 import { getUUID, cloneDeep } from "@lime-util/util";
 
 export function createDesigner(vueInstance) {
+  // 获取平台store
   const platformStore = usePlatformStore();
+  // 获取设计器store
+  const designerStore = useDesignerStore();
+
   return {
     // vue实例
     vueInstance,
@@ -10,39 +14,52 @@ export function createDesigner(vueInstance) {
     // 设计器组件列表
     widgets: [],
     // 设计器配置
-    widgetConfig: {
-      version: "1.0.0",
-      globalCss: "",
-      globalStyle: "",
-      globalVars: [],
-      globalFx: [],
-      globalActions: [
-        {
-          name: "globalCustomAction1",
-          label: "全局自定义动作1",
-          enable: true,
-          code: "(target) => { /*这里动作内容*/ }",
-        },
-      ],
-      dataSources: [],
-    },
+    widgetConfig: null,
 
-    // 默认的导入模板
-    defaultWidgetTemplate: null,
+    // 默认的设计器模板数据
+    defaultWidgetTemplate: {
+      widgets: [],
+      widgetConfig: {
+        version: "1.0.0",
+        globalCss: "",
+        globalStyle: "",
+        globalVars: [],
+        globalFx: [],
+        globalActions: [
+          {
+            name: "globalCustomAction1",
+            label: "全局自定义动作1",
+            enable: true,
+            code: "/*这里动作内容*/ console.log('触发全局自定义动作1',widget);",
+          },
+        ],
+        dataSources: [],
+      },
+    },
 
     // 当前选择的组件信息
     selectedId: null,
-    selectedWidgetName: null,
     selectedWidget: null,
 
     // 历史数据
-    historyData: null,
+    historyData: {
+      maxStep: 20, // 最大长度
+      steps: [], // 历史记录
+      undoSteps: [], // 撤销的记录
+    },
 
+    // 设计器
     /**
      * 初始化设计器
      */
     initDesigner() {
-      this.defaultWidgetTemplate = cloneDeep({ widgets: this.widgets, widgetConfig: this.widgetConfig });
+      // 初始化设计器配置数据
+      this.widgetConfig = cloneDeep(this.defaultWidgetTemplate.widgetConfig);
+
+      // 从缓存中获取widgets
+      this.widgets = designerStore.getWidgets;
+      // 从缓存中获得当前选中的组件
+      this.setSelected(designerStore.getSelectedWidget);
     },
     /**
      * 清空设计器
@@ -60,6 +77,7 @@ export function createDesigner(vueInstance) {
       };
     },
 
+    // 操作json
     /**
      * 加载json组件数据
      */
@@ -79,13 +97,13 @@ export function createDesigner(vueInstance) {
      * 清空设计器数据
      */
 
+    // 操作组件选中
     /**
      * 选中组件
      */
     setSelected(widget) {
       if (widget) {
         this.selectedId = widget.id;
-        this.selectedWidgetName = widget.name;
         this.selectedWidget = widget;
       } else {
         this.clearSelected();
@@ -96,10 +114,10 @@ export function createDesigner(vueInstance) {
      */
     clearSelected() {
       this.selectedId = null;
-      this.selectedWidgetName = null;
       this.selectedWidget = null;
     },
 
+    // 操作组件元素
     /**
      * 通过类型或者名称获得设计器组件信息
      * @param typeName 类型名称，可以通过左侧菜单的name或者组件中的type获得
@@ -173,6 +191,7 @@ export function createDesigner(vueInstance) {
       return widget.type + "-widget";
     },
 
+    // 操作设计器历史数据
     /**
      * 获取历史数据
      */
@@ -181,14 +200,21 @@ export function createDesigner(vueInstance) {
      * 设置历史数据
      */
     setHistoryData() {},
+    undoHistoryData() {},
+    redoHistoryData() {},
 
+    // 操作设计器缓存
     /**
      * 获得设计器中所有组件的缓存数据
      */
-    getWidgetsCache() {},
+    getWidgetsCache() {
+      return designerStore.getWidgets;
+    },
     /**
      * 设置设计器中所有组件的缓存数据
      */
-    setWidgetsCache() {},
+    setWidgetsCache(widgets) {
+      designerStore.setWidgets(widgets);
+    },
   };
 }

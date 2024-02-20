@@ -293,8 +293,8 @@ const props = defineProps({
   },
 });
 
-// 获取到平台的组件库和模板库
-const platformStore = new usePlatformStore();
+// 获取到平台的组件库和模板库的store
+const platformStore = usePlatformStore();
 const platformComponents = computed(() => platformStore.getPlatformComponents);
 const platformTemplates = computed(() => platformStore.getPlatformTemplates);
 

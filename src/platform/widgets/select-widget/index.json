@@ -7,18 +7,6 @@
     "className": "",
     "defaultValue": ""
   },
-  "events": [
-    {
-      "name": "change",
-      "args": ["row", "rowIndex"],
-      "code": "(row, rowIndex) => { /*这里事件内容*/ }"
-    }
-  ],
-  "actions": [
-    {
-      "name": "deleteTable",
-      "label": "删除表格数据",
-      "code": "(target) => { /*这里动作内容，可以获取到this*/ }"
-    }
-  ]
+  "events": [],
+  "actions": []
 }

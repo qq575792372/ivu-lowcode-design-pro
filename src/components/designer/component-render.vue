@@ -79,11 +79,12 @@
   </VueDraggable>
 </template>
 <script setup>
+import { useDesignerStore } from "@/store";
+import { VueDraggable } from "vue-draggable-plus";
+
 defineOptions({
   name: "ComponentRender",
 });
-
-import { VueDraggable } from "vue-draggable-plus";
 
 // props
 const props = defineProps({
@@ -98,6 +99,9 @@ const props = defineProps({
   // 当前设计器元素在父级widgets列表中的下标
   indexOfParentWidgets: { type: Number, default: null },
 });
+
+// 获取到设计器的store
+const designerStore = useDesignerStore();
 
 // 拖拽的操作
 /**
@@ -124,6 +128,9 @@ const onUpdate = async (event) => {
  */
 const handleSelectedWidget = (subWidget) => {
   props.designer.setSelected(subWidget);
+  // 缓存设计器的选中信息
+  designerStore.setSelectedId(subWidget.id);
+  designerStore.setSelectedWidget(subWidget);
 };
 /**
  * 选中父组件

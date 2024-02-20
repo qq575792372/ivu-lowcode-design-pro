@@ -7,6 +7,8 @@
   </div>
 </template>
 <script setup>
+import { watch } from "vue";
+import { useDesignerStore } from "@/store";
 import ComponentRender from "./component-render.vue";
 
 defineOptions({
@@ -15,6 +17,22 @@ defineOptions({
 
 // props
 const props = defineProps({ designer: { type: Object, default: () => ({}) } });
+
+// 获取到设计器的store
+const designerStore = useDesignerStore();
+
+// 监听设计器widgets列表
+watch(
+  () => props.designer.widgets,
+  (val) => {
+    // 缓存设计器的widgets列表
+    designerStore.setWidgets(val);
+  },
+  {
+    deep: true,
+    immediate: true,
+  },
+);
 </script>
 <style lang="scss" scoped>
 .designer-container {

@@ -23,7 +23,7 @@
       "args": [
         "widget"
       ],
-      "code": "/*事件内容*/ console.log(111,widget);",
+      "code": "/*事件内容*/ console.log('onClick点击事件',widget);",
       "action": [
         "deleteTable"
       ]
@@ -34,7 +34,7 @@
       "name": "deleteTable",
       "label": "删除表格数据",
       "enable": true,
-      "code": "/*这里动作内容*/"
+      "code": "/*这里动作内容*/ console.log('触发删除表格数据',widget);"
     }
   ]
 }

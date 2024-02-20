@@ -1,14 +1,19 @@
 <template>
   <div class="events-container">
     <el-collapse-item title="事件" name="events">
-      <el-form-item
-        v-for="(event, eventIndex) in props.widget.events"
-        :key="eventIndex"
-        :label="event.name"
-        class="clearfix"
-      >
-        <el-button type="primary" plain icon="Edit" @click="handleClick(event, eventIndex)">编辑</el-button>
-      </el-form-item>
+      <template v-if="props.widget.events.length">
+        <el-form-item
+          v-for="(event, eventIndex) in props.widget.events"
+          :key="eventIndex"
+          :label="event.name"
+          class="events-wrapper clearfix"
+        >
+          <el-button type="primary" plain icon="Edit" @click="handleClick(event, eventIndex)">编辑</el-button>
+        </el-form-item>
+      </template>
+      <template v-else>
+        <div class="events-wrapper no-events">暂无事件</div>
+      </template>
     </el-collapse-item>
   </div>
 
@@ -51,7 +56,8 @@
 </template>
 <script setup>
 import { computed, reactive, ref, watch } from "vue";
-import { ElMessage, ElMessageBox } from "element-plus";
+import useActions from "@/hooks/actions";
+import { ElMessage } from "element-plus";
 import CodeEditor from "@/components/code-editor/index.vue";
 
 defineOptions({ name: "Props" });
@@ -70,13 +76,9 @@ const dialog = ref({
   eventActions: [],
 });
 
-// 获取到组件本身和全局的动作列表
-const actionList = computed(() => {
-  const globalActions = props.designer.widgetConfig.globalActions.map((v) => {
-    return { ...v, global: true };
-  });
-  return [...globalActions, ...props.widget.actions];
-});
+// 获取组件动作的hooks
+const { actionList } = useActions({ props });
+// 绑定tab的名称，默认是events事件
 const boundActiveNames = ref("events");
 
 /**
@@ -105,5 +107,15 @@ const handleSure = () => {
 </script>
 <style lang="scss" scoped>
 .events-container {
+  .events-wrapper {
+    &.no-events {
+      display: block;
+      width: 100%;
+      text-align: center;
+      font-size: var(--font-size-12);
+      padding-bottom: var(--cmp-padding);
+      color: var(--text-desc-color);
+    }
+  }
 }
 </style>
