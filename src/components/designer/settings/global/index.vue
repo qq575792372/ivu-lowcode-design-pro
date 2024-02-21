@@ -1,37 +1,377 @@
 <template>
   <div class="global-container">
-    <el-form :label-width="100" label-position="left" class="custom-form" size="small">
-      <el-form-item label="全局组件大小">
-        <el-input placeholder="请输入" />
-      </el-form-item>
-      <el-form-item label="表单标签位置">
-        <el-input placeholder="请输入" />
-      </el-form-item>
-      <el-form-item label="表单标签宽度">
-        <el-input placeholder="请输入" />
-      </el-form-item>
-      <el-form-item label="主题样式">
-        <el-select placeholder="请输入" />
-      </el-form-item>
-      <el-form-item label="全局CSS">
-        <el-button type="primary" plain icon="Edit" @click="handleClick(event, eventIndex)">编辑</el-button>
-      </el-form-item>
+    <el-form-item label="全局组件大小">
+      <el-radio-group v-model="widgetConfig.globalSize">
+        <el-radio-button label="small">小</el-radio-button>
+        <el-radio-button label="">默认</el-radio-button>
+        <el-radio-button label="large">大</el-radio-button>
+      </el-radio-group>
+    </el-form-item>
+
+    <el-form-item label="表单标签位置">
+      <el-radio-group v-model="widgetConfig.globalLabelPosition">
+        <el-radio-button label="left">左</el-radio-button>
+        <el-radio-button label="right">右</el-radio-button>
+      </el-radio-group>
+    </el-form-item>
+    <el-form-item label="表单标签宽度">
+      <el-input-number
+        v-model="widgetConfig.globalLabelWidth"
+        placeholder="请输入"
+        :min="0"
+        :max="999"
+        style="width: 100%"
+        controls-position="right"
+      />
+    </el-form-item>
+    <el-form-item label="主题样式">
+      <el-select v-model="widgetConfig.globalTheme" placeholder="请输入">
+        <el-option label="默认" value="default" />
+        <el-option label="火焰红" value="fire-hot" />
+      </el-select>
+    </el-form-item>
+    <el-form-item label="全局CSS">
+      <el-button type="primary" plain icon="Edit" @click="showGlobalCssDialog">编辑</el-button>
+    </el-form-item>
+    <el-collapse-item title="全局变量" name="globalVars">
       <el-form-item label="全局变量">
+        <el-button type="primary" plain icon="Edit" @click="showGlobalVarsDialog">编辑</el-button>
+      </el-form-item>
+    </el-collapse-item>
+    <el-collapse-item title="全局表达式" name="globalFxs">
+      <el-form-item label="全局表达式">
         <el-button type="primary" plain icon="Edit" @click="handleClick(event, eventIndex)">编辑</el-button>
       </el-form-item>
+    </el-collapse-item>
+    <el-collapse-item title="全局函数" name="globalFns">
       <el-form-item label="全局函数">
         <el-button type="primary" plain icon="Edit" @click="handleClick(event, eventIndex)">编辑</el-button>
       </el-form-item>
-      <el-form-item label="全局事件">
-        <el-button type="primary" plain icon="Edit" @click="handleClick(event, eventIndex)">编辑</el-button>
+    </el-collapse-item>
+    <el-collapse-item title="全局事件" name="globalEvents">
+      <el-form-item
+        v-for="(event, eventIndex) in widgetConfig.globalEvents"
+        :key="eventIndex"
+        :label="event.name"
+        :label-width="110"
+        class="events-wrapper"
+      >
+        <el-button type="primary" plain icon="Edit" @click="showGlobalEventsDialog(event, eventIndex)">编辑</el-button>
       </el-form-item>
-      <el-form-item label="全局动作">
-        <el-button type="primary" plain icon="Edit" @click="handleClick(event, eventIndex)">编辑</el-button>
+    </el-collapse-item>
+    <el-collapse-item title="全局动作" name="globalActions">
+      <template v-if="widgetConfig.globalActions.length">
+        <el-form-item
+          v-for="(action, actionIndex) in widgetConfig.globalActions"
+          :key="actionIndex"
+          :label="action.label"
+          class="actions-wrapper"
+        >
+          <el-button type="primary" plain icon="Edit" @click="showEditGlobalActionsDialog(action, actionIndex)">
+            编辑
+          </el-button>
+          <el-button
+            type="danger"
+            plain
+            icon="Delete"
+            style="margin-left: auto"
+            @click="handleRemoveGlobalActions(actionIndex)"
+          ></el-button>
+        </el-form-item>
+        <el-button type="primary" style="width: 100%" plain icon="Plus" @click="showAddGlobalActionsDialog">
+          添加全局动作
+        </el-button>
+      </template>
+      <template v-else>
+        <div class="actions-wrapper no-actions">
+          暂无动作，点击
+          <el-button icon="Plus" plain type="primary" @click="showAddGlobalActionsDialog"></el-button>
+          添加动作
+        </div>
+      </template>
+    </el-collapse-item>
+  </div>
+
+  <!--弹框操作-->
+  <!--全局CSS-->
+  <el-dialog
+    v-if="globalCssDialog.visible"
+    v-model="globalCssDialog.visible"
+    :title="globalCssDialog.title"
+    append-to-body
+    draggable
+    width="960px"
+    :close-on-click-modal="false"
+  >
+    <CodeEditor v-model="globalCssDialog.data" lang="css" />
+    <template #footer>
+      <div class="text-align-center">
+        <el-button type="primary" @click="handleSureGlobalCss">确定</el-button>
+        <el-button @click="globalCssDialog.visible = false">取消</el-button>
+      </div>
+    </template>
+  </el-dialog>
+  <!--全局变量-->
+  <el-dialog
+    v-if="globalVarsDialog.visible"
+    v-model="globalVarsDialog.visible"
+    :title="globalVarsDialog.title"
+    append-to-body
+    draggable
+    width="960px"
+    :close-on-click-modal="false"
+  >
+    {{ widgetConfig }}
+    <el-alert type="info" :closable="false">变量保存在globalVars中，以JSON对象形式存在。</el-alert>
+    <CodeEditor v-model="globalVarsDialog.data" />
+    <template #footer>
+      <div class="text-align-center">
+        <el-button type="primary" @click="handleSureGlobalVars">确定</el-button>
+        <el-button @click="globalVarsDialog.visible = false">取消</el-button>
+      </div>
+    </template>
+  </el-dialog>
+  <!--全局事件-->
+  <el-dialog
+    v-if="globalEventsDialog.visible"
+    v-model="globalEventsDialog.visible"
+    :title="globalEventsDialog.title"
+    append-to-body
+    draggable
+    width="960px"
+    :close-on-click-modal="false"
+  >
+    <CodeEditor v-model="globalEventsDialog.data" />
+    <template #footer>
+      <div class="text-align-center">
+        <el-button type="primary" @click="handleSureGlobalEvents">确定</el-button>
+        <el-button @click="globalEventsDialog.visible = false">取消</el-button>
+      </div>
+    </template>
+  </el-dialog>
+  <!--全局动作-->
+  <el-dialog
+    v-if="globalActionsDialog.visible"
+    v-model="globalActionsDialog.visible"
+    :title="globalActionsDialog.title"
+    append-to-body
+    draggable
+    width="960px"
+    :close-on-click-modal="false"
+  >
+    <el-form
+      ref="globalActionsFormRef"
+      :model="globalActionsDialog.form"
+      :rules="globalActionsDialog.formRules"
+      label-width="80px"
+      inline
+      size="small"
+    >
+      <el-form-item label="动作名称" prop="name">
+        <el-input v-model="globalActionsDialog.form.name" :disabled="globalActionsDialog.type === 'edit'" />
+      </el-form-item>
+      <el-form-item label="动作标签" prop="label">
+        <el-input v-model="globalActionsDialog.form.label" />
+      </el-form-item>
+      <el-form-item label="是否启用">
+        <el-switch v-model="globalActionsDialog.form.enable" />
       </el-form-item>
     </el-form>
-  </div>
+    <el-alert type="info" :closable="false">
+      &nbsp;(widget)&nbsp;=>&nbsp;{&nbsp;//&nbsp;widget&nbsp;触发动作的元素
+    </el-alert>
+    <CodeEditor v-model="globalActionsDialog.form.code" />
+    <el-alert type="info" :closable="false">}</el-alert>
+    <template #footer>
+      <div class="text-align-center">
+        <el-button type="primary" @click="handleSureGlobalActions">确定</el-button>
+        <el-button @click="globalActionsDialog.visible = false">取消</el-button>
+      </div>
+    </template>
+  </el-dialog>
 </template>
-<script setup></script>
+<script setup>
+import { ref } from "vue";
+import { cloneDeep } from "@lime-util/util";
+import { ElMessage, ElMessageBox } from "element-plus";
+import { useDesignerStore } from "@/store";
+import useGlobal from "@/hooks/global";
+import CodeEditor from "@/components/code-editor/index.vue";
+
+defineOptions({ name: "Global" });
+
+// props
+const props = defineProps({
+  designer: { type: Object, default: () => ({}) },
+});
+
+// 获取到设计器的store
+const designerStore = useDesignerStore();
+// 获取全局配置的hooks
+const { getGlobalEventFn } = useGlobal({ props });
+// 设计器中全局的数据配置
+const widgetConfig = ref(props.designer.widgetConfig);
+
+/* 全局css */
+const globalCssDialog = ref({
+  visible: false,
+  title: "全局css",
+  data: null,
+});
+const showGlobalCssDialog = () => {
+  globalCssDialog.value.visible = true;
+  globalCssDialog.value.data = widgetConfig.value.globalCss;
+};
+const handleSureGlobalCss = () => {
+  widgetConfig.value.globalCss = globalCssDialog.value.data;
+  globalCssDialog.value.visible = false;
+  ElMessage({
+    type: "success",
+    message: "操作成功",
+  });
+};
+
+/* 全局变量 */
+// 弹框
+const globalVarsDialog = ref({
+  visible: false,
+  title: "全局css",
+  data: "",
+});
+// 显示
+const showGlobalVarsDialog = () => {
+  globalVarsDialog.value.visible = true;
+  globalVarsDialog.value.data = widgetConfig.value.globalVars;
+};
+// 确定
+const handleSureGlobalVars = () => {
+  widgetConfig.value.globalVars = globalVarsDialog.value.data;
+  globalVarsDialog.value.visible = false;
+  ElMessage({
+    type: "success",
+    message: "操作成功",
+  });
+};
+
+/* 全局事件 */
+// 弹框
+const globalEventsDialog = ref({
+  visible: false,
+  title: "全局事件",
+  eventIndex: null,
+  data: "",
+});
+// 显示
+const showGlobalEventsDialog = (event, eventIndex) => {
+  globalEventsDialog.value.visible = true;
+  globalEventsDialog.value.eventIndex = eventIndex;
+  globalEventsDialog.value.data = event.code;
+};
+// 确定
+const handleSureGlobalEvents = () => {
+  widgetConfig.value.globalEvents[globalEventsDialog.value.eventIndex].code = globalEventsDialog.value.data;
+  globalEventsDialog.value.visible = false;
+  ElMessage({
+    type: "success",
+    message: "操作成功",
+  });
+};
+
+/* 全局动作 */
+// 弹框
+const globalActionsDialog = ref({
+  visible: false,
+  title: "添加全局动作",
+  type: "add",
+  actionIndex: null,
+  form: {
+    name: "",
+    label: "",
+    enable: true,
+    code: "",
+  },
+  formRules: {
+    name: [{ required: true, message: "请输入", trigger: "blur" }],
+    label: [{ required: true, message: "请输入", trigger: "blur" }],
+  },
+});
+// 表单
+const globalActionsFormRef = ref(null);
+// 添加
+const showAddGlobalActionsDialog = () => {
+  globalActionsDialog.value.visible = true;
+  globalActionsDialog.value.title = "添加全局动作";
+  globalActionsDialog.value.type = "add";
+  globalActionsDialog.value.actionIndex = null;
+  // 重置之前的表单输入
+  globalActionsDialog.value.form = {
+    name: "",
+    label: "",
+    enable: true,
+    code: "",
+  };
+  globalActionsFormRef.value.resetFields();
+};
+// 修改
+const showEditGlobalActionsDialog = (action, actionIndex) => {
+  globalActionsDialog.value.visible = true;
+  globalActionsDialog.value.title = "修改全局动作";
+  globalActionsDialog.value.type = "edit";
+  globalActionsDialog.value.actionIndex = actionIndex;
+  globalActionsDialog.value.form = cloneDeep(action);
+};
+// 删除
+const handleRemoveGlobalActions = (actionIndex) => {
+  ElMessageBox.confirm("确定删除吗？", "提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning",
+  }).then(() => {
+    widgetConfig.value.globalActions.splice(actionIndex, 1);
+    // 缓存全局动作列表
+    designerStore.setGlobalActions(widgetConfig.value.globalActions);
+    ElMessage({
+      type: "success",
+      message: "删除成功",
+    });
+  });
+};
+// 确定
+const handleSureGlobalActions = () => {
+  if (!globalActionsFormRef.value) return;
+  globalActionsFormRef.value.validate((valid) => {
+    if (valid) {
+      // 添加
+      if (globalActionsDialog.value.type === "add") {
+        // 校验是否已经存在动作名称
+        let hasActionName = widgetConfig.value.globalActions.some(
+          (v, i) => v.name === globalActionsDialog.value.form.name,
+        );
+        if (hasActionName) {
+          ElMessage({
+            type: "error",
+            message: "全局已经存在该动作名称",
+          });
+          return;
+        }
+        widgetConfig.value.globalActions.push(globalActionsDialog.value.form);
+      }
+      // 编辑
+      if (globalActionsDialog.value.type === "edit") {
+        widgetConfig.value.globalActions[globalActionsDialog.value.actionIndex] = globalActionsDialog.value.form;
+      }
+      // 操作结果
+      globalActionsDialog.value.visible = false;
+      // 缓存全局动作列表
+      designerStore.setGlobalActions(widgetConfig.value.globalActions);
+      ElMessage({
+        type: "success",
+        message: "操作成功",
+      });
+    }
+  });
+};
+</script>
 <style lang="scss" scoped>
 .global-container {
   margin-top: var(--cmp-margin);

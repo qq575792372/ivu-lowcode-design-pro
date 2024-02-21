@@ -14,12 +14,20 @@
       </el-tab-pane>
       <el-tab-pane label="数据接口" name="data-source">
         <el-scrollbar>
-          <DataSources :designer :widget />
+          <el-form :label-width="100" label-position="left" class="custom-form" size="small">
+            <el-collapse v-model="componentConfigActiveNames" class="custom-collapse">
+              <DataSources :designer :widget />
+            </el-collapse>
+          </el-form>
         </el-scrollbar>
       </el-tab-pane>
       <el-tab-pane label="全局配置" name="global">
         <el-scrollbar>
-          <Global :designer :widget />
+          <el-form :label-width="100" label-position="left" class="custom-form" size="small">
+            <el-collapse v-model="componentConfigActiveNames" class="custom-collapse">
+              <Global :designer :widget />
+            </el-collapse>
+          </el-form>
         </el-scrollbar>
       </el-tab-pane>
     </el-tabs>
@@ -53,7 +61,27 @@ const widget = computed(() => {
 .setting-container {
   height: 100%;
   width: 320px;
-  padding: var(--cmp-large-padding);
+  overflow: hidden;
+  padding: var(--cmp-large-padding) var(--cmp-large-padding) var(--cmp-large-padding) 0;
+
+  // 属性配置中重新定义tab样式
+  :deep(.custom-tabs) {
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+
+    .el-tabs__content {
+      flex: 1;
+      overflow: hidden;
+      height: 100%;
+
+      .el-tab-pane {
+        overflow: hidden;
+        height: 100%;
+      }
+    }
+  }
 
   // 属性配置中重新定义折叠框样式
   :deep(.custom-collapse) {

@@ -41,7 +41,7 @@
   >
     <el-form ref="actionFormRef" :model="dialog.form" :rules="dialog.formRules" label-width="80px" inline size="small">
       <el-form-item label="动作名称" prop="name">
-        <el-input v-model="dialog.form.name" />
+        <el-input v-model="dialog.form.name" :disabled="dialog.type === 'edit'" />
       </el-form-item>
       <el-form-item label="动作标签" prop="label">
         <el-input v-model="dialog.form.label" />
@@ -79,7 +79,7 @@ const props = defineProps({
 });
 
 // 获取组件动作的hooks
-const { actionList } = useActions({ props });
+const { allActionList } = useActions({ props });
 
 // 弹框
 const dialog = ref({
@@ -102,6 +102,23 @@ const dialog = ref({
 // 表单
 const actionFormRef = ref(null);
 /**
+ * 添加动作点击
+ */
+const handleAddClick = (action, actionIndex) => {
+  dialog.value.visible = true;
+  dialog.value.type = "add";
+  dialog.value.title = "添加动作";
+  dialog.value.actionIndex = null;
+  // 重置之前的表单输入
+  dialog.value.form = {
+    name: "",
+    label: "",
+    enable: true,
+    code: "",
+  };
+  actionFormRef.value.resetFields();
+};
+/**
  * 编辑动作点击
  */
 const handleEditClick = (action, actionIndex) => {
@@ -112,35 +129,16 @@ const handleEditClick = (action, actionIndex) => {
   dialog.value.form = cloneDeep(action);
 };
 /**
- * 添加动作点击
- */
-const handleAddClick = (action, actionIndex) => {
-  dialog.value.visible = true;
-  dialog.value.type = "add";
-  dialog.value.title = "添加动作";
-  // 重置之前的表单输入
-  dialog.value.form = {
-    name: "",
-    label: "",
-    enable: true,
-    code: "",
-  };
-  actionFormRef.value.resetFields();
-};
-
-/**
- * 确定编辑动作
+ * 确定动作
  */
 const handleSure = () => {
   if (!actionFormRef.value) return;
-
   actionFormRef.value.validate((valid) => {
     if (valid) {
-      // 添加动作
+      // 添加
       if (dialog.value.type === "add") {
-        console.log(111, actionList);
-        // 校验是否已经存在动作名称
-        let hasActionName = actionList.value.some((v, i) => v.name === dialog.value.form.name);
+        // 校验所有是否已经存在动作名称
+        let hasActionName = allActionList.value.some((v, i) => v.name === dialog.value.form.name);
         if (hasActionName) {
           ElMessage({
             type: "error",
@@ -150,11 +148,10 @@ const handleSure = () => {
         }
         props.widget.actions.push(dialog.value.form);
       }
-      // 编辑动作
+      // 编辑
       if (dialog.value.type === "edit") {
         props.widget.actions[dialog.value.actionIndex] = dialog.value.form;
       }
-
       dialog.value.visible = false;
       ElMessage({
         type: "success",

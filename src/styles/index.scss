@@ -163,6 +163,7 @@ div:focus {
 .custom-vue-draggable {
   width: 100%;
   height: 100%;
+  backface-visibility: hidden;
 
   // 拖拽容器内无组件的默认提示
   &.no-widget {

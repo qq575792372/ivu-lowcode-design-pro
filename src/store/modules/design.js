@@ -19,17 +19,17 @@ const useDesignStore = defineStore("design", {
   },
   getters: {
     // 设计器组件列表
-    getWidgets: (state) => state.widgets,
+    getWidgets: (state) => state.widgets || [],
     // 全局动作列表
-    getGlobalActions: (state) => state.globalActions,
+    getGlobalActions: (state) => state.globalActions || [],
     // 全局数据源列表
-    getDataSources: (state) => state.dataSources,
+    getDataSources: (state) => state.dataSources || [],
     // 当前选择的组件id
     getSelectedId: (state) => state.selectedId,
     // 当前选择的组件
     getSelectedWidget: (state) => state.selectedWidget,
     // 历史数据
-    getHistoryData: (state) => state.historyData,
+    getHistoryData: (state) => state.historyData || [],
   },
   actions: {
     // 设计器组件列表

@@ -43,6 +43,7 @@ watch(
     height: 100%;
     overflow: auto;
     padding: var(--cmp-padding);
+    backface-visibility: hidden;
   }
 }
 </style>

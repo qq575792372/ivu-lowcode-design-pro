@@ -1,48 +1,46 @@
 <template>
   <div class="data-sources-container">
-    <el-form :label-width="100" label-position="left" class="custom-form" size="small">
-      <el-card class="data-sources-card" shadow="never">
-        <template #header>
-          <div class="data-sources-header">
-            <span>接口</span>
-            <el-button style="margin-left: auto" plain type="primary" size="small" icon="Edit"></el-button>
-            <el-button plain type="danger" size="small" icon="Delete"></el-button>
-          </div>
-        </template>
-        <div class="data-sources-body">
-          <div class="data-sources-item">
-            <div class="data-sources-item-title">
-              <el-icon>
-                <Promotion />
-              </el-icon>
-              名称
-            </div>
-            <div class="data-sources-item-content">等等等等等等等等等等等等等等等等等等等等等等等等等等等等等等</div>
-          </div>
-          <div class="data-sources-item">
-            <div class="data-sources-item-title">
-              <el-icon>
-                <Connection />
-              </el-icon>
-              地址
-            </div>
-            <div class="data-sources-item-content">等等等等等等</div>
-          </div>
-          <div class="data-sources-item">
-            <div class="data-sources-item-title">
-              <el-icon>
-                <Tickets />
-              </el-icon>
-              描述
-            </div>
-            <div class="data-sources-item-content">等等等等等等</div>
-          </div>
+    <el-card class="data-sources-card" shadow="never">
+      <template #header>
+        <div class="data-sources-header">
+          <span>接口</span>
+          <el-button style="margin-left: auto" plain type="primary" size="small" icon="Edit"></el-button>
+          <el-button plain type="danger" size="small" icon="Delete"></el-button>
         </div>
-      </el-card>
-      <el-button type="primary" style="width: 100%; margin-top: 12px" plain icon="Plus" @click="handleAddClick">
-        添加
-      </el-button>
-    </el-form>
+      </template>
+      <div class="data-sources-body">
+        <div class="data-sources-item">
+          <div class="data-sources-item-title">
+            <el-icon>
+              <Promotion />
+            </el-icon>
+            名称
+          </div>
+          <div class="data-sources-item-content">等等等等等等等等等等等等等等等等等等等等等等等等等等等等等等</div>
+        </div>
+        <div class="data-sources-item">
+          <div class="data-sources-item-title">
+            <el-icon>
+              <Connection />
+            </el-icon>
+            地址
+          </div>
+          <div class="data-sources-item-content">等等等等等等</div>
+        </div>
+        <div class="data-sources-item">
+          <div class="data-sources-item-title">
+            <el-icon>
+              <Tickets />
+            </el-icon>
+            描述
+          </div>
+          <div class="data-sources-item-content">等等等等等等</div>
+        </div>
+      </div>
+    </el-card>
+    <el-button type="primary" style="width: 100%; margin-top: 12px" plain icon="Plus" @click="handleAddClick">
+      添加
+    </el-button>
   </div>
 </template>
 <script setup></script>

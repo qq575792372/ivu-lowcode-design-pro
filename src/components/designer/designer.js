@@ -21,15 +21,30 @@ export function createDesigner(vueInstance) {
       widgets: [],
       widgetConfig: {
         version: "1.0.0",
+        globalSize: "",
+        globalLabelPosition: "left",
+        globalLabelWidth: 80,
+        globalTheme: "default",
         globalCss: "",
-        globalStyle: "",
-        globalVars: [],
-        globalFx: [],
+        globalVars: "",
+        globalFns: [],
+        globalFxs: [],
+        globalEvents: [
+          { name: "onMounted", code: "" },
+          { name: "onUpdated", code: "" },
+          { name: "onUnmounted", code: "" },
+          { name: "onBeforeMount", code: "" },
+          { name: "onBeforeUpdate", code: "" },
+          { name: "onBeforeUnmount", code: "" },
+          { name: "onActivated", code: "" },
+          { name: "onDeactivated", code: "" },
+        ],
         globalActions: [
           {
             name: "globalCustomAction1",
             label: "全局自定义动作1",
             enable: true,
+            global: true,
             code: "/*这里动作内容*/ console.log('触发全局自定义动作1',widget);",
           },
         ],
@@ -53,13 +68,18 @@ export function createDesigner(vueInstance) {
      * 初始化设计器
      */
     initDesigner() {
-      // 初始化设计器配置数据
+      /* 初始化设计器配置 */
       this.widgetConfig = cloneDeep(this.defaultWidgetTemplate.widgetConfig);
 
+      /* 初始化缓存 */
       // 从缓存中获取widgets
       this.widgets = designerStore.getWidgets;
       // 从缓存中获得当前选中的组件
       this.setSelected(designerStore.getSelectedWidget);
+      // 从缓存中获取全局动作列表
+      if (designerStore.getGlobalActions.length) {
+        this.widgetConfig.globalActions = designerStore.getGlobalActions;
+      }
     },
     /**
      * 清空设计器

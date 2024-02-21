@@ -1,17 +1,14 @@
-import { ref, computed } from "vue";
+import { computed } from "vue";
 
 /**
  * 组件动作的hooks
  */
 export default ({ props, emits }) => {
   /**
-   * 获得所有全局和组件的动作
+   * 全局和组件的动作
    */
-  const actionList = computed(() => {
-    const globalActions = props.designer.widgetConfig.globalActions.map((v) => {
-      return { ...v, global: true };
-    });
-    return [...globalActions, ...props.widget.actions];
+  const allActionList = computed(() => {
+    return [...getGlobalActionList(), ...getActionList(props.widget)];
   });
 
   /**
@@ -35,9 +32,27 @@ export default ({ props, emits }) => {
     return action && new Function("target", action.code);
   };
 
+  /**
+   * 获得元素的动作列表
+   * @param {Object} widget 元素对象
+   * @returns {Object} 返回该元素的动作列表
+   */
+  const getActionList = (widget) => {
+    return widget.actions;
+  };
+  /**
+   * 获得全局动作列表
+   * @returns {Object} 返回全局动作列表
+   */
+  const getGlobalActionList = () => {
+    return props.designer.widgetConfig.globalActions;
+  };
+
   return {
-    actionList,
     getAction,
     getActionFn,
+    getActionList,
+    getGlobalActionList,
+    allActionList,
   };
 };

@@ -38,7 +38,7 @@
       </el-tab-pane>
       <el-tab-pane label="动作" name="actions">
         <el-checkbox-group v-model="dialog.eventActions">
-          <el-checkbox v-for="(action, actionIndex) in actionList" :key="actionIndex" :label="action.name" border>
+          <el-checkbox v-for="(action, actionIndex) in allActionList" :key="actionIndex" :label="action.name" border>
             <el-tag v-if="action.global">全局</el-tag>
             {{ action.label }}
           </el-checkbox>
@@ -68,6 +68,12 @@ const props = defineProps({
   widget: { type: Object, default: () => ({}) },
 });
 
+// 获取组件动作的hooks
+const { allActionList } = useActions({ props });
+
+// 绑定tab的名称，默认是events事件
+const boundActiveNames = ref("events");
+
 // 弹框
 const dialog = ref({
   visible: false,
@@ -75,11 +81,6 @@ const dialog = ref({
   eventCode: null,
   eventActions: [],
 });
-
-// 获取组件动作的hooks
-const { actionList } = useActions({ props });
-// 绑定tab的名称，默认是events事件
-const boundActiveNames = ref("events");
 
 /**
  * 弹出绑定弹框

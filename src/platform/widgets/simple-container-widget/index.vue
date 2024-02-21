@@ -1,6 +1,5 @@
 <template>
   <div class="simple-container-widget-wrapper">
-    普通容器
     <slot />
   </div>
 </template>
@@ -18,4 +17,8 @@ const props = defineProps({
   indexOfParentWidgets: { type: Number, default: null },
 });
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.simple-container-widget-wrapper {
+  backface-visibility: hidden;
+}
+</style>

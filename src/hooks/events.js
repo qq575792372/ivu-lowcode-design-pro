@@ -5,7 +5,7 @@ import useActions from "./actions";
  * 组件事件的hooks
  */
 export default ({ props, emits }) => {
-  const { actionList } = useActions({ props, emits });
+  const { allActionList } = useActions({ props, emits });
 
   /**
    * 获得元素指定事件的配置
@@ -35,7 +35,6 @@ export default ({ props, emits }) => {
    * @returns {Function} 返回创建后的函数
    */
   const executeEvent = (widget, eventName) => {
-    // 执行事件
     let eventFn = getEventFn(widget, eventName);
     eventFn(widget);
   };
@@ -51,7 +50,7 @@ export default ({ props, emits }) => {
     // 遍历执行该事件对应的动作
     event.action &&
       event.action.forEach((actionName) => {
-        let currentAction = actionList.value.find((v) => v.name === actionName);
+        let currentAction = allActionList.value.find((v) => v.name === actionName);
         if (currentAction) {
           let actionFn = new Function("widget", currentAction.code);
           actionFn(widget);

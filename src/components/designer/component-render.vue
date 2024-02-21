@@ -6,6 +6,7 @@
     :class="{ 'no-widget': parentWidgets.length === 0 }"
     :group="{ name: 'designer-group' }"
     :animation="150"
+    :empty-insert-threshold="0"
     handle=".widget-drag-handler"
     chosen-class="widget-chosen-class"
     drag-class="widget-drag-class"

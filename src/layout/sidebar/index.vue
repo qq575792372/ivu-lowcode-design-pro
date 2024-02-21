@@ -27,6 +27,7 @@
                       :group="{ name: 'designer-group', pull: 'clone', put: false }"
                       :clone="onClone"
                       :sort="false"
+                      :empty-insert-threshold="10"
                     >
                       <div v-for="(widget, widgetIndex) in module.children" :key="widgetIndex" class="draggable-item">
                         <el-tag class="widget-drag-tag">
@@ -78,6 +79,7 @@
                       :group="{ name: 'designer-group', pull: 'clone', put: false }"
                       :clone="onClone"
                       :sort="false"
+                      :empty-insert-threshold="10"
                     >
                       <div v-for="(widget, widgetIndex) in module.children" :key="widgetIndex" class="draggable-item">
                         <el-tag class="widget-drag-tag">
@@ -129,6 +131,7 @@
                       :group="{ name: 'designer-group', pull: 'clone', put: false }"
                       :clone="onClone"
                       :sort="false"
+                      :empty-insert-threshold="10"
                     >
                       <div v-for="(widget, widgetIndex) in module.children" :key="widgetIndex" class="draggable-item">
                         <el-tag class="widget-drag-tag">
