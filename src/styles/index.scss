@@ -15,7 +15,7 @@ body {
   // background: #f5f7f9;
   color: #333;
   font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
-  sans-serif;
+    sans-serif;
 }
 
 label {
@@ -34,7 +34,18 @@ body {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  font-family: Inter, -apple-system, BlinkMacSystemFont, PingFang SC, Hiragino Sans GB, noto sans, Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    PingFang SC,
+    Hiragino Sans GB,
+    noto sans,
+    Microsoft YaHei,
+    Helvetica Neue,
+    Helvetica,
+    Arial,
+    sans-serif;
 }
 
 #app {
@@ -127,13 +138,16 @@ div:focus {
   background: none;
 }
 
+// 自定义dialog样式
+.custom-dialog {
+}
+
 // 自定义设计面板中el-collapse样式
 .custom-collapse {
   border: none;
 
   .el-collapse-item {
     &.is-active {
-
     }
 
     .el-collapse-item__header {
@@ -155,7 +169,6 @@ div:focus {
         border: none;
       }
     }
-
   }
 }
 
@@ -241,7 +254,6 @@ div:focus {
     &.selected {
       outline: solid 1px var(--primary-color);
     }
-
 
     // 被选中项的样式
     &.widget-chosen-class {
@@ -331,3 +343,24 @@ div:focus {
   }
 }
 
+// 数据源弹框样式
+.data-source-dialog {
+  .el-form-item__content {
+    display: block;
+  }
+
+  .data-list {
+    margin-bottom: var(--sp4);
+
+    .el-input,
+    .el-select {
+      display: inline-block;
+      width: 200px;
+      margin-right: var(--cmp-margin);
+
+      .el-input__wrapper {
+        width: 100%;
+      }
+    }
+  }
+}

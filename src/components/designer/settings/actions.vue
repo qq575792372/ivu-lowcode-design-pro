@@ -152,6 +152,7 @@ const handleSure = () => {
       if (dialog.value.type === "edit") {
         props.widget.actions[dialog.value.actionIndex] = dialog.value.form;
       }
+      // 结果
       dialog.value.visible = false;
       ElMessage({
         type: "success",

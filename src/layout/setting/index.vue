@@ -12,7 +12,7 @@
           </el-form>
         </el-scrollbar>
       </el-tab-pane>
-      <el-tab-pane label="数据接口" name="data-source">
+      <el-tab-pane label="数据源" name="data-sources">
         <el-scrollbar>
           <el-form :label-width="100" label-position="left" class="custom-form" size="small">
             <el-collapse v-model="componentConfigActiveNames" class="custom-collapse">
@@ -53,7 +53,7 @@ const settingActiveName = ref("");
 const componentConfigActiveNames = ref(["base", "advanced", "custom", "events", "actions"]);
 
 const widget = computed(() => {
-  settingActiveName.value = props.designer.selectedWidget ? "props" : "data-source";
+  settingActiveName.value = props.designer.selectedWidget ? "props" : "data-sources";
   return props.designer.selectedWidget;
 });
 </script>

@@ -6,11 +6,11 @@
     title="导出JSON"
     append-to-body
     draggable
-    width="640px"
+    width="860px"
     :close-on-click-modal="false"
   >
     <div>
-      <CodeEditor v-model="dialog.jsonData" lang="json" readonly />
+      <CodeEditor v-model="dialog.jsonData" :height="400" lang="json" readonly />
     </div>
     <template #footer>
       <div class="text-align-center">

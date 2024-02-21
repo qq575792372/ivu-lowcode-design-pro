@@ -1,5 +1,9 @@
 <template>
-  <el-button icon="Memo" type="primary" text class="margin-right-12" @click="handleClick"></el-button>
+  <el-tooltip content="组件层次结构">
+    <el-button type="primary" text class="margin-right-12" @click="handleClick">
+      <svg-icon name="layer-tree" />
+    </el-button>
+  </el-tooltip>
   <el-drawer
     v-model="dialog.visible"
     title="组件层次结构"

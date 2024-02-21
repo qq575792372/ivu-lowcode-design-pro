@@ -6,7 +6,7 @@
     title="导入JSON"
     append-to-body
     draggable
-    width="640px"
+    width="860px"
     :close-on-click-modal="false"
   >
     <el-alert
@@ -16,7 +16,7 @@
       class="margin-bottom-8"
       :closable="false"
     />
-    <CodeEditor v-model="dialog.jsonData" lang="json" />
+    <CodeEditor v-model="dialog.jsonData" :height="400" lang="json" />
     <template #footer>
       <div class="text-align-center">
         <el-button type="primary" @click="handleImport">导入</el-button>

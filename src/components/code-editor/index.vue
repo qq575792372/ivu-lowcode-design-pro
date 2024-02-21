@@ -93,7 +93,7 @@ const props = defineProps({
   // 编辑器高度
   height: {
     type: [String, Number],
-    default: 340,
+    default: 320,
   },
 });
 
