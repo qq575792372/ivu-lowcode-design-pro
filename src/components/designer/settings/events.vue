@@ -5,7 +5,7 @@
         <el-form-item
           v-for="(event, eventIndex) in props.widget.events"
           :key="eventIndex"
-          :label="event.name"
+          :label="event.label"
           class="events-wrapper clearfix"
         >
           <el-button type="primary" plain icon="Edit" @click="handleClick(event, eventIndex)">编辑</el-button>

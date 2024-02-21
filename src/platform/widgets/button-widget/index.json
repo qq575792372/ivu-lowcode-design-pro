@@ -12,21 +12,17 @@
   "events": [
     {
       "name": "onMounted",
+      "label": "onMounted",
       "args": [],
       "code": "",
-      "action": [
-        "deleteTable"
-      ]
+      "action": ["deleteTable"]
     },
     {
       "name": "onClick",
-      "args": [
-        "widget"
-      ],
+      "label": "onClick",
+      "args": ["widget"],
       "code": "/*事件内容*/ console.log('onClick点击事件',widget);",
-      "action": [
-        "deleteTable"
-      ]
+      "action": ["deleteTable"]
     }
   ],
   "actions": [

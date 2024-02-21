@@ -30,14 +30,14 @@ export function createDesigner(vueInstance) {
         globalFns: [],
         globalFxs: [],
         globalEvents: [
-          { name: "onMounted", code: "" },
-          { name: "onUpdated", code: "" },
-          { name: "onUnmounted", code: "" },
-          { name: "onBeforeMount", code: "" },
-          { name: "onBeforeUpdate", code: "" },
-          { name: "onBeforeUnmount", code: "" },
-          { name: "onActivated", code: "" },
-          { name: "onDeactivated", code: "" },
+          { name: "onMounted", label: "onMounted", code: "" },
+          { name: "onUpdated", label: "onUpdated", code: "" },
+          { name: "onUnmounted", label: "onUnmounted", code: "" },
+          { name: "onBeforeMount", label: "onBeforeMount", code: "" },
+          { name: "onBeforeUpdate", label: "onBeforeUpdate", code: "" },
+          { name: "onBeforeUnmount", label: "onBeforeUnmount", code: "" },
+          { name: "onActivated", label: "onActivated", code: "" },
+          { name: "onDeactivated", label: "onDeactivated", code: "" },
         ],
         globalActions: [
           {
@@ -76,6 +76,10 @@ export function createDesigner(vueInstance) {
       this.widgets = designerStore.getWidgets;
       // 从缓存中获得当前选中的组件
       this.setSelected(designerStore.getSelectedWidget);
+      // 从缓存中获取全局函数列表
+      if (designerStore.getGlobalFns.length) {
+        this.widgetConfig.globalFns = designerStore.getGlobalFns;
+      }
       // 从缓存中获取全局动作列表
       if (designerStore.getGlobalActions.length) {
         this.widgetConfig.globalActions = designerStore.getGlobalActions;

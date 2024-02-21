@@ -44,9 +44,33 @@
       </el-form-item>
     </el-collapse-item>
     <el-collapse-item title="全局函数" name="globalFns">
-      <el-form-item label="全局函数">
-        <el-button type="primary" plain icon="Edit" @click="handleClick(event, eventIndex)">编辑</el-button>
-      </el-form-item>
+      <template v-if="widgetConfig.globalFns.length">
+        <el-form-item
+          v-for="(fn, fnIndex) in widgetConfig.globalFns"
+          :key="fnIndex"
+          :label="fn.label"
+          class="fns-wrapper"
+        >
+          <el-button type="primary" plain icon="Edit" @click="showEditGlobalFnsDialog(fn, fnIndex)">编辑</el-button>
+          <el-button
+            type="danger"
+            plain
+            icon="Delete"
+            style="margin-left: auto"
+            @click="handleRemoveGlobalFns(fnIndex)"
+          ></el-button>
+        </el-form-item>
+        <el-button type="primary" style="width: 100%" plain icon="Plus" @click="showAddGlobalFnsDialog">
+          添加全局函数
+        </el-button>
+      </template>
+      <template v-else>
+        <div class="actions-wrapper no-actions">
+          点击
+          <el-button icon="Plus" plain type="primary" @click="showAddGlobalFnsDialog"></el-button>
+          添加全局函数
+        </div>
+      </template>
     </el-collapse-item>
     <el-collapse-item title="全局事件" name="globalEvents">
       <el-form-item
@@ -84,9 +108,9 @@
       </template>
       <template v-else>
         <div class="actions-wrapper no-actions">
-          暂无动作，点击
+          点击
           <el-button icon="Plus" plain type="primary" @click="showAddGlobalActionsDialog"></el-button>
-          添加动作
+          添加全局动作
         </div>
       </template>
     </el-collapse-item>
@@ -128,6 +152,46 @@
       <div class="text-align-center">
         <el-button type="primary" @click="handleSureGlobalVars">确定</el-button>
         <el-button @click="globalVarsDialog.visible = false">取消</el-button>
+      </div>
+    </template>
+  </el-dialog>
+  <!--全局函数-->
+  <el-dialog
+    v-if="globalFnsDialog.visible"
+    v-model="globalFnsDialog.visible"
+    :title="globalFnsDialog.title"
+    append-to-body
+    draggable
+    width="960px"
+    :close-on-click-modal="false"
+  >
+    <el-form
+      ref="globalFnsFormRef"
+      :model="globalFnsDialog.form"
+      :rules="globalFnsDialog.formRules"
+      label-width="80px"
+      inline
+      size="small"
+    >
+      <el-form-item label="函数名称" prop="name">
+        <el-input v-model="globalFnsDialog.form.name" :disabled="globalFnsDialog.type === 'edit'" />
+      </el-form-item>
+      <el-form-item label="函数标签" prop="label">
+        <el-input v-model="globalFnsDialog.form.label" />
+      </el-form-item>
+      <el-form-item label="是否启用">
+        <el-switch v-model="globalFnsDialog.form.enable" />
+      </el-form-item>
+    </el-form>
+    <el-alert type="info" :closable="false">
+      &nbsp;(widget)&nbsp;=>&nbsp;{&nbsp;//&nbsp;widget&nbsp;触发动作的元素
+    </el-alert>
+    <CodeEditor v-model="globalFnsDialog.form.code" />
+    <el-alert type="info" :closable="false">}</el-alert>
+    <template #footer>
+      <div class="text-align-center">
+        <el-button type="primary" @click="handleSureGlobalFns">确定</el-button>
+        <el-button @click="globalFnsDialog.visible = false">取消</el-button>
       </div>
     </template>
   </el-dialog>
@@ -250,6 +314,100 @@ const handleSureGlobalVars = () => {
   ElMessage({
     type: "success",
     message: "操作成功",
+  });
+};
+
+/* 全局函数 */
+// 弹框
+const globalFnsDialog = ref({
+  visible: false,
+  title: "添加全局函数",
+  type: "add",
+  actionIndex: null,
+  form: {
+    name: "",
+    label: "",
+    enable: true,
+    code: "",
+  },
+  formRules: {
+    name: [{ required: true, message: "请输入", trigger: "blur" }],
+    label: [{ required: true, message: "请输入", trigger: "blur" }],
+  },
+});
+// 表单
+const globalFnsFormRef = ref(null);
+// 添加
+const showAddGlobalFnsDialog = () => {
+  globalFnsDialog.value.visible = true;
+  globalFnsDialog.value.title = "添加全局函数";
+  globalFnsDialog.value.type = "add";
+  globalFnsDialog.value.fnIndex = null;
+  // 重置之前的表单输入
+  globalFnsDialog.value.form = {
+    name: "",
+    label: "",
+    enable: true,
+    code: "",
+  };
+  globalFnsFormRef.value.resetFields();
+};
+// 修改
+const showEditGlobalFnsDialog = (fn, fnIndex) => {
+  globalFnsDialog.value.visible = true;
+  globalFnsDialog.value.title = "修改全局函数";
+  globalFnsDialog.value.type = "edit";
+  globalFnsDialog.value.actionIndex = fnIndex;
+  globalFnsDialog.value.form = cloneDeep(fn);
+};
+// 删除
+const handleRemoveGlobalFns = (fnIndex) => {
+  ElMessageBox.confirm("确定删除吗？", "提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning",
+  }).then(() => {
+    widgetConfig.value.globalFns.splice(fnIndex, 1);
+    // 缓存全局动作列表
+    designerStore.setGlobalFns(widgetConfig.value.globalFns);
+    ElMessage({
+      type: "success",
+      message: "删除成功",
+    });
+  });
+};
+// 确定
+const handleSureGlobalFns = () => {
+  if (!globalFnsFormRef.value) return;
+  globalFnsFormRef.value.validate((valid) => {
+    if (valid) {
+      // 添加
+      if (globalFnsDialog.value.type === "add") {
+        // 校验是否已经存在动作名称
+        let hasFnName = widgetConfig.value.globalFns.some((v, i) => v.name === globalFnsDialog.value.form.name);
+        if (hasFnName) {
+          ElMessage({
+            type: "error",
+            message: "全局已经存在该函数名称",
+          });
+          return;
+        }
+        console.log(333, globalFnsDialog.value.form);
+        widgetConfig.value.globalFns.push(globalFnsDialog.value.form);
+      }
+      // 编辑
+      if (globalFnsDialog.value.type === "edit") {
+        widgetConfig.value.globalFns[globalFnsDialog.value.actionIndex] = globalFnsDialog.value.form;
+      }
+      // 操作结果
+      globalFnsDialog.value.visible = false;
+      // 缓存全局动作列表
+      designerStore.setGlobalFns(widgetConfig.value.globalFns);
+      ElMessage({
+        type: "success",
+        message: "操作成功",
+      });
+    }
   });
 };
 

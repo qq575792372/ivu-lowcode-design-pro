@@ -34,5 +34,6 @@ module.exports = {
     "vue/no-reserved-component-names": "off", // vue忽略不能使用html标签当组件名的规则
     "vue/comment-directive": "off",
     "vue/no-mutating-props": "off", // 忽略不能修改props
+    "vue/no-side-effects-in-computed-properties": "off", // 忽略在计算属性中赋值
   },
 };
