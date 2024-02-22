@@ -7,7 +7,7 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    Actions: typeof import('./src/components/designer/settings/actions.vue')['default']
+    Actions: typeof import('./src/components/designer/settings/actions/index.vue')['default']
     Clear: typeof import('./src/components/designer/tools/clear.vue')['default']
     CodeEditor: typeof import('./src/components/code-editor/index.vue')['default']
     ComponentRender: typeof import('./src/components/designer/component-render.vue')['default']
@@ -30,7 +30,6 @@ declare module 'vue' {
     ElDropdownMenu: typeof import('element-plus/es')['ElDropdownMenu']
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
-    ElFormItem000000: typeof import('element-plus/es')['ElFormItem000000']
     ElHeader: typeof import('element-plus/es')['ElHeader']
     ElIcon: typeof import('element-plus/es')['ElIcon']
     ElInput: typeof import('element-plus/es')['ElInput']
@@ -48,7 +47,7 @@ declare module 'vue' {
     ElTag: typeof import('element-plus/es')['ElTag']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     ElTree: typeof import('element-plus/es')['ElTree']
-    Events: typeof import('./src/components/designer/settings/events.vue')['default']
+    Events: typeof import('./src/components/designer/settings/events/index.vue')['default']
     ExportJson: typeof import('./src/components/designer/tools/export-json.vue')['default']
     ExportSFC: typeof import('./src/components/designer/tools/export-SFC.vue')['default']
     FoldedPanel: typeof import('./src/components/folded-panel/index.vue')['default']
@@ -56,7 +55,8 @@ declare module 'vue' {
     ImportJson: typeof import('./src/components/designer/tools/import-json.vue')['default']
     LayerTree: typeof import('./src/components/designer/tools/layer-tree.vue')['default']
     Preview: typeof import('./src/components/designer/tools/preview.vue')['default']
-    Props: typeof import('./src/components/designer/settings/props.vue')['default']
+    Props: typeof import('./src/components/designer/settings/props/index.vue')['default']
+    PropsBinder: typeof import('./src/components/designer/settings/props/props-binder.vue')['default']
     Redo: typeof import('./src/components/designer/tools/redo.vue')['default']
     Render: typeof import('./src/components/render/index.vue')['default']
     SvgIcon: typeof import('./src/components/svg-icon/index.vue')['default']

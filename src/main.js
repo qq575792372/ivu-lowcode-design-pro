@@ -22,7 +22,7 @@ import store from "./store";
 app.use(store);
 
 // 使用低代码平台插件注册
-import UsePlatform from "@/plugins/platform/index";
+import UsePlatform from "@/plugins/platform";
 
 app.use(UsePlatform);
 

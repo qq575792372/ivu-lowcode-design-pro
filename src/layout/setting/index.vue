@@ -35,9 +35,9 @@
 </template>
 <script setup>
 import { ref, computed, watch } from "vue";
-import Props from "@/components/designer/settings/props.vue";
-import Events from "@/components/designer/settings/events.vue";
-import Actions from "@/components/designer/settings/actions.vue";
+import Props from "@/components/designer/settings/props/index.vue";
+import Events from "@/components/designer/settings/events/index.vue";
+import Actions from "@/components/designer/settings/actions/index.vue";
 import DataSources from "@/components/designer/settings/data-sources/index.vue";
 import Global from "@/components/designer/settings/global/index.vue";
 
