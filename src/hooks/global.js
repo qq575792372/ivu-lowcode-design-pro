@@ -1,5 +1,7 @@
+import { getCurrentInstance } from "vue";
+
 /**
- * 全局配置的hooks
+ * 设计器中全局配置的hooks
  */
 export default ({ props, emits }) => {
   /**

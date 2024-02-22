@@ -2,9 +2,9 @@ import { usePlatformStore, useDesignerStore } from "@/store";
 import { getUUID, cloneDeep } from "@lime-util/util";
 
 export function createDesigner(vueInstance) {
-  // 获取平台store
+  // 获取平台缓存store
   const platformStore = usePlatformStore();
-  // 获取设计器store
+  // 获取设计器缓存store
   const designerStore = useDesignerStore();
 
   return {
@@ -76,14 +76,12 @@ export function createDesigner(vueInstance) {
       this.widgets = designerStore.getWidgets;
       // 从缓存中获得当前选中的组件
       this.setSelected(designerStore.getSelectedWidget);
+      // 从缓存中获取全局数据源列表
+      this.widgetConfig.dataSources = designerStore.dataSources;
       // 从缓存中获取全局函数列表
-      if (designerStore.getGlobalFns.length) {
-        this.widgetConfig.globalFns = designerStore.getGlobalFns;
-      }
+      this.widgetConfig.globalFns = designerStore.getGlobalFns;
       // 从缓存中获取全局动作列表
-      if (designerStore.getGlobalActions.length) {
-        this.widgetConfig.globalActions = designerStore.getGlobalActions;
-      }
+      this.widgetConfig.globalActions = designerStore.getGlobalActions;
     },
     /**
      * 清空设计器

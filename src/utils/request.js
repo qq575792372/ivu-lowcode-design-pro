@@ -1,6 +1,5 @@
 import axios from "axios";
-import store from "@/store";
-import { Message } from "element-plus";
+import { ElMessage } from "element-plus";
 
 // 设置axios跨域访问
 axios.defaults.withCredentials = true; // 设置cross跨域 并设置访问权限 允许跨域携带cookie信息
@@ -16,11 +15,8 @@ const service = axios.create({
 service.interceptors.request.use(
   (config) => {
     /* 这里可以设置请求拦截的内容 */
-
     // 设置token
-    if (store.getters.token) {
-      config.headers["X-Token"] = 123;
-    }
+    config.headers["X-Token"] = 123;
     return config;
   },
   (error) => {
@@ -54,9 +50,9 @@ let errorMsgTimer = null;
 
 function onceErrorMsg(errorMsg, interval = 3 * 1000) {
   if (errorMsgInstance) {
-    Message.destory();
+    ElMessage.destory();
   } else {
-    errorMsgInstance = Message.error(errorMsg);
+    errorMsgInstance = ElMessage.error(errorMsg);
   }
   errorMsgTimer && clearTimeout(errorMsgTimer);
   errorMsgTimer = setTimeout(() => {

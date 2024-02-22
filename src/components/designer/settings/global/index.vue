@@ -7,7 +7,6 @@
         <el-radio-button label="large">大</el-radio-button>
       </el-radio-group>
     </el-form-item>
-
     <el-form-item label="表单标签位置">
       <el-radio-group v-model="widgetConfig.globalLabelPosition">
         <el-radio-button label="left">左</el-radio-button>
@@ -67,7 +66,13 @@
       <template v-else>
         <div class="actions-wrapper no-actions">
           点击
-          <el-button icon="Plus" plain type="primary" @click="showAddGlobalFnsDialog"></el-button>
+          <el-button
+            icon="Plus"
+            plain
+            type="primary"
+            class="margin-bottom-8"
+            @click="showAddGlobalFnsDialog"
+          ></el-button>
           添加全局函数
         </div>
       </template>
@@ -109,7 +114,13 @@
       <template v-else>
         <div class="actions-wrapper no-actions">
           点击
-          <el-button icon="Plus" plain type="primary" @click="showAddGlobalActionsDialog"></el-button>
+          <el-button
+            icon="Plus"
+            plain
+            type="primary"
+            class="margin-bottom-8"
+            @click="showAddGlobalActionsDialog"
+          ></el-button>
           添加全局动作
         </div>
       </template>

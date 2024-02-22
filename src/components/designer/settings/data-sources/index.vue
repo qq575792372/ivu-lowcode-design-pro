@@ -1,6 +1,6 @@
 <template>
   <div class="data-sources-container">
-    <el-input placeholder="输入名称模糊搜索" style="width: 100%" />
+    <el-input placeholder="输入关键字搜索" style="width: 100%" />
     <el-card
       v-for="(dataSource, dataSourceIndex) in dataSources"
       :key="dataSourceIndex"
@@ -10,7 +10,13 @@
       <template #header>
         <div class="data-sources-header">
           <span>{{ dataSource.title }}</span>
-          <el-button style="margin-left: auto" plain type="primary" icon="Edit"></el-button>
+          <el-button
+            style="margin-left: auto"
+            plain
+            type="primary"
+            icon="Edit"
+            @click="showEditDialog(dataSource, dataSourceIndex)"
+          ></el-button>
           <el-button plain type="danger" icon="Delete" @click="handleRemove(dataSourceIndex)"></el-button>
         </div>
       </template>
@@ -71,7 +77,7 @@
     </template>
     <el-form ref="dataSourceFormRef" :model="dialog.form" :rules="dialog.formRules" label-width="140px" size="small">
       <el-form-item label="名称" prop="name">
-        <el-input v-model="dialog.form.name" />
+        <el-input v-model="dialog.form.name" :disabled="dialog.type === 'edit'" />
       </el-form-item>
       <el-form-item label="标题" prop="title">
         <el-input v-model="dialog.form.title" />
@@ -98,46 +104,130 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="请求头（headers）">
-        <div class="data-list">
-          <el-input v-model="dialog.form.headers" placeholder="键" />
-          <el-select>
-            <el-option label="字符串类型" value="string" />
-            <el-option label="数字类型" value="string" />
-            <el-option label="布尔类型" value="string" />
-            <el-option label="变量或表达式" value="string" />
-          </el-select>
-          <el-input v-model="dialog.form.headers" placeholder="值" />
-          <el-button type="danger" plain icon="Delete" />
-        </div>
-        <el-button type="primary" text icon="Plus">新增请求头</el-button>
+        <el-row v-for="(hd, hdIndex) in dialog.form.headers" :key="hdIndex" class="margin-bottom-4">
+          <el-col :span="8" class="padding-right-8">
+            <el-form-item
+              label-width="0"
+              :prop="`headers.${hdIndex}.name`"
+              :rules="[{ required: true, message: '请输入', trigger: 'blur' }]"
+            >
+              <el-input v-model="hd.name" placeholder="名称" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="4" class="padding-right-8">
+            <el-form-item
+              label-width="0"
+              :prop="`headers.${hdIndex}.type`"
+              :rules="[{ required: true, message: '请选择', trigger: 'change' }]"
+            >
+              <el-select v-model="hd.type" placeholder="请选择">
+                <el-option label="字符串类型" value="String" />
+                <el-option label="数字类型" value="Number" />
+                <el-option label="布尔类型" value="Boolean" />
+                <el-option label="数组类型" value="Array" />
+                <el-option label="文件类型" value="File" />
+                <el-option label="变量或表达式" value="VarFx" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8" class="padding-right-8">
+            <el-form-item
+              label-width="0"
+              :prop="`headers.${hdIndex}.value`"
+              :rules="[{ required: true, message: '请输入', trigger: 'blur' }]"
+            >
+              <el-input v-model="hd.value" placeholder="值" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="4">
+            <el-button type="danger" plain icon="Delete" @click="handleRemoveHeaders(hdIndex)" />
+          </el-col>
+        </el-row>
+        <el-button type="primary" text icon="Plus" @click="handleAddHeaders">新增请求头</el-button>
       </el-form-item>
       <el-form-item label="请求参数（params）">
-        <div class="data-list">
-          <el-input v-model="dialog.form.headers" placeholder="键" />
-          <el-select>
-            <el-option label="字符串类型" value="string" />
-            <el-option label="数字类型" value="string" />
-            <el-option label="布尔类型" value="string" />
-            <el-option label="变量或表达式" value="string" />
-          </el-select>
-          <el-input v-model="dialog.form.headers" placeholder="值" />
-          <el-button type="danger" icon="Delete" />
-        </div>
-        <el-button type="primary" text icon="Plus">新增请求参数</el-button>
+        <el-row v-for="(pm, pmIndex) in dialog.form.params" :key="pmIndex" class="margin-bottom-4">
+          <el-col :span="8" class="padding-right-8">
+            <el-form-item
+              label-width="0"
+              :prop="`params.${pmIndex}.name`"
+              :rules="[{ required: true, message: '请输入', trigger: 'blur' }]"
+            >
+              <el-input v-model="pm.name" placeholder="名称" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="4" class="padding-right-8">
+            <el-form-item
+              label-width="0"
+              :prop="`params.${pmIndex}.type`"
+              :rules="[{ required: true, message: '请选择', trigger: 'change' }]"
+            >
+              <el-select v-model="pm.type" placeholder="请选择">
+                <el-option label="字符串类型" value="String" />
+                <el-option label="数字类型" value="Number" />
+                <el-option label="布尔类型" value="Boolean" />
+                <el-option label="数组类型" value="Array" />
+                <el-option label="文件类型" value="File" />
+                <el-option label="变量或表达式" value="VarFx" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8" class="padding-right-8">
+            <el-form-item
+              label-width="0"
+              :prop="`params.${pmIndex}.value`"
+              :rules="[{ required: true, message: '请输入', trigger: 'blur' }]"
+            >
+              <el-input v-model="pm.value" placeholder="值" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="4">
+            <el-button type="danger" plain icon="Delete" @click="handleRemoveParams(pmIndex)" />
+          </el-col>
+        </el-row>
+        <el-button type="primary" text icon="Plus" @click="handleAddParams">新增请求参数</el-button>
       </el-form-item>
       <el-form-item label="请求数据（data）">
-        <div class="data-list">
-          <el-input v-model="dialog.form.headers" placeholder="键" />
-          <el-select>
-            <el-option label="字符串类型" value="string" />
-            <el-option label="数字类型" value="string" />
-            <el-option label="布尔类型" value="string" />
-            <el-option label="变量或表达式" value="string" />
-          </el-select>
-          <el-input v-model="dialog.form.headers" placeholder="值" />
-          <el-button type="danger" icon="Delete" />
-        </div>
-        <el-button type="primary" text icon="Plus">新增请求数据</el-button>
+        <el-row v-for="(dt, dtIndex) in dialog.form.data" :key="dtIndex" class="margin-bottom-4">
+          <el-col :span="8" class="padding-right-8">
+            <el-form-item
+              label-width="0"
+              :prop="`data.${dtIndex}.name`"
+              :rules="[{ required: true, message: '请输入', trigger: 'blur' }]"
+            >
+              <el-input v-model="dt.name" placeholder="名称" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="4" class="padding-right-8">
+            <el-form-item
+              label-width="0"
+              :prop="`data.${dtIndex}.type`"
+              :rules="[{ required: true, message: '请选择', trigger: 'change' }]"
+            >
+              <el-select v-model="dt.type" placeholder="请选择">
+                <el-option label="字符串类型" value="String" />
+                <el-option label="数字类型" value="Number" />
+                <el-option label="布尔类型" value="Boolean" />
+                <el-option label="数组类型" value="Array" />
+                <el-option label="文件类型" value="File" />
+                <el-option label="变量或表达式" value="VarFx" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8" class="padding-right-8">
+            <el-form-item
+              label-width="0"
+              :prop="`data.${dtIndex}.value`"
+              :rules="[{ required: true, message: '请输入', trigger: 'blur' }]"
+            >
+              <el-input v-model="dt.value" placeholder="值" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="4">
+            <el-button type="danger" plain icon="Delete" @click="handleRemoveData(dtIndex)" />
+          </el-col>
+        </el-row>
+        <el-button type="primary" text icon="Plus" @click="handleAddData">新增请求数据</el-button>
       </el-form-item>
       <el-tabs v-model="activeName" type="border-card">
         <el-tab-pane label="请求配置（request）" name="requestCode">
@@ -161,14 +251,17 @@
 </template>
 <script setup>
 import { ref } from "vue";
-import { cloneDeep } from "@lime-util/util";
-import CodeEditor from "@/components/code-editor/index.vue";
+import { useDesignerStore } from "@/store";
 import { ElMessage, ElMessageBox } from "element-plus";
+import CodeEditor from "@/components/code-editor/index.vue";
 
 // props
 const props = defineProps({
   designer: { type: Object, default: () => ({}) },
 });
+
+// 获取到设计器的store
+const designerStore = useDesignerStore();
 
 // 初始化的表单数据
 const initForm = {
@@ -178,7 +271,13 @@ const initForm = {
   description: "",
   url: "",
   urlType: "string",
-  headers: [],
+  headers: [
+    {
+      name: "Content-Type",
+      type: "String",
+      value: "application/json; charset=utf-8",
+    },
+  ],
   params: [],
   data: [],
   method: "get",
@@ -186,7 +285,6 @@ const initForm = {
   responseCode: "return result.data.result;",
   responseErrorCode: "$message.error(error.message);",
 };
-
 // 数据源列表
 const dataSources = ref(props.designer.widgetConfig.dataSources);
 
@@ -196,7 +294,7 @@ const dialog = ref({
   type: "add",
   title: "添加数据源",
   dataSourceIndex: null,
-  form: cloneDeep(initForm),
+  form: JSON.parse(JSON.stringify(initForm)),
   formRules: {
     name: [{ required: true, message: "请输入", trigger: "blur" }],
     title: [{ required: true, message: "请输入", trigger: "blur" }],
@@ -204,26 +302,42 @@ const dialog = ref({
 });
 // 表单
 const dataSourceFormRef = ref(null);
-// 请求和响应配置
+// 请求和响应配置的tab名
 const activeName = ref("requestCode");
-// 添加
+
+// 操作表单
+/**
+ * 添加
+ */
 const showAddDialog = () => {
   dialog.value.visible = true;
+  dialog.value.type = "add";
+  dialog.value.title = "添加数据源";
+  dialog.value.dataSourceIndex = null;
   dialog.value.form = JSON.parse(JSON.stringify(initForm));
+  dataSourceFormRef.value.resetFields();
 };
-// 修改
-const showEditDialog = (dataSource, dataSourceIndex) => {};
-// 保存
+/**
+ * 修改
+ */
+const showEditDialog = (dataSource, dataSourceIndex) => {
+  dialog.value.visible = true;
+  dialog.value.type = "edit";
+  dialog.value.title = "修改数据源";
+  dialog.value.dataSourceIndex = dataSourceIndex;
+  dialog.value.form = JSON.parse(JSON.stringify(dataSource));
+};
+/**
+ * 保存
+ */
 const handleSave = () => {
   if (!dataSourceFormRef.value) return;
   dataSourceFormRef.value.validate((valid) => {
     if (valid) {
       // 添加
       if (dialog.value.type === "add") {
-        console.log(11, dialog.value.form, dataSources);
         // 校验是否已经存在数据源名称
         let hasDataSourceName = (dataSources.value || []).some((v, i) => v.name === dialog.value.form.name);
-        console.log(333, hasDataSourceName);
         if (hasDataSourceName) {
           ElMessage({
             type: "error",
@@ -236,10 +350,14 @@ const handleSave = () => {
       }
       // 修改
       if (dialog.value.type === "edit") {
+        dataSources.value[dialog.value.dataSourceIndex] = dialog.value.form;
       }
 
       // 结果
       dialog.value.visible = false;
+      // 缓存全局数据源列表
+      console.log(11111, dataSources.value);
+      designerStore.setDataSources(dataSources.value);
       ElMessage({
         type: "success",
         message: "操作成功",
@@ -257,11 +375,55 @@ const handleRemove = (dataSourceIndex) => {
     type: "warning",
   }).then(() => {
     dataSources.value.splice(dataSourceIndex, 1);
+    // 缓存全局数据源列表
+    designerStore.setDataSources(dataSources.value);
     ElMessage({
       type: "success",
       message: "删除成功",
     });
   });
+};
+
+// 操作请求头
+/**
+ * 新增请求头
+ */
+const handleAddHeaders = () => {
+  dialog.value.form.headers.push({ name: "", type: "String", value: "" });
+};
+/**
+ * 删除请求头
+ */
+const handleRemoveHeaders = (hdIndex) => {
+  dialog.value.form.headers.splice(hdIndex, 1);
+};
+
+// 操作请求参数
+/**
+ * 新增请求参数
+ */
+const handleAddParams = () => {
+  dialog.value.form.params.push({ name: "", type: "String", value: "" });
+};
+/**
+ * 删除请求参数
+ */
+const handleRemoveParams = (pmIndex) => {
+  dialog.value.form.params.splice(pmIndex, 1);
+};
+
+// 操作发送数据
+/**
+ * 新增发送数据
+ */
+const handleAddData = () => {
+  dialog.value.form.data.push({ name: "", type: "String", value: "" });
+};
+/**
+ * 删除发送数据
+ */
+const handleRemoveData = (dtIndex) => {
+  dialog.value.form.data.splice(dtIndex, 1);
 };
 </script>
 <style lang="scss" scoped>

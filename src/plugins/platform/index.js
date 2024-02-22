@@ -10,7 +10,7 @@ import { usePlatformStore } from "@/store/index";
  * @param suffix
  * @returns {string}
  */
-const getcomponentNameFromPath = (path, suffix) => {
+const getCmpNameFromPath = (path, suffix) => {
   return String(path)
     .split("/")
     .filter((v) => v.indexOf(suffix) > -1)
@@ -32,14 +32,14 @@ export default {
     const widgets = import.meta.glob("/src/platform*/widgets/*-widget/index.vue", { eager: true });
     Object.entries(widgets).map(([path, component]) => {
       // 会优先获取组件内部定义的名称，否则取文件名为组件名
-      let componentName = component.default.name || toPascalCase(getcomponentNameFromPath(path, "-widget"));
+      let componentName = component.default.name || toPascalCase(getCmpNameFromPath(path, "-widget"));
       app.component(componentName, component.default);
     });
     // 获取设计器组件的配置
     const widgetConfigs = import.meta.glob("/src/platform*/widgets/*-widget/index.json", { eager: true });
     const $widgetConfigs = {}; // 绑定到全局的设计器配置集合
     Object.entries(widgetConfigs).map(([path, component]) => {
-      let componentName = getcomponentNameFromPath(path, "-widget");
+      let componentName = getCmpNameFromPath(path, "-widget");
       $widgetConfigs[componentName] = component.default;
     });
     // 设置到全局中，可以根据组件名称获取对应的组件配置
@@ -52,7 +52,7 @@ export default {
       { eager: true },
     );
     Object.entries(props).map(([path, component]) => {
-      let componentName = component.default.name || toPascalCase(getcomponentNameFromPath(path, "-editor"));
+      let componentName = component.default.name || toPascalCase(getCmpNameFromPath(path, "-editor"));
       app.component(componentName, component.default);
     });
 
@@ -63,7 +63,7 @@ export default {
     );
     const $propConfigs = {}; // 绑定到全局的比属性编辑器配置集合
     Object.entries(propConfigs).map(([path, component]) => {
-      let componentName = toPascalCase(getcomponentNameFromPath(path, "-editor"));
+      let componentName = toPascalCase(getCmpNameFromPath(path, "-editor"));
       $propConfigs[component.default.name] = {
         ...component.default,
         componentName,

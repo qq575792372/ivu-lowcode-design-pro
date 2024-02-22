@@ -348,18 +348,19 @@ div:focus {
   .el-form-item__content {
     display: block;
   }
+// 重新定义带后缀的输入框
+  .el-input{
+    &.el-input-group--append{
+      .el-input__wrapper{
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        z-index: 1;
+      }
+      .el-select{
+        .el-select__wrapper{
+          box-shadow: none;
+        }
 
-  .data-list {
-    margin-bottom: var(--sp4);
-
-    .el-input,
-    .el-select {
-      display: inline-block;
-      width: 200px;
-      margin-right: var(--cmp-margin);
-
-      .el-input__wrapper {
-        width: 100%;
       }
     }
   }

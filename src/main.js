@@ -1,4 +1,5 @@
 import { createApp } from "vue";
+import request from "@/utils/request";
 import App from "./App.vue";
 
 const app = createApp(App);
@@ -37,6 +38,7 @@ import "@/theme/default.scss";
 
 // 绑定全局变量
 app.config.globalProperties.$message = ElMessage;
+app.config.globalProperties.$request = request;
 
 // 挂载实例
 app.mount("#app");

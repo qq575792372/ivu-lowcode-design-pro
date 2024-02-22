@@ -6,8 +6,15 @@
     <el-collapse-item title="基本属性" name="base">
       <template v-if="baseProps.length">
         <div v-for="(item, index) in baseProps" :key="index" class="props-wrapper">
-          <component :is="item.componentName" :item="item" :designer :widget class="props-editor" />
-          <el-button class="props-fx" type="text" text plain @click="handleClick(event, eventIndex)">fx</el-button>
+          <component
+            :is="item.componentName"
+            v-model="props.widget.props[item.name]"
+            :item="item"
+            :designer
+            :widget
+            class="props-editor"
+          />
+          <el-button class="props-fx" type="text" text plain @click="handleClick(event, eventIndex)">ƒx</el-button>
         </div>
       </template>
       <template v-else>
@@ -18,7 +25,7 @@
       <template v-if="advancedProps.length">
         <div v-for="(item, index) in advancedProps" :key="index" class="props-wrapper">
           <component :is="item.componentName" :item="item" :designer :widget class="props-editor" />
-          <el-button class="props-fx" type="text" text plain @click="handleClick(event, eventIndex)">fx</el-button>
+          <el-button class="props-fx" type="text" text plain @click="handleClick(event, eventIndex)">ƒx</el-button>
         </div>
       </template>
       <template v-else>
@@ -29,7 +36,7 @@
       <template v-if="customProps.length">
         <div v-for="(item, index) in customProps" :key="index" class="props-wrapper">
           <component :is="item.componentName" :item="item" :designer :widget class="props-editor" />
-          <el-button class="props-fx" type="text" text plain @click="handleClick(event, eventIndex)">fx</el-button>
+          <el-button class="props-fx" type="text" text plain @click="handleClick(event, eventIndex)">ƒx</el-button>
         </div>
       </template>
       <template v-else>

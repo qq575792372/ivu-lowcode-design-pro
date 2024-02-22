@@ -2,5 +2,6 @@
   "name": "className",
   "label": "类名",
   "placeholder": "请输入",
+  "defaultValue": "my-class",
   "group": "base"
 }

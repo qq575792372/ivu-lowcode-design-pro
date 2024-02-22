@@ -5,6 +5,7 @@
   "props": {
     "name": "",
     "defaultValue": "button",
+    "className": "button-primary",
     "dsEnable": false,
     "dsName": "",
     "options": []
@@ -15,14 +16,20 @@
       "label": "onMounted",
       "args": [],
       "code": "",
-      "action": ["deleteTable"]
+      "action": [
+        "deleteTable"
+      ]
     },
     {
       "name": "onClick",
       "label": "onClick",
-      "args": ["widget"],
+      "args": [
+        "widget"
+      ],
       "code": "/*事件内容*/ console.log('onClick点击事件',widget);",
-      "action": ["deleteTable"]
+      "action": [
+        "deleteTable"
+      ]
     }
   ],
   "actions": [

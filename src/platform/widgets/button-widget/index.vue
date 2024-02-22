@@ -1,5 +1,6 @@
 <template>
   <div>
+    className={{ widget.props.className }}
     <el-button @click="handleClick">{{ widget.props.defaultValue }}</el-button>
   </div>
 </template>
