@@ -8,7 +8,7 @@
         <div v-for="(item, index) in baseProps" :key="index" class="props-wrapper">
           <component
             :is="item.componentName"
-            v-model="props.widget.props[item.name]"
+            v-model="currentWidgetProps[item.name]"
             :item="item"
             :designer
             :widget
@@ -72,6 +72,10 @@ watch(
   { deep: true, immediate: true },
 );
 
+// 当前元素的属性
+const currentWidgetProps = computed(() => {
+  return props.widget.props;
+});
 // 基本属性
 const baseProps = computed(() => {
   return propConfigs.value.filter((v) => v.group === "base");
