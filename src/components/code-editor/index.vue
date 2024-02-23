@@ -1,5 +1,6 @@
 <template>
   <div :style="codeEditorStyle" class="code-editor">
+    {{ modelValue }}
     <div id="editor" ref="aceDom"></div>
   </div>
 </template>

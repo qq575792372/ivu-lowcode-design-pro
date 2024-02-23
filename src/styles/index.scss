@@ -15,7 +15,7 @@ body {
   // background: #f5f7f9;
   color: #333;
   font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
-    sans-serif;
+  sans-serif;
 }
 
 label {
@@ -34,18 +34,17 @@ body {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  font-family:
-    Inter,
-    -apple-system,
-    BlinkMacSystemFont,
-    PingFang SC,
-    Hiragino Sans GB,
-    noto sans,
-    Microsoft YaHei,
-    Helvetica Neue,
-    Helvetica,
-    Arial,
-    sans-serif;
+  font-family: Inter,
+  -apple-system,
+  BlinkMacSystemFont,
+  PingFang SC,
+  Hiragino Sans GB,
+  noto sans,
+  Microsoft YaHei,
+  Helvetica Neue,
+  Helvetica,
+  Arial,
+  sans-serif;
 }
 
 #app {
@@ -93,6 +92,44 @@ div:focus {
     clear: both;
     height: 0;
   }
+}
+
+
+/* 颜色样式 */
+.primary-color {
+  color: var(--primary-color);
+}
+
+.info-color {
+  color: var(--info-color);
+}
+
+.success-color {
+  color: var(--success-color);
+}
+
+.warning-color {
+  color: var(--warning-color);
+}
+
+.error-color {
+  color: var(--error-color);
+}
+
+.text-title-color {
+  color: var(--text-title-color);
+}
+
+.text-content-color {
+  color: var(--text-content-color);
+}
+
+.text-desc-color {
+  color: var(--text-desc-color);
+}
+
+.text-disabled-color {
+  color: var(--text-disabled-color);
 }
 
 // 自定义设计面板中tab的样式
@@ -348,20 +385,52 @@ div:focus {
   .el-form-item__content {
     display: block;
   }
-// 重新定义带后缀的输入框
-  .el-input{
-    &.el-input-group--append{
-      .el-input__wrapper{
+
+  // 重新定义带后缀的输入框
+  .el-input {
+    &.el-input-group--append {
+      .el-input__wrapper {
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
         z-index: 1;
       }
-      .el-select{
-        .el-select__wrapper{
+
+      .el-select {
+        .el-select__wrapper {
           box-shadow: none;
         }
 
       }
+    }
+  }
+}
+
+// 属性绑定变量弹框样式
+.props-binder-dialog {
+  .el-dialog__body {
+    padding: var(--cmp-padding);
+  }
+
+  .binder-content {
+    height: 340px;
+    display: flex;
+
+    .binder-value {
+      flex: 1;
+
+      .el-textarea {
+        height: 100%;
+
+        .el-textarea__inner {
+          height: 100%;
+        }
+      }
+    }
+
+    .binder-data {
+      width: 400px;
+      margin-left: var(--cmp-margin);
+      padding-left: var(--cmp-padding);
     }
   }
 }

@@ -36,7 +36,7 @@ export default ({ props, emits }) => {
    */
   const executeEvent = (widget, eventName) => {
     let eventFn = getEventFn(widget, eventName);
-    eventFn(widget);
+    return eventFn(widget);
   };
 
   /**

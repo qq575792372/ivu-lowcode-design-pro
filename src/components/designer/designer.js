@@ -26,7 +26,7 @@ export function createDesigner(vueInstance) {
         globalLabelWidth: 80,
         globalTheme: "default",
         globalCss: "",
-        globalVars: "",
+        globalVars: [],
         globalFns: [],
         globalFxs: [],
         globalEvents: [

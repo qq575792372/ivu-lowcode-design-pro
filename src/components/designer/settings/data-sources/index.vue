@@ -79,9 +79,6 @@
       <el-form-item label="名称" prop="name">
         <el-input v-model="dialog.form.name" :disabled="dialog.type === 'edit'" />
       </el-form-item>
-      <el-form-item label="标题" prop="title">
-        <el-input v-model="dialog.form.title" />
-      </el-form-item>
       <el-form-item label="请求地址" prop="url">
         <el-input v-model="dialog.form.url">
           <template #append>
@@ -91,6 +88,9 @@
             </el-select>
           </template>
         </el-input>
+      </el-form-item>
+      <el-form-item label="标题" prop="title">
+        <el-input v-model="dialog.form.title" />
       </el-form-item>
       <el-form-item label="描述">
         <el-input v-model="dialog.form.description" type="textarea" :rows="4" />
@@ -315,7 +315,6 @@ const showAddDialog = () => {
   dialog.value.title = "添加数据源";
   dialog.value.dataSourceIndex = null;
   dialog.value.form = JSON.parse(JSON.stringify(initForm));
-  dataSourceFormRef.value.resetFields();
 };
 /**
  * 修改
@@ -356,7 +355,6 @@ const handleSave = () => {
       // 结果
       dialog.value.visible = false;
       // 缓存全局数据源列表
-      console.log(11111, dataSources.value);
       designerStore.setDataSources(dataSources.value);
       ElMessage({
         type: "success",
