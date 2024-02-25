@@ -156,7 +156,6 @@
     width="960px"
     :close-on-click-modal="false"
   >
-    {{ widgetConfig }}
     <el-alert type="info" :closable="false">变量保存在globalVars中，以JSON对象形式存在。</el-alert>
     <CodeEditor v-model="globalVarsDialog.data" />
     <template #footer>
@@ -194,11 +193,7 @@
         <el-switch v-model="globalFnsDialog.form.enable" />
       </el-form-item>
     </el-form>
-    <el-alert type="info" :closable="false">
-      &nbsp;(widget)&nbsp;=>&nbsp;{&nbsp;//&nbsp;widget&nbsp;触发动作的元素
-    </el-alert>
     <CodeEditor v-model="globalFnsDialog.form.code" />
-    <el-alert type="info" :closable="false">}</el-alert>
     <template #footer>
       <div class="text-align-center">
         <el-button type="primary" @click="handleSureGlobalFns">确定</el-button>
@@ -252,11 +247,7 @@
         <el-switch v-model="globalActionsDialog.form.enable" />
       </el-form-item>
     </el-form>
-    <el-alert type="info" :closable="false">
-      &nbsp;(widget)&nbsp;=>&nbsp;{&nbsp;//&nbsp;widget&nbsp;触发动作的元素
-    </el-alert>
     <CodeEditor v-model="globalActionsDialog.form.code" />
-    <el-alert type="info" :closable="false">}</el-alert>
     <template #footer>
       <div class="text-align-center">
         <el-button type="primary" @click="handleSureGlobalActions">确定</el-button>
@@ -310,18 +301,20 @@ const handleSureGlobalCss = () => {
 // 弹框
 const globalVarsDialog = ref({
   visible: false,
-  title: "全局css",
+  title: "全局变量",
   data: "",
 });
 // 显示
 const showGlobalVarsDialog = () => {
   globalVarsDialog.value.visible = true;
-  globalVarsDialog.value.data = widgetConfig.value.globalVars;
+  globalVarsDialog.value.data = JSON.stringify(widgetConfig.value.globalVars, null, " ");
 };
 // 确定
 const handleSureGlobalVars = () => {
-  widgetConfig.value.globalVars = globalVarsDialog.value.data;
+  widgetConfig.value.globalVars = JSON.parse(globalVarsDialog.value.data);
   globalVarsDialog.value.visible = false;
+  // 缓存全局变量对象
+  designerStore.setGlobalVars(widgetConfig.value.globalVars);
   ElMessage({
     type: "success",
     message: "操作成功",

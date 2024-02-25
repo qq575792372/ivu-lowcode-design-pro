@@ -29,7 +29,7 @@ export default ({ props, emits }) => {
    */
   const getActionFn = (widget, actionName) => {
     let action = getAction(widget, actionName);
-    return action && new Function("target", action.code);
+    return action && new Function("widget", action.code);
   };
 
   /**

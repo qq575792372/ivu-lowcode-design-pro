@@ -1,12 +1,11 @@
 <template>
   <div class="default-value-editor-wrapper">
     <el-form-item :label="item.label">
-      <el-input v-model="propModel[item.name]" :placeholder="item.placeholder" />
+      <el-input v-model="modelValue" :placeholder="item.placeholder" />
     </el-form-item>
   </div>
 </template>
 <script setup>
-import { computed } from "vue";
 // props
 const props = defineProps({
   designer: { type: Object, default: () => ({}) },
@@ -14,10 +13,8 @@ const props = defineProps({
   item: { type: Object, default: () => ({}) },
 });
 
-// 属性数据模型
-const propModel = computed(() => {
-  return props.widget.props;
-});
+// 属性双向绑定的值
+const modelValue = defineModel({ type: [String, Number], default: null });
 </script>
 <style lang="scss" scoped>
 .name-editor-wrapper {

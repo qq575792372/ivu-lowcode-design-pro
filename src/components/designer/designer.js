@@ -26,7 +26,7 @@ export function createDesigner(vueInstance) {
         globalLabelWidth: 80,
         globalTheme: "default",
         globalCss: "",
-        globalVars: [],
+        globalVars: {},
         globalFns: [],
         globalFxs: [],
         globalEvents: [
@@ -76,12 +76,14 @@ export function createDesigner(vueInstance) {
       this.widgets = designerStore.getWidgets;
       // 从缓存中获得当前选中的组件
       this.setSelected(designerStore.getSelectedWidget);
-      // 从缓存中获取全局数据源列表
-      this.widgetConfig.dataSources = designerStore.dataSources;
+      // 从缓存中获取全局变量对象
+      this.widgetConfig.globalVars = designerStore.getGlobalVars;
       // 从缓存中获取全局函数列表
       this.widgetConfig.globalFns = designerStore.getGlobalFns;
       // 从缓存中获取全局动作列表
       this.widgetConfig.globalActions = designerStore.getGlobalActions;
+      // 从缓存中获取全局数据源列表
+      this.widgetConfig.dataSources = designerStore.dataSources;
     },
     /**
      * 清空设计器

@@ -25,7 +25,6 @@
   >
     <div class="binder-content">
       <div class="binder-value">
-        {{ dialog.bindValue }}
         <CodeEditor v-model="dialog.bindValue" lang="html" />
         <div>
           <div>当前运行结果</div>
@@ -35,10 +34,20 @@
       <div class="binder-data">
         <el-scrollbar>
           <el-collapse v-model="activeNames">
-            <el-collapse-item title="全局变量（$globalVars）" name="globalVars"></el-collapse-item>
+            <el-collapse-item title="全局变量（$globalVars）" name="globalVars">
+              <el-tree
+                :data="globalVars"
+                :props="{ label: 'key', children: 'children' }"
+                @node-click="(event) => handleNodeClick('$globalVars', event.key)"
+              />
+            </el-collapse-item>
             <el-collapse-item title="全局表达式（$globalFxs）" name="globalFxs"></el-collapse-item>
             <el-collapse-item title="全局函数（$globalFns）" name="globalFns">
-              <el-tree :data="globalFns" @node-click="handleNodeClick('$globalFns', $event)">
+              <el-tree
+                highlight-current
+                :data="globalFns"
+                @node-click="(event) => handleNodeClick('$globalFns', event)"
+              >
                 <template #default="{ node, data }">
                   {{ data.name }}
                   <span class="text-desc-color">（{{ data.label }}）</span>
@@ -46,7 +55,7 @@
               </el-tree>
             </el-collapse-item>
             <el-collapse-item title="数据源（$dataSources）" name="dataSources">
-              <el-tree :data="dataSources" @node-click="handleNodeClick('$dataSources', $event)">
+              <el-tree :data="dataSources" @node-click="(event) => handleNodeClick('$dataSources', event)">
                 <template #default="{ node, data }">
                   {{ data.name }}
                   <span class="text-desc-color">（{{ data.title }}）</span>
@@ -66,7 +75,8 @@
   </el-dialog>
 </template>
 <script setup>
-import { ref } from "vue";
+import { ref, toRef, computed } from "vue";
+import { isObject, isArray } from "@lime-util/util";
 import useProps from "@/hooks/props";
 import CodeEditor from "@/components/code-editor/index.vue";
 
@@ -83,7 +93,7 @@ const { getPropResult } = useProps({ props });
 // 绑定变量弹框
 const dialog = ref({
   visible: false,
-  bindValue: "aaaa", // 绑定表达式值
+  bindValue: "", // 绑定表达式值
   bindResult: "", // 绑定值运行的结果
 });
 
@@ -91,11 +101,31 @@ const dialog = ref({
 const activeNames = ref(["globalVars", "globalFxs", "globalFns", "dataSources"]);
 
 // 全局变量
-const globalVars = ref(props.designer.widgetConfig.globalVars);
+// 将全局变量中的对象格式化为el-tree需要的数据
+const formatGlobalVars = (data) => {
+  let res = [];
+  for (let key in data) {
+    let value = data[key];
+    let temp = { key, value };
+    // 判断是对象，则继续遍历找下去
+    if (isObject(value)) {
+      temp.children = formatGlobalVars(value);
+    }
+    // 判断是其他，则直接赋值
+    res.push(temp);
+  }
+  return res;
+};
+const globalVars = computed(() => {
+  return formatGlobalVars(props.designer.widgetConfig.globalVars);
+});
+
 // 全局表达式
 const globalFxs = ref(props.designer.widgetConfig.globalFxs);
+
 // 全局函数
 const globalFns = ref(props.designer.widgetConfig.globalFns);
+
 // 数据源
 const dataSources = ref(props.designer.widgetConfig.dataSources);
 
@@ -105,11 +135,21 @@ const handleClick = () => {
   dialog.value.title = props.item.label;
 };
 
-// 节点点击
+/**
+ * 右侧绑定的节点点击事件
+ * @param type 类型
+ * @param data 点击的数据
+ */
 const handleNodeClick = (type, data) => {
   console.log(11, type, data);
   dialog.value.bindValue = `${type}.${data.name}`;
   dialog.value.bindResult = getPropResult(dialog.value.bindValue);
+};
+
+// 确定
+const handleSure = () => {
+  props.widget.props[props.item.name] = dialog.value.bindValue;
+  dialog.value.visible = false;
 };
 </script>
 <style scoped lang="scss">

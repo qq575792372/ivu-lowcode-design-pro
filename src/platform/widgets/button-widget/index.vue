@@ -1,11 +1,11 @@
 <template>
   <div>
-    {{ widget.props.className }}-{{ getPropValue("className") }}
-    <el-button @click="handleClick">{{ widget.props.defaultValue }}</el-button>
+    {{ className }}
+    <el-button @click="handleClick">{{ className }}</el-button>
   </div>
 </template>
 <script setup>
-import { ref } from "vue";
+import { ref, toRefs, reactive, computed } from "vue";
 import useEvents from "@/hooks/events";
 import useProps from "@/hooks/props";
 
@@ -27,9 +27,8 @@ const props = defineProps({
 const { executeEvent, executeEventAction } = useEvents({ props });
 // 获得组件属性的hooks
 const { getPropValue } = useProps({ props });
-
-/* 获取组件属性的值 */
-const className = ref(getPropValue("className"));
+// /* 获取组件属性的值 */
+let className = getPropValue("className");
 
 /**
  * 点击事件

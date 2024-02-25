@@ -32,7 +32,7 @@ export default ({ props, emits }) => {
    */
   const executeGlobalEventFn = (globalEvents, eventName) => {
     let eventFn = getGlobalEventFn(globalEvents, eventName);
-    eventFn();
+    return eventFn();
   };
 
   return {

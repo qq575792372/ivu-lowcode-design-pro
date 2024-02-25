@@ -36,7 +36,6 @@ declare module 'vue' {
     ElInputNumber: typeof import('element-plus/es')['ElInputNumber']
     ElMain: typeof import('element-plus/es')['ElMain']
     ElOption: typeof import('element-plus/es')['ElOption']
-    ElPopover: typeof import('element-plus/es')['ElPopover']
     ElRadioButton: typeof import('element-plus/es')['ElRadioButton']
     ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
     ElRow: typeof import('element-plus/es')['ElRow']
@@ -64,6 +63,5 @@ declare module 'vue' {
     Tools: typeof import('./src/components/designer/tools/index.vue')['default']
     Undo: typeof import('./src/components/designer/tools/undo.vue')['default']
     VEasyForm: typeof import('./src/components/v-easy-form/index.vue')['default']
-    VTable: typeof import('./src/components/v-table/index.vue')['default']
   }
 }

@@ -5,7 +5,7 @@
   "props": {
     "name": "",
     "className": "",
-    "defaultValue": "",
+    "value": "",
     "inputCustomEditor": ""
   },
   "events": [
@@ -22,7 +22,7 @@
     {
       "name": "deleteTable",
       "label": "删除表格数据",
-      "code": "(target) => { /*这里动作内容，可以获取到this*/ }"
+      "code": "/*这里动作内容*/"
     }
   ]
 }

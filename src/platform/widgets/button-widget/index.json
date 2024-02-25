@@ -4,7 +4,7 @@
   "widgets": [],
   "props": {
     "name": "",
-    "defaultValue": "button",
+    "value": "button",
     "className": "button-primary",
     "dsEnable": false,
     "dsName": "",

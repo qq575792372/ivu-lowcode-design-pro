@@ -5,7 +5,7 @@
   "props": {
     "name": "",
     "className": "",
-    "defaultValue": ""
+    "value": ""
   },
   "events": [],
   "actions": []

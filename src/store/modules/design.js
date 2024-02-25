@@ -5,6 +5,8 @@ const useDesignStore = defineStore("design", {
     return {
       // 设计器组件列表
       widgets: [],
+      // 全局变量对象
+      globalVars: {},
       // 全局函数列表
       globalFns: [],
       // 全局动作列表
@@ -22,6 +24,8 @@ const useDesignStore = defineStore("design", {
   getters: {
     // 设计器组件列表
     getWidgets: (state) => state.widgets || [],
+    // 全局变量对象
+    getGlobalVars: (state) => state.globalVars || [],
     // 全局函数列表
     getGlobalFns: (state) => state.globalFns || [],
     // 全局动作列表
@@ -39,6 +43,10 @@ const useDesignStore = defineStore("design", {
     // 设计器组件列表
     setWidgets(widgets) {
       this.widgets = widgets;
+    },
+    // 全局变量对象
+    setGlobalVars(globalVars) {
+      this.globalVars = globalVars;
     },
     // 全局函数列表
     setGlobalFns(globalFns) {
