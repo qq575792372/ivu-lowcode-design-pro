@@ -37,28 +37,37 @@
             <el-collapse-item title="全局变量（$globalVars）" name="globalVars">
               <el-tree
                 :data="globalVars"
-                :props="{ label: 'key', children: 'children' }"
+                highlight-current
                 @node-click="(event) => handleNodeClick('$globalVars', event.key)"
-              />
+              >
+                <template #default="{ node, data }">
+                  {{ data.label }}
+                  <span class="text-desc-color">（{{ data.desc }}）</span>
+                </template>
+              </el-tree>
             </el-collapse-item>
             <el-collapse-item title="全局表达式（$globalFxs）" name="globalFxs"></el-collapse-item>
             <el-collapse-item title="全局函数（$globalFns）" name="globalFns">
               <el-tree
-                highlight-current
                 :data="globalFns"
+                highlight-current
                 @node-click="(event) => handleNodeClick('$globalFns', event)"
               >
                 <template #default="{ node, data }">
-                  {{ data.name }}
-                  <span class="text-desc-color">（{{ data.label }}）</span>
+                  {{ data.label }}
+                  <span class="text-desc-color">（{{ data.desc }}）</span>
                 </template>
               </el-tree>
             </el-collapse-item>
             <el-collapse-item title="数据源（$dataSources）" name="dataSources">
-              <el-tree :data="dataSources" @node-click="(event) => handleNodeClick('$dataSources', event)">
+              <el-tree
+                :data="dataSources"
+                highlight-current
+                @node-click="(event) => handleNodeClick('$dataSources', event)"
+              >
                 <template #default="{ node, data }">
-                  {{ data.name }}
-                  <span class="text-desc-color">（{{ data.title }}）</span>
+                  {{ data.label }}
+                  <span class="text-desc-color">（{{ data.desc }}）</span>
                 </template>
               </el-tree>
             </el-collapse-item>
@@ -101,33 +110,80 @@ const dialog = ref({
 const activeNames = ref(["globalVars", "globalFxs", "globalFns", "dataSources"]);
 
 // 全局变量
+/*
+{
+  "unitOid": 12,
+  "unitName": "单位111111",
+  "deptOid": 13,
+  "deptName": "机构1",
+  "personInfo": {
+    "userId": 12,
+    "userName": "小明",
+    "age": 20,
+    "test1": {
+      "test1Id": 1,
+      "test1Name": "ddd"
+    },
+    "test2": [{ "id": 1, "name": "2" }]
+  },
+  "tableData": [
+    {
+      "id": 1,
+      "name": "test1"
+    },
+    {
+      "id": 2,
+      "name": "test2"
+    }
+  ]
+}
+ */
 // 将全局变量中的对象格式化为el-tree需要的数据
-const formatGlobalVars = (data) => {
+const formatGlobalVars = (data, parentPath) => {
   let res = [];
   for (let key in data) {
-    let value = data[key];
-    let temp = { key, value };
+    let currentParentPath = `${parentPath}.${key}`;
+    let temp = { label: key, value: currentParentPath, desc: currentParentPath };
     // 判断是对象，则继续遍历找下去
-    if (isObject(value)) {
-      temp.children = formatGlobalVars(value);
+    if (isObject(data[key])) {
+      temp.children = formatGlobalVars(data[key], currentParentPath);
     }
     // 判断是其他，则直接赋值
     res.push(temp);
   }
+
   return res;
 };
 const globalVars = computed(() => {
-  return formatGlobalVars(props.designer.widgetConfig.globalVars);
+  return formatGlobalVars(props.designer.widgetConfig.globalVars, "$globalVars");
 });
 
 // 全局表达式
 const globalFxs = ref(props.designer.widgetConfig.globalFxs);
 
 // 全局函数
-const globalFns = ref(props.designer.widgetConfig.globalFns);
+const globalFns = computed(() => {
+  // 转为树形结构
+  return props.designer.widgetConfig.globalFns.map((v) => {
+    return {
+      label: v.name,
+      value: v.code,
+      desc: v.label,
+    };
+  });
+});
 
 // 数据源
-const dataSources = ref(props.designer.widgetConfig.dataSources);
+const dataSources = computed(() => {
+  // 转为树形结构
+  return props.designer.widgetConfig.dataSources.map((v) => {
+    return {
+      label: v.name,
+      value: v.name,
+      desc: v.title,
+    };
+  });
+});
 
 // 弹框绑定
 const handleClick = () => {
