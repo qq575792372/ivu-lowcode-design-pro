@@ -5,8 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from "vue";
-import { ElMessage } from "element-plus";
+import { ref, onMounted, onBeforeUnmount, computed, watch } from "vue";
 
 // 引用ace插件
 import ace from "ace-builds";
@@ -55,12 +54,12 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
-  // 是否显示行数
+  // 是否显示行号
   showLineNumbers: {
     type: Boolean,
     default: true,
   },
-  // 是否显示左侧行号
+  // 是否显示行号区域
   showGutter: {
     type: Boolean,
     default: true,
@@ -68,7 +67,7 @@ const props = defineProps({
   // 是否有外边框
   hasBorder: {
     type: Boolean,
-    default: true,
+    default: false,
   },
   // 是否高亮选中行
   highlightActiveLine: {
@@ -114,16 +113,23 @@ const codeEditorStyle = computed(() => {
 });
 
 // 定义ace的事件
-const emit = defineEmits(["update:modelValue", "focus", "blur", "change"]);
+const emits = defineEmits(["update:modelValue", "focus", "blur", "change"]);
+// ace的元素
 const aceDom = ref(null);
+// ace编辑器对象
+let editor = null;
 
 onMounted(() => {
-  const editor = ace.edit(aceDom.value, {
+  editor = ace.edit(aceDom.value, {
     value: props.modelValue,
     mode: `ace/mode/${props.lang}`,
     theme: `ace/theme/${props.theme}`,
-    useWorker: props.useWorker,
     readOnly: props.readonly,
+    useWorker: props.useWorker,
+    showLineNumbers: props.showLineNumbers,
+    showGutter: props.showGutter,
+    hasBorder: props.hasBorder,
+    fontSize: props.fontSize,
     tabSize: props.tabSize,
     highlightActiveLine: props.highlightActiveLine,
   });
@@ -133,6 +139,8 @@ onMounted(() => {
     enableSnippets: true, // 设置代码片段提示
     enableLiveAutocompletion: true, // 设置自动提示
   });
+  // 切换自动换行
+  editor.getSession().setUseWrapMode(true);
 
   // 自定义语法补全
   const completions = [
@@ -185,17 +193,34 @@ onMounted(() => {
 
   // 回调事件
   editor.on("focus", () => {
-    emit("focus");
+    emits("focus");
   });
   editor.on("blur", () => {
-    emit("blur");
+    emits("blur");
   });
   // change事件，支持双向绑定和回调
   editor.on("change", () => {
-    emit("change", editor.getValue());
-    emit("update:modelValue", editor.getValue());
+    emits("change", editor.getValue());
+    // 双向绑定数据
+    emits("update:modelValue", editor.getValue());
   });
 });
+
+onBeforeUnmount(() => {
+  editor && editor.destroy();
+});
+// 监听值改变
+watch(
+  () => props.modelValue,
+  (newValue) => {
+    // 解决光标移动问题
+    const position = editor.getCursorPosition();
+    editor.getSession().setValue(newValue);
+    editor.clearSelection();
+    editor.moveCursorToPosition(position);
+  },
+  { deep: true },
+);
 </script>
 
 <style scoped lang="scss">

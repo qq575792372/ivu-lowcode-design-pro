@@ -37,11 +37,6 @@
         <el-button type="primary" plain icon="Edit" @click="showGlobalVarsDialog">编辑</el-button>
       </el-form-item>
     </el-collapse-item>
-    <el-collapse-item title="全局表达式" name="globalFxs">
-      <el-form-item label="全局表达式">
-        <el-button type="primary" plain icon="Edit" @click="handleClick(event, eventIndex)">编辑</el-button>
-      </el-form-item>
-    </el-collapse-item>
     <el-collapse-item title="全局函数" name="globalFns">
       <template v-if="widgetConfig.globalFns.length">
         <el-form-item
@@ -257,10 +252,9 @@
   </el-dialog>
 </template>
 <script setup>
-import { ref } from "vue";
+import { ref, computed, watch } from "vue";
 import { cloneDeep } from "@lime-util/util";
 import { ElMessage, ElMessageBox } from "element-plus";
-import { useDesignerStore } from "@/store";
 import useGlobal from "@/hooks/global";
 import CodeEditor from "@/components/code-editor/index.vue";
 
@@ -271,12 +265,10 @@ const props = defineProps({
   designer: { type: Object, default: () => ({}) },
 });
 
-// 获取到设计器的store
-const designerStore = useDesignerStore();
 // 获取全局配置的hooks
 const { getGlobalEventFn } = useGlobal({ props });
-// 设计器中全局的数据配置
-const widgetConfig = ref(props.designer.widgetConfig);
+// 设计器中全局的数据配置，通过计算属性可以监听到改变
+const widgetConfig = computed(() => props.designer.widgetConfig);
 
 /* 全局css */
 const globalCssDialog = ref({
@@ -313,8 +305,8 @@ const showGlobalVarsDialog = () => {
 const handleSureGlobalVars = () => {
   widgetConfig.value.globalVars = JSON.parse(globalVarsDialog.value.data);
   globalVarsDialog.value.visible = false;
-  // 缓存全局变量对象
-  designerStore.setGlobalVars(widgetConfig.value.globalVars);
+  /*   // 缓存全局变量对象
+  setGlobalVars(widgetConfig.value.globalVars); */
   ElMessage({
     type: "success",
     message: "操作成功",
@@ -372,8 +364,8 @@ const handleRemoveGlobalFns = (fnIndex) => {
     type: "warning",
   }).then(() => {
     widgetConfig.value.globalFns.splice(fnIndex, 1);
-    // 缓存全局动作列表
-    designerStore.setGlobalFns(widgetConfig.value.globalFns);
+    /*     // 缓存全局动作列表
+    setGlobalFns(widgetConfig.value.globalFns); */
     ElMessage({
       type: "success",
       message: "删除成功",
@@ -405,8 +397,8 @@ const handleSureGlobalFns = () => {
       }
       // 操作结果
       globalFnsDialog.value.visible = false;
-      // 缓存全局动作列表
-      designerStore.setGlobalFns(widgetConfig.value.globalFns);
+      /*       // 缓存全局动作列表
+      setGlobalFns(widgetConfig.value.globalFns); */
       ElMessage({
         type: "success",
         message: "操作成功",
@@ -490,8 +482,6 @@ const handleRemoveGlobalActions = (actionIndex) => {
     type: "warning",
   }).then(() => {
     widgetConfig.value.globalActions.splice(actionIndex, 1);
-    // 缓存全局动作列表
-    designerStore.setGlobalActions(widgetConfig.value.globalActions);
     ElMessage({
       type: "success",
       message: "删除成功",
@@ -524,8 +514,6 @@ const handleSureGlobalActions = () => {
       }
       // 操作结果
       globalActionsDialog.value.visible = false;
-      // 缓存全局动作列表
-      designerStore.setGlobalActions(widgetConfig.value.globalActions);
       ElMessage({
         type: "success",
         message: "操作成功",

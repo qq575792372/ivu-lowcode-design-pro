@@ -20,15 +20,23 @@
     append-to-body
     draggable
     class="props-binder-dialog"
-    width="960px"
+    width="940px"
     :close-on-click-modal="false"
   >
     <div class="binder-content">
-      <div class="binder-value">
-        <CodeEditor v-model="dialog.bindValue" lang="html" />
-        <div>
-          <div>当前运行结果</div>
-          <div>{{ dialog.bindResult }}</div>
+      <div class="binder-editor">
+        <el-alert type="warning" :closable="false">
+          从右侧选择绑定的表达式到左侧，绑定的属性会自动解析表达式的值。
+        </el-alert>
+        <CodeEditor v-model="dialog.bindValue" lang="html" height="240px" />
+        <div class="binder-editor-result">
+          <div class="binder-editor-result-title">
+            <el-icon class="success-color margin-right-4" :size="18">
+              <CircleCheckFilled />
+            </el-icon>
+            当前运行结果
+          </div>
+          <div class="binder-editor-result-value">{{ dialog.bindResult }}</div>
         </div>
       </div>
       <div class="binder-data">
@@ -36,9 +44,11 @@
           <el-collapse v-model="activeNames">
             <el-collapse-item title="全局变量（$globalVars）" name="globalVars">
               <el-tree
+                ref="globalVarsRef"
                 :data="globalVars"
                 highlight-current
-                @node-click="(event) => handleNodeClick('$globalVars', event.key)"
+                :expand-on-click-node="false"
+                @node-click="handleNodeClick('$globalVars', $event)"
               >
                 <template #default="{ node, data }">
                   {{ data.label }}
@@ -46,12 +56,13 @@
                 </template>
               </el-tree>
             </el-collapse-item>
-            <el-collapse-item title="全局表达式（$globalFxs）" name="globalFxs"></el-collapse-item>
             <el-collapse-item title="全局函数（$globalFns）" name="globalFns">
               <el-tree
+                ref="globalFnsRef"
                 :data="globalFns"
                 highlight-current
-                @node-click="(event) => handleNodeClick('$globalFns', event)"
+                :expand-on-click-node="false"
+                @node-click="handleNodeClick('$globalFns', $event)"
               >
                 <template #default="{ node, data }">
                   {{ data.label }}
@@ -61,9 +72,11 @@
             </el-collapse-item>
             <el-collapse-item title="数据源（$dataSources）" name="dataSources">
               <el-tree
+                ref="dataSourcesRef"
                 :data="dataSources"
                 highlight-current
-                @node-click="(event) => handleNodeClick('$dataSources', event)"
+                :expand-on-click-node="false"
+                @node-click="handleNodeClick('$dataSources', $event)"
               >
                 <template #default="{ node, data }">
                   {{ data.label }}
@@ -107,7 +120,7 @@ const dialog = ref({
 });
 
 // 打开的标签页
-const activeNames = ref(["globalVars", "globalFxs", "globalFns", "dataSources"]);
+const activeNames = ref(["globalVars", "globalFns", "dataSources"]);
 
 // 全局变量
 /*
@@ -142,7 +155,7 @@ const activeNames = ref(["globalVars", "globalFxs", "globalFns", "dataSources"])
 const formatGlobalVars = (data, parentPath) => {
   let res = [];
   for (let key in data) {
-    let currentParentPath = `${parentPath}.${key}`;
+    let currentParentPath = parentPath ? `${parentPath}.${key}` : `${key}`;
     let temp = { label: key, value: currentParentPath, desc: currentParentPath };
     // 判断是对象，则继续遍历找下去
     if (isObject(data[key])) {
@@ -155,11 +168,8 @@ const formatGlobalVars = (data, parentPath) => {
   return res;
 };
 const globalVars = computed(() => {
-  return formatGlobalVars(props.designer.widgetConfig.globalVars, "$globalVars");
+  return formatGlobalVars(props.designer.widgetConfig.globalVars);
 });
-
-// 全局表达式
-const globalFxs = ref(props.designer.widgetConfig.globalFxs);
 
 // 全局函数
 const globalFns = computed(() => {
@@ -167,7 +177,7 @@ const globalFns = computed(() => {
   return props.designer.widgetConfig.globalFns.map((v) => {
     return {
       label: v.name,
-      value: v.code,
+      value: v.name,
       desc: v.label,
     };
   });
@@ -197,8 +207,7 @@ const handleClick = () => {
  * @param data 点击的数据
  */
 const handleNodeClick = (type, data) => {
-  console.log(11, type, data);
-  dialog.value.bindValue = `${type}.${data.name}`;
+  dialog.value.bindValue = `${type}.${data.value}`;
   dialog.value.bindResult = getPropResult(dialog.value.bindValue);
 };
 

@@ -28,7 +28,6 @@ export function createDesigner(vueInstance) {
         globalCss: "",
         globalVars: {},
         globalFns: [],
-        globalFxs: [],
         globalEvents: [
           { name: "onMounted", label: "onMounted", code: "" },
           { name: "onUpdated", label: "onUpdated", code: "" },
@@ -68,22 +67,10 @@ export function createDesigner(vueInstance) {
      * 初始化设计器
      */
     initDesigner() {
-      /* 初始化设计器配置 */
-      this.widgetConfig = cloneDeep(this.defaultWidgetTemplate.widgetConfig);
-
-      /* 初始化缓存 */
-      // 从缓存中获取widgets
-      this.widgets = designerStore.getWidgets;
-      // 从缓存中获得当前选中的组件
-      this.setSelected(designerStore.getSelectedWidget);
-      // 从缓存中获取全局变量对象
-      this.widgetConfig.globalVars = designerStore.getGlobalVars;
-      // 从缓存中获取全局函数列表
-      this.widgetConfig.globalFns = designerStore.getGlobalFns;
-      // 从缓存中获取全局动作列表
-      this.widgetConfig.globalActions = designerStore.getGlobalActions;
-      // 从缓存中获取全局数据源列表
-      this.widgetConfig.dataSources = designerStore.dataSources;
+      // 初始化设计器配置
+      this.widgetConfig = JSON.parse(JSON.stringify(this.defaultWidgetTemplate.widgetConfig));
+      // 从设计器缓存store中获取数据
+      this.getDesignerCache();
     },
     /**
      * 清空设计器
@@ -91,14 +78,45 @@ export function createDesigner(vueInstance) {
     clearDesigner() {
       this.clearSelected();
       this.widgets = [];
-      this.widgetConfig = {
-        version: "1.0.0",
-        globalCss: [],
-        globalVars: [],
-        globalFns: [],
-        globalEvents: [],
-        dataSources: [],
-      };
+      this.widgetConfig = JSON.parse(JSON.stringify(this.defaultWidgetTemplate.widgetConfig));
+      // 重置设计器store中缓存的对象为初始状态
+      designerStore.resetDesigner();
+    },
+    /**
+     * 设置设计器缓存store中组件和全局配置数据
+     */
+    setDesignerCache() {
+      // 设计器组件列表
+      designerStore.setWidgets(this.widgets);
+      // 设计器组件列表
+      designerStore.setWidgets(this.widgets);
+      // 全局变量对象
+      designerStore.setGlobalVars(this.widgetConfig.globalVars);
+      // 全局函数列表
+      designerStore.setGlobalFns(this.widgetConfig.globalFns);
+      // 全局动作列表
+      designerStore.setGlobalActions(this.widgetConfig.globalActions);
+      // 全局数据源列表
+      designerStore.setDataSources(this.widgetConfig.dataSources);
+      // 历史数据
+      designerStore.setHistoryData(this.widgetConfig.historyData);
+    },
+    /**
+     * 从设计器缓存store中获取数据
+     */
+    getDesignerCache() {
+      // 获取widgets
+      this.widgets = designerStore.getWidgets;
+      // 获得当前选中的组件
+      this.setSelected(designerStore.getSelectedWidget);
+      // 获取全局变量对象
+      this.widgetConfig.globalVars = designerStore.getGlobalVars;
+      // 获取全局函数列表
+      this.widgetConfig.globalFns = designerStore.getGlobalFns;
+      // 获取全局动作列表
+      this.widgetConfig.globalActions = designerStore.getGlobalActions;
+      // 获取全局数据源列表
+      this.widgetConfig.dataSources = designerStore.dataSources;
     },
 
     // 操作json
@@ -107,8 +125,11 @@ export function createDesigner(vueInstance) {
      */
     loadFromJson(jsonData) {
       if (!!jsonData && !!jsonData.widgets) {
+        /*  */
         this.widgets = jsonData.widgets;
         this.widgetConfig = { ...this.widgetConfig, ...jsonData.widgetConfig };
+        // 设置设计器缓存store中组件和全局配置数据
+        this.setDesignerCache();
       } else {
         console.error("no json-data load!");
       }
@@ -226,19 +247,5 @@ export function createDesigner(vueInstance) {
     setHistoryData() {},
     undoHistoryData() {},
     redoHistoryData() {},
-
-    // 操作设计器缓存
-    /**
-     * 获得设计器中所有组件的缓存数据
-     */
-    getWidgetsCache() {
-      return designerStore.getWidgets;
-    },
-    /**
-     * 设置设计器中所有组件的缓存数据
-     */
-    setWidgetsCache(widgets) {
-      designerStore.setWidgets(widgets);
-    },
   };
 }

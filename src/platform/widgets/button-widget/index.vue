@@ -5,7 +5,6 @@
   </div>
 </template>
 <script setup>
-import { ref, toRefs, reactive, computed } from "vue";
 import useEvents from "@/hooks/events";
 import useProps from "@/hooks/props";
 

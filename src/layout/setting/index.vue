@@ -52,10 +52,21 @@ const settingActiveName = ref("");
 // 组件配置展开的名称
 const componentConfigActiveNames = ref(["base", "advanced", "custom", "events", "actions"]);
 
+// 监听设计元素改变的计算属性
 const widget = computed(() => {
   settingActiveName.value = props.designer.selectedWidget ? "props" : "data-sources";
   return props.designer.selectedWidget;
 });
+
+// 监听设计器的数据源和全局配置的改变，并存入到缓存
+watch(
+  props.designer.widgetConfig,
+  (val) => {
+    // 设置设计器中组件和全局配置的缓存
+    props.designer.setDesignCache();
+  },
+  { deep: true },
+);
 </script>
 <style lang="scss" scoped>
 .setting-container {

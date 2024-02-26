@@ -139,6 +139,9 @@ const handleSelectedWidget = (subWidget) => {
 const handleSelectedParentWidget = () => {
   if (props.parentWidget && props.parentWidget.type) {
     props.designer.selectedParentWidget(props.parentWidget);
+    // 缓存设计器的选中信息
+    designerStore.setSelectedId(props.parentWidget.id);
+    designerStore.setSelectedWidget(props.parentWidget);
   } else {
     console.warn("can’t find parent!");
   }

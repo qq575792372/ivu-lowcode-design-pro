@@ -72,6 +72,11 @@ const useDesignStore = defineStore("design", {
     setHistoryData(historyData) {
       this.historyData = historyData;
     },
+    // 重置设计器store中缓存的对象为初始状态
+    resetDesigner() {
+      // 如果只window.sessionStore.clear()是不会清空本地的，pinia的缓存可以从内存中读取再次赋值防止被误清空
+      this.$reset();
+    },
   },
   persist: {
     key: "LOWCODE_DESIGN", // 缓存key

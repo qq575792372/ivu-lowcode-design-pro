@@ -250,8 +250,7 @@
   </el-dialog>
 </template>
 <script setup>
-import { ref } from "vue";
-import { useDesignerStore } from "@/store";
+import { ref, computed } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import CodeEditor from "@/components/code-editor/index.vue";
 
@@ -259,9 +258,6 @@ import CodeEditor from "@/components/code-editor/index.vue";
 const props = defineProps({
   designer: { type: Object, default: () => ({}) },
 });
-
-// 获取到设计器的store
-const designerStore = useDesignerStore();
 
 // 初始化的表单数据
 const initForm = {
@@ -286,7 +282,7 @@ const initForm = {
   responseErrorCode: "$message.error(error.message);",
 };
 // 数据源列表
-const dataSources = ref(props.designer.widgetConfig.dataSources);
+const dataSources = computed(() => props.designer.widgetConfig.dataSources);
 
 // 弹框
 const dialog = ref({
@@ -354,8 +350,8 @@ const handleSave = () => {
 
       // 结果
       dialog.value.visible = false;
-      // 缓存全局数据源列表
-      designerStore.setDataSources(dataSources.value);
+      /*     // 缓存全局数据源列表
+      setDataSources(dataSources.value); */
       ElMessage({
         type: "success",
         message: "操作成功",
@@ -373,8 +369,6 @@ const handleRemove = (dataSourceIndex) => {
     type: "warning",
   }).then(() => {
     dataSources.value.splice(dataSourceIndex, 1);
-    // 缓存全局数据源列表
-    designerStore.setDataSources(dataSources.value);
     ElMessage({
       type: "success",
       message: "删除成功",

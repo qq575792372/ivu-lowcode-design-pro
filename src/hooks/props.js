@@ -1,5 +1,6 @@
 import { computed, ref } from "vue";
 import useGlobal from "@/hooks/global";
+import useDataSources from "@/hooks/data-sources";
 
 /**
  * 组件属性的hooks
@@ -10,8 +11,10 @@ export default ({ props, emits }) => {
     return props.designer.widgetConfig;
   });
 
-  // 全局的hooks
+  // 获取设计器中全局配置的hooks
   const { executeGlobalEventFn } = useGlobal({ props, emits });
+  // 获取设计器中数据源配置的hooks
+  const { requestData } = useDataSources({ props, emits });
 
   /**
    * 通过元素属性名获取绑定的值
@@ -34,15 +37,26 @@ export default ({ props, emits }) => {
    * @returns {Object} 返回值解析后的结果
    */
   const getPropResult = (propValue) => {
+    console.log(111, propValue);
+    // 全局变量
+    if (propValue.includes("$globalVars")) {
+      // 通过对象取值路径获取值
+      let varFn = new Function("$globalVars", `return ${propValue}`);
+      return varFn(widgetConfig.value.globalVars);
+    }
     // 全局函数
-    if (propValue.includes("$globalFns")) {
-      let bindValue = propValue.split(".")[1];
+    else if (propValue.includes("$globalFns")) {
+      let bindValue = propValue.split(".")[1]; // 获取到函数名称
       return executeGlobalEventFn(widgetConfig.value.globalFns, bindValue);
     }
     // 数据源
     else if (propValue.includes("$dataSources")) {
-      let bindValue = bindValue.split(".")[1];
+      let bindValue = propValue.split(".")[1]; // 获取到数据源名称
       console.log("数据源", bindValue);
+
+      let res = requestData(bindValue);
+      console.log("请求的结果", res);
+
       return ref(null);
     }
     // 普通值
@@ -50,6 +64,7 @@ export default ({ props, emits }) => {
       return propValue;
     }
   };
+
   return {
     getPropValue,
     getPropResult,
