@@ -1,5 +1,8 @@
+import { getCurrentInstance } from "vue";
+
 /**
- * 设计器中全局配置的hooks
+ * 设计器中全局的hooks
+ * @description 包含全局配置数据，以及Vue全局绑定的变量
  */
 export default ({ props, emits }) => {
   /**
@@ -22,6 +25,16 @@ export default ({ props, emits }) => {
     let event = getGlobalEvent(globalEvents, eventName);
     return event && new Function(event.code);
   };
+
+  /**
+   * 获取Vue3中挂载的全局变量
+   * @returns {Proxy} 返回全局的变量集合
+   */
+  const getGlobalProperties = () => {
+    const { proxy } = getCurrentInstance();
+    return proxy;
+  };
+
   /**
    * 执行全局事件中指定的事件的函数
    * @param {Array} globalEvents 事件列表
@@ -36,6 +49,7 @@ export default ({ props, emits }) => {
   return {
     getGlobalEvent,
     getGlobalEventFn,
+    getGlobalProperties,
     executeGlobalEventFn,
   };
 };

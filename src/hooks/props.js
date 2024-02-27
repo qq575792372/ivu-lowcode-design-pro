@@ -32,6 +32,7 @@ export default ({ props, emits }) => {
    * @returns {Object} 返回值解析后的结果
    */
   const getPropResult = (propValue) => {
+    console.log("getPropResult", propValue);
     // 全局变量
     if (propValue.includes("$globalVars")) {
       // 通过对象取值路径获取值

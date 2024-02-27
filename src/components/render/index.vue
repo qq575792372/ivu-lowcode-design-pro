@@ -1,6 +1,6 @@
 <template>
   <div class="render-container">
-    <ComponentRender :parent-widgets="widgets" />
+    <ComponentRender :designer="render" :parent-widgets="widgets" />
   </div>
 </template>
 <script setup>
@@ -19,7 +19,7 @@ import {
 } from "vue";
 import useGlobal from "@/hooks/global";
 import ComponentRender from "./component-render.vue";
-import { createDesigner } from "@/components/designer/designer";
+import { createRender } from "@/components/render/render";
 
 defineOptions({
   name: "Render",
@@ -30,6 +30,11 @@ const props = defineProps({
   data: { type: Object, default: () => ({}) },
   designer: { type: Object, default: () => ({}) },
 });
+
+// 创建渲染器，并初始化
+const { proxy } = getCurrentInstance();
+const render = reactive(createRender(proxy));
+render.initRender(props.data);
 
 // 计算属性
 const widgets = computed(() => {
@@ -59,6 +64,8 @@ onBeforeUpdate(() => {
   executeGlobalEventFn(widgetConfig.value.globalEvents, "onBeforeUpdate");
 });
 onBeforeUnmount(() => {
+  // 清空渲染器
+  render.clearRender();
   executeGlobalEventFn(widgetConfig.value.globalEvents, "onBeforeUnmount");
 });
 onActivated(() => {

@@ -1,12 +1,13 @@
 import { computed } from "vue";
-import useGlobalProperties from "@/hooks/globalProperties";
+import useGlobal from "@/hooks/global";
 
 /**
  * 设计器中数据源配置的hooks
  */
 export default ({ props, emits }) => {
-  // 获得全局配置中的数据
-  const { $request, $message } = useGlobalProperties();
+  // 获得设计器中全局的hooks
+  const { getGlobalProperties } = useGlobal({ props, emits });
+  const { $request, $message } = getGlobalProperties();
   // 获得数据源列表
   const dataSources = computed(() => props.designer.widgetConfig.dataSources);
 

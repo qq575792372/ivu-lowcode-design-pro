@@ -1,6 +1,9 @@
 import { usePlatformStore, useDesignerStore } from "@/store";
 import { getGenerateId } from "@/utils/util";
 
+/**
+ * 创建设计器对象
+ */
 export function createDesigner(vueInstance) {
   // 获取平台缓存store
   const platformStore = usePlatformStore();
@@ -10,6 +13,9 @@ export function createDesigner(vueInstance) {
   return {
     // vue实例
     vueInstance,
+
+    // 状态标识
+    state: "designer",
 
     // 设计器组件列表
     widgets: [],
@@ -69,6 +75,7 @@ export function createDesigner(vueInstance) {
     initDesigner() {
       // 初始化设计器配置
       this.widgetConfig = JSON.parse(JSON.stringify(this.defaultWidgetTemplate.widgetConfig));
+      console.log("initDesigner", this, this.widgets, this.widgetConfig);
       // 从设计器缓存store中获取数据
       this.getDesignerCache();
     },
@@ -129,7 +136,7 @@ export function createDesigner(vueInstance) {
         this.widgets = jsonData.widgets;
         this.widgetConfig = { ...this.widgetConfig, ...jsonData.widgetConfig };
         // 设置设计器缓存store中组件和全局配置数据
-        /*         this.setDesignerCache(); */
+        this.setDesignerCache();
       } else {
         console.error("no json-data load!");
       }

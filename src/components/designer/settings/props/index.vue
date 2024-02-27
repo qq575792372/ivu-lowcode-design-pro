@@ -32,7 +32,7 @@
 <script setup>
 import { computed, reactive, ref, watch } from "vue";
 import PropsBinder from "./props-binder.vue";
-import useGlobalProperties from "@/hooks/globalProperties";
+import useGlobal from "@/hooks/global";
 
 defineOptions({ name: "Props" });
 
@@ -42,8 +42,10 @@ const props = defineProps({
   widget: { type: Object, default: () => ({}) },
 });
 
-// 获得全局中所有定义的属性配置集合
-const { $propConfigs } = useGlobalProperties();
+// 获得设计器中全局的hooks
+const { getGlobalProperties } = useGlobal({ props });
+const { $propConfigs } = getGlobalProperties();
+
 /* 获得当前组件的属性配置集合 */
 // 当前组件元素的属性配置
 const currentWidgetPropsConfig = ref([]);
