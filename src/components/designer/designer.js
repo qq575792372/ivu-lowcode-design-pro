@@ -26,7 +26,6 @@ export function createDesigner(vueInstance) {
     defaultWidgetTemplate: {
       widgets: [],
       widgetConfig: {
-        version: "1.0.0",
         globalSize: "",
         globalLabelPosition: "left",
         globalLabelWidth: 80,
