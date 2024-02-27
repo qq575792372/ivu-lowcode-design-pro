@@ -14,9 +14,12 @@ import {
   onBeforeUnmount,
   onActivated,
   onDeactivated,
+  getCurrentInstance,
+  reactive,
 } from "vue";
 import useGlobal from "@/hooks/global";
 import ComponentRender from "./component-render.vue";
+import { createDesigner } from "@/components/designer/designer";
 
 defineOptions({
   name: "Render",
@@ -25,6 +28,7 @@ defineOptions({
 // props
 const props = defineProps({
   data: { type: Object, default: () => ({}) },
+  designer: { type: Object, default: () => ({}) },
 });
 
 // 计算属性

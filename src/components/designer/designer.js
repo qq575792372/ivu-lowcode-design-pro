@@ -129,7 +129,7 @@ export function createDesigner(vueInstance) {
         this.widgets = jsonData.widgets;
         this.widgetConfig = { ...this.widgetConfig, ...jsonData.widgetConfig };
         // 设置设计器缓存store中组件和全局配置数据
-        this.setDesignerCache();
+        /*         this.setDesignerCache(); */
       } else {
         console.error("no json-data load!");
       }

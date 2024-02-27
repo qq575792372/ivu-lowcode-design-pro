@@ -8,9 +8,8 @@ import useDataSources from "@/hooks/data-sources";
 export default ({ props, emits }) => {
   // 设计器配置，可以获取到全局的变量
   const widgetConfig = computed(() => {
-    return props.designer.widgetConfig;
+    return (props.designer && props.designer.widgetConfig) || {};
   });
-
   // 获取设计器中全局配置的hooks
   const { executeGlobalEventFn } = useGlobal({ props, emits });
   // 获取设计器中数据源配置的hooks
