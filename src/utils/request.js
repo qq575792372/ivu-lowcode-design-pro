@@ -27,11 +27,10 @@ service.interceptors.request.use(
 // 响应拦截
 service.interceptors.response.use(
   (response) => {
-    const res = response.data;
-    if (res) {
-      return res;
+    if (response) {
+      return response;
     } else {
-      return Promise.reject(new Error(res.message || "Error"));
+      return Promise.reject(new Error(response.message || "Error"));
     }
   },
   (error) => {

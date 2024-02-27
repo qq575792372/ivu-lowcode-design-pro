@@ -1,14 +1,21 @@
 <template>
   <div class="events-container">
     <el-collapse-item title="事件" name="events">
-      <template v-if="props.widget.events.length">
+      <template v-if="props.widget.events && props.widget.events.length">
         <el-form-item
           v-for="(event, eventIndex) in props.widget.events"
           :key="eventIndex"
           :label="event.label"
           class="events-wrapper clearfix"
         >
-          <el-button type="primary" plain icon="Edit" @click="handleClick(event, eventIndex)">编辑</el-button>
+          <el-button
+            type="primary"
+            :plain="!(event.code || event.action.length)"
+            icon="Edit"
+            @click="handleClick(event, eventIndex)"
+          >
+            编辑
+          </el-button>
         </el-form-item>
       </template>
       <template v-else>

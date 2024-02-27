@@ -1,14 +1,16 @@
 <template>
   <div class="actions-container">
     <el-collapse-item title="动作" name="actions">
-      <template v-if="props.widget.actions.length">
+      <template v-if="props.widget.actions && props.widget.actions.length">
         <el-form-item
           v-for="(action, actionIndex) in props.widget.actions"
           :key="actionIndex"
           :label="action.label"
           class="actions-wrapper"
         >
-          <el-button type="primary" plain icon="Edit" @click="handleEditClick(action, actionIndex)">编辑</el-button>
+          <el-button type="primary" :plain="!action.code" icon="Edit" @click="handleEditClick(action, actionIndex)">
+            编辑
+          </el-button>
           <el-button
             type="danger"
             plain

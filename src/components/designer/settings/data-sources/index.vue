@@ -75,6 +75,9 @@
         <el-button @click="dialog.visible = false">取消</el-button>
       </div>
     </template>
+    <el-alert type="warning" :closable="false">
+      数据源中变量或表达式的参数名是DSV（data-source-var)，用来获取调用数据源传递的数据，例如：`${DSV.xx}`
+    </el-alert>
     <el-form ref="dataSourceFormRef" :model="dialog.form" :rules="dialog.formRules" label-width="140px" size="small">
       <el-form-item label="名称" prop="name">
         <el-input v-model="dialog.form.name" :disabled="dialog.type === 'edit'" />
@@ -83,8 +86,8 @@
         <el-input v-model="dialog.form.url">
           <template #append>
             <el-select v-model="dialog.form.urlType" style="width: 120px">
-              <el-option label="字符串" value="string" />
-              <el-option label="变量或表达式" value="fx" />
+              <el-option label="字符串" value="String" />
+              <el-option label="变量或表达式" value="VarFx" />
             </el-select>
           </template>
         </el-input>
@@ -125,7 +128,6 @@
                 <el-option label="数字类型" value="Number" />
                 <el-option label="布尔类型" value="Boolean" />
                 <el-option label="数组类型" value="Array" />
-                <el-option label="文件类型" value="File" />
                 <el-option label="变量或表达式" value="VarFx" />
               </el-select>
             </el-form-item>
@@ -167,7 +169,6 @@
                 <el-option label="数字类型" value="Number" />
                 <el-option label="布尔类型" value="Boolean" />
                 <el-option label="数组类型" value="Array" />
-                <el-option label="文件类型" value="File" />
                 <el-option label="变量或表达式" value="VarFx" />
               </el-select>
             </el-form-item>
@@ -251,6 +252,7 @@
 </template>
 <script setup>
 import { ref, computed } from "vue";
+import { getGenerateId } from "@/utils/util";
 import { ElMessage, ElMessageBox } from "element-plus";
 import CodeEditor from "@/components/code-editor/index.vue";
 
@@ -340,7 +342,7 @@ const handleSave = () => {
           });
           return;
         }
-
+        dialog.value.form.id = getGenerateId("data-source"); // 生成数据源id
         dataSources.value.push(dialog.value.form);
       }
       // 修改
@@ -462,6 +464,7 @@ const handleRemoveData = (dtIndex) => {
 
           .data-sources-item-title {
             width: 60px;
+            flex-shrink: 0;
             padding: var(--sp4) var(--sp8);
             background: var(--bg-standard-color);
             border-right: solid 1px var(--border-standard-color);
@@ -470,6 +473,8 @@ const handleRemoveData = (dtIndex) => {
 
           .data-sources-item-content {
             flex: 1;
+            word-wrap: break-word;
+            word-break: break-all;
             color: var(--text-content-color);
             padding: var(--sp4) var(--sp8);
           }

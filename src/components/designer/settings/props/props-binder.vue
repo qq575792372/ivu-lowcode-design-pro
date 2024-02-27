@@ -206,7 +206,7 @@ const handleClick = () => {
  * @param type 类型
  * @param data 点击的数据
  */
-const handleNodeClick = (type, data) => {
+const handleNodeClick = async (type, data) => {
   dialog.value.bindValue = `${type}.${data.value}`;
   dialog.value.bindResult = getPropResult(dialog.value.bindValue);
 };

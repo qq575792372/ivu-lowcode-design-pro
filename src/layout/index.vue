@@ -21,7 +21,6 @@
   </el-container>
 </template>
 <script setup>
-import { ref } from "vue";
 import Header from "@/layout/header/index.vue";
 import Sidebar from "@/layout/sidebar/index.vue";
 import Designer from "@/components/designer/index.vue";

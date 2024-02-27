@@ -30,11 +30,15 @@
       </el-select>
     </el-form-item>
     <el-form-item label="全局CSS">
-      <el-button type="primary" plain icon="Edit" @click="showGlobalCssDialog">编辑</el-button>
+      <el-button type="primary" :plain="!widgetConfig.globalCss" icon="Edit" @click="showGlobalCssDialog">
+        编辑
+      </el-button>
     </el-form-item>
     <el-collapse-item title="全局变量" name="globalVars">
       <el-form-item label="全局变量">
-        <el-button type="primary" plain icon="Edit" @click="showGlobalVarsDialog">编辑</el-button>
+        <el-button type="primary" :plain="!widgetConfig.globalVars" icon="Edit" @click="showGlobalVarsDialog">
+          编辑
+        </el-button>
       </el-form-item>
     </el-collapse-item>
     <el-collapse-item title="全局函数" name="globalFns">
@@ -45,7 +49,9 @@
           :label="fn.label"
           class="fns-wrapper"
         >
-          <el-button type="primary" plain icon="Edit" @click="showEditGlobalFnsDialog(fn, fnIndex)">编辑</el-button>
+          <el-button type="primary" :plain="!fn.code" icon="Edit" @click="showEditGlobalFnsDialog(fn, fnIndex)">
+            编辑
+          </el-button>
           <el-button
             type="danger"
             plain
@@ -80,7 +86,9 @@
         :label-width="110"
         class="events-wrapper"
       >
-        <el-button type="primary" plain icon="Edit" @click="showGlobalEventsDialog(event, eventIndex)">编辑</el-button>
+        <el-button type="primary" :plain="!event.code" icon="Edit" @click="showGlobalEventsDialog(event, eventIndex)">
+          编辑
+        </el-button>
       </el-form-item>
     </el-collapse-item>
     <el-collapse-item title="全局动作" name="globalActions">
@@ -91,7 +99,12 @@
           :label="action.label"
           class="actions-wrapper"
         >
-          <el-button type="primary" plain icon="Edit" @click="showEditGlobalActionsDialog(action, actionIndex)">
+          <el-button
+            type="primary"
+            :plain="!action.code"
+            icon="Edit"
+            @click="showEditGlobalActionsDialog(action, actionIndex)"
+          >
             编辑
           </el-button>
           <el-button
@@ -305,8 +318,6 @@ const showGlobalVarsDialog = () => {
 const handleSureGlobalVars = () => {
   widgetConfig.value.globalVars = JSON.parse(globalVarsDialog.value.data);
   globalVarsDialog.value.visible = false;
-  /*   // 缓存全局变量对象
-  setGlobalVars(widgetConfig.value.globalVars); */
   ElMessage({
     type: "success",
     message: "操作成功",

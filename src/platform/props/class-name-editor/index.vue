@@ -1,7 +1,6 @@
 <template>
   <div class="class-name-editor-wrapper">
     <el-form-item :label="item.label">
-      {{ modelValue }}
       <el-input v-model="modelValue" :placeholder="item.placeholder" />
     </el-form-item>
   </div>

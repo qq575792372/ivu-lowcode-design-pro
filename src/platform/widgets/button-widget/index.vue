@@ -1,12 +1,13 @@
 <template>
   <div>
-    {{ className }}
-    <el-button @click="handleClick">{{ className }}</el-button>
+    <el-button :class="className" @click="handleClick">{{ value }}</el-button>
   </div>
 </template>
 <script setup>
+import { ref } from "vue";
 import useEvents from "@/hooks/events";
 import useProps from "@/hooks/props";
+import useDataSources from "@/hooks/data-sources";
 
 defineOptions({
   name: "ButtonWidget",
@@ -26,13 +27,20 @@ const props = defineProps({
 const { executeEvent, executeEventAction } = useEvents({ props });
 // 获得组件属性的hooks
 const { getPropValue } = useProps({ props });
-// /* 获取组件属性的值 */
-let className = getPropValue("className");
+// 获得数据源的hooks
+const { requestData } = useDataSources({ props });
+
+/* 获取组件属性的值 */
+let className = ref(getPropValue("className"));
+let value = ref(getPropValue("value"));
 
 /**
  * 点击事件
  */
-const handleClick = () => {
+const handleClick = async () => {
+  const res = await requestData("getList", { myId: "myId1234" });
+  console.log("点击手动获取到数据源", res);
+
   // 执行元素的事件
   executeEvent(props.widget, "onClick");
   // 执行元素事件绑定的动作

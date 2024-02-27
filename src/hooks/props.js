@@ -23,11 +23,7 @@ export default ({ props, emits }) => {
    * @returns {Object} 返回该元素属性解析后的值
    */
   const getPropValue = (propName) => {
-    return computed(() => {
-      let propValue = props.widget.props[propName];
-      console.log("getPropValue", propValue);
-      return getPropResult(propValue);
-    });
+    return computed(() => getPropResult(props.widget.props[propName]));
   };
 
   /**
@@ -37,7 +33,6 @@ export default ({ props, emits }) => {
    * @returns {Object} 返回值解析后的结果
    */
   const getPropResult = (propValue) => {
-    console.log(111, propValue);
     // 全局变量
     if (propValue.includes("$globalVars")) {
       // 通过对象取值路径获取值
@@ -52,11 +47,7 @@ export default ({ props, emits }) => {
     // 数据源
     else if (propValue.includes("$dataSources")) {
       let bindValue = propValue.split(".")[1]; // 获取到数据源名称
-      console.log("数据源", bindValue);
-
-      let res = requestData(bindValue);
-      console.log("请求的结果", res);
-
+      // return await requestData(bindValue);
       return ref(null);
     }
     // 普通值

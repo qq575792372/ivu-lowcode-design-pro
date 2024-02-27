@@ -283,7 +283,7 @@
   </div>
 </template>
 <script setup>
-import { getUUID } from "@lime-util/util";
+import { getGenerateId } from "@/utils/util";
 import { computed, defineProps, ref, watch, watchEffect } from "vue";
 import { usePlatformStore } from "@/store";
 import { VueDraggable } from "vue-draggable-plus";
@@ -363,7 +363,7 @@ const onClone = (target) => {
   // 拖拽时根据名称获取到对应的设计组件信息
   let newWidget = JSON.parse(JSON.stringify(props.designer.getWidget(target.name)));
   // 生成唯一名称
-  let uniqueKey = `${target.name}-${getUUID(16)}`;
+  let uniqueKey = getGenerateId(target.name);
   newWidget.id = uniqueKey;
   newWidget.props.name = uniqueKey;
   return newWidget;

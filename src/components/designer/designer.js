@@ -1,5 +1,5 @@
 import { usePlatformStore, useDesignerStore } from "@/store";
-import { getUUID, cloneDeep } from "@lime-util/util";
+import { getGenerateId } from "@/utils/util";
 
 export function createDesigner(vueInstance) {
   // 获取平台缓存store
@@ -212,8 +212,8 @@ export function createDesigner(vueInstance) {
      */
     copyWidget(widgets, widgetIndex) {
       // 生成新的组件
-      let newWidget = cloneDeep(widgets[widgetIndex]);
-      let uniqueKey = `${newWidget.type}-${getUUID(16)}`;
+      let newWidget = JSON.parse(JSON.stringify(widgets[widgetIndex]));
+      let uniqueKey = getGenerateId(newWidget.type);
       newWidget.id = uniqueKey;
       newWidget.name = uniqueKey;
 

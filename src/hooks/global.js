@@ -1,5 +1,3 @@
-import { getCurrentInstance } from "vue";
-
 /**
  * 设计器中全局配置的hooks
  */
