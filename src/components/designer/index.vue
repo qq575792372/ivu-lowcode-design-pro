@@ -1,15 +1,15 @@
 <template>
   <div class="designer-container">
     <div class="widget-canvas">
-      <!--在设计器入口传入widgets-->
-      <ComponentRender :designer :parent-widgets="props.designer.widgets" />
+      <!--在设计器入口传入设计器数据-->
+      <CanvasDrag :designer :widgets="props.designer.widgets" :global-config="props.designer.globalConfig" />
     </div>
   </div>
 </template>
 <script setup>
 import { watch } from "vue";
 import { useDesignerStore } from "@/store";
-import ComponentRender from "./component-render.vue";
+import CanvasDrag from "./canvas-drag/index.vue";
 
 defineOptions({
   name: "Design",

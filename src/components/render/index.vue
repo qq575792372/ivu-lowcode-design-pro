@@ -40,39 +40,39 @@ render.initRender(props.data);
 const widgets = computed(() => {
   return props.data.widgets;
 });
-const widgetConfig = computed(() => {
-  return props.data.widgetConfig;
+const globalConfig = computed(() => {
+  return props.data.globalConfig;
 });
 
-// 获取全局配置的hooks
+// 使用全局配置的hooks
 const { executeGlobalEventFn } = useGlobal({ props });
 
 // 执行全局事件
 onMounted(() => {
-  executeGlobalEventFn(widgetConfig.value.globalEvents, "onMounted");
+  executeGlobalEventFn(globalConfig.value.globalEvents, "onMounted");
 });
 onUpdated(() => {
-  executeGlobalEventFn(widgetConfig.value.globalEvents, "onUpdated");
+  executeGlobalEventFn(globalConfig.value.globalEvents, "onUpdated");
 });
 onUnmounted(() => {
-  executeGlobalEventFn(widgetConfig.value.globalEvents, "onUnmounted");
+  executeGlobalEventFn(globalConfig.value.globalEvents, "onUnmounted");
 });
 onBeforeMount(() => {
-  executeGlobalEventFn(widgetConfig.value.globalEvents, "onBeforeMount");
+  executeGlobalEventFn(globalConfig.value.globalEvents, "onBeforeMount");
 });
 onBeforeUpdate(() => {
-  executeGlobalEventFn(widgetConfig.value.globalEvents, "onBeforeUpdate");
+  executeGlobalEventFn(globalConfig.value.globalEvents, "onBeforeUpdate");
 });
 onBeforeUnmount(() => {
   // 清空渲染器
   render.clearRender();
-  executeGlobalEventFn(widgetConfig.value.globalEvents, "onBeforeUnmount");
+  executeGlobalEventFn(globalConfig.value.globalEvents, "onBeforeUnmount");
 });
 onActivated(() => {
-  executeGlobalEventFn(widgetConfig.value.globalEvents, "onActivated");
+  executeGlobalEventFn(globalConfig.value.globalEvents, "onActivated");
 });
 onDeactivated(() => {
-  executeGlobalEventFn(widgetConfig.value.globalEvents, "onDeactivated");
+  executeGlobalEventFn(globalConfig.value.globalEvents, "onDeactivated");
 });
 </script>
 <style scoped lang="scss"></style>

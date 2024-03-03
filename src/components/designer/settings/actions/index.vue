@@ -68,7 +68,7 @@
 <script setup>
 import { computed, reactive, ref, watch } from "vue";
 import { cloneDeep } from "@lime-util/util";
-import useActions from "@/hooks/actions";
+import useWidget from "@/hooks/widget";
 import { ElMessage, ElMessageBox } from "element-plus";
 import CodeEditor from "@/components/code-editor/index.vue";
 
@@ -77,11 +77,12 @@ defineOptions({ name: "Actions" });
 // props
 const props = defineProps({
   designer: { type: Object, default: () => ({}) },
+  globalConfig: { type: Object, default: null },
   widget: { type: Object, default: () => ({}) },
 });
 
-// 获取组件动作的hooks
-const { allActionList } = useActions({ props });
+// 使用组件动作的hooks
+const { allActionList } = useWidget({ props });
 
 // 弹框
 const dialog = ref({

@@ -12,21 +12,21 @@ export function createRender(vueInstance) {
     // 设计器组件列表
     widgets: [],
     // 设计器配置
-    widgetConfig: null,
+    globalConfig: null,
 
     /**
      * 初始化渲染器
      */
     initRender(data) {
       this.widgets = data.widgets;
-      this.widgetConfig = data.widgetConfig;
+      this.globalConfig = data.globalConfig;
     },
     /**
      * 清空渲染器
      */
     clearRender() {
       this.widgets = [];
-      this.widgetConfig = null;
+      this.globalConfig = null;
     },
   };
 }

@@ -33,7 +33,8 @@ module.exports = {
     "vue/multi-word-component-names": "off", // vue忽略文件名建议的短横单词分割
     "vue/no-reserved-component-names": "off", // vue忽略不能使用html标签当组件名的规则
     "vue/comment-directive": "off",
-    "vue/no-mutating-props": "off", // 忽略不能修改props
-    "vue/no-side-effects-in-computed-properties": "off", // 忽略在计算属性中赋值
+    "vue/no-dupe-keys": "off", // vue忽略重复的keys
+    "vue/no-mutating-props": "off", // vue忽略不能修改props
+    "vue/no-side-effects-in-computed-properties": "off", // vue忽略在计算属性中赋值
   },
 };

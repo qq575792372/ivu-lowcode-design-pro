@@ -5,7 +5,14 @@
     </el-form-item>
     <el-collapse-item title="基本属性" name="base">
       <template v-if="baseProps.length">
-        <PropsBinder v-for="(item, index) in baseProps" :key="index" :item="item" :designer :widget />
+        <PropBinder
+          v-for="(item, index) in baseProps"
+          :key="index"
+          :item="item"
+          :designer
+          :global-config="props.globalConfig"
+          :widget
+        />
       </template>
       <template v-else>
         <div class="no-props-binder">暂无属性</div>
@@ -13,7 +20,14 @@
     </el-collapse-item>
     <el-collapse-item title="高级属性" name="advanced">
       <template v-if="advancedProps.length">
-        <PropsBinder v-for="(item, index) in advancedProps" :key="index" :item="item" :designer :widget />
+        <PropBinder
+          v-for="(item, index) in advancedProps"
+          :key="index"
+          :item="item"
+          :designer
+          :global-config="props.globalConfig"
+          :widget
+        />
       </template>
       <template v-else>
         <div class="no-props-binder">暂无属性</div>
@@ -21,7 +35,14 @@
     </el-collapse-item>
     <el-collapse-item title="自定义属性" name="custom">
       <template v-if="customProps.length">
-        <PropsBinder v-for="(item, index) in customProps" :key="index" :item="item" :designer :widget />
+        <PropBinder
+          v-for="(item, index) in customProps"
+          :key="index"
+          :item="item"
+          :designer
+          :global-config="props.globalConfig"
+          :widget
+        />
       </template>
       <template v-else>
         <div class="no-props-binder">暂无属性</div>
@@ -30,8 +51,8 @@
   </div>
 </template>
 <script setup>
-import { computed, reactive, ref, watch } from "vue";
-import PropsBinder from "./props-binder.vue";
+import { computed, ref, watch } from "vue";
+import PropBinder from "./prop-binder.vue";
 import useGlobal from "@/hooks/global";
 
 defineOptions({ name: "Props" });
@@ -39,10 +60,11 @@ defineOptions({ name: "Props" });
 // props
 const props = defineProps({
   designer: { type: Object, default: () => ({}) },
+  globalConfig: { type: Object, default: null },
   widget: { type: Object, default: () => ({}) },
 });
 
-// 获得设计器中全局的hooks
+// 使用设计器中全局的hooks
 const { getGlobalProperties } = useGlobal({ props });
 const { $propConfigs } = getGlobalProperties();
 

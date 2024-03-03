@@ -10,19 +10,15 @@
   },
   "events": [
     {
-      "name": "change",
+      "name": "custom-change",
+      "label": "custom-change",
       "args": [
         "row",
         "rowIndex"
       ],
-      "code": "(row, rowIndex) => { /*这里事件内容*/ }"
+      "code": "/*这里事件内容*/"
     }
   ],
   "actions": [
-    {
-      "name": "deleteTable",
-      "label": "删除表格数据",
-      "code": "/*这里动作内容*/"
-    }
   ]
 }

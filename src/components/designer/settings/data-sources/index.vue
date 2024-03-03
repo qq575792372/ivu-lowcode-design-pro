@@ -259,6 +259,7 @@ import CodeEditor from "@/components/code-editor/index.vue";
 // props
 const props = defineProps({
   designer: { type: Object, default: () => ({}) },
+  globalConfig: { type: Object, default: null },
 });
 
 // 初始化的表单数据
@@ -268,7 +269,7 @@ const initForm = {
   title: "",
   description: "",
   url: "",
-  urlType: "string",
+  urlType: "String",
   headers: [
     {
       name: "Content-Type",
@@ -284,7 +285,7 @@ const initForm = {
   responseErrorCode: "$message.error(error.message);",
 };
 // 数据源列表
-const dataSources = computed(() => props.designer.widgetConfig.dataSources);
+const dataSources = computed(() => props.globalConfig.dataSources);
 
 // 弹框
 const dialog = ref({

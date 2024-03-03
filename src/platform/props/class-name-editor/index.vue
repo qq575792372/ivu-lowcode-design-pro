@@ -16,7 +16,7 @@ const props = defineProps({
 });
 
 // 属性双向绑定的值
-const modelValue = defineModel({ type: [String, Number, Boolean], default: null });
+const modelValue = defineModel({ type: String, default: "" });
 </script>
 <style lang="scss" scoped>
 .class-name-editor-wrapper {

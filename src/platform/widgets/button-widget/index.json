@@ -5,39 +5,30 @@
   "props": {
     "name": "",
     "value": "button",
-    "className": "button-primary",
+    "className": "custom-button-primary",
     "dsEnable": false,
     "dsName": "",
     "options": []
   },
   "events": [
     {
-      "name": "onMounted",
-      "label": "onMounted",
-      "args": [],
-      "code": "",
-      "action": [
-        "deleteTable"
-      ]
-    },
-    {
-      "name": "onClick",
-      "label": "onClick",
+      "name": "custom-click",
+      "label": "custom-click",
       "args": [
         "widget"
       ],
-      "code": "/*事件内容*/ console.log('onClick点击事件',widget);",
+      "code": "console.log('custom-click的点击事件',widget);",
       "action": [
-        "deleteTable"
+        "$globalActions.globalCustomAction1"
       ]
     }
   ],
   "actions": [
     {
-      "name": "deleteTable",
-      "label": "删除表格数据",
+      "name": "customButtonAction",
+      "label": "自定义按钮动作",
       "enable": true,
-      "code": "/*这里动作内容*/ console.log('触发删除表格数据',widget);"
+      "code": "/*这里动作内容*/ console.log('触发自定义按钮动作',widget);"
     }
   ]
 }

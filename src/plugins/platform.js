@@ -18,16 +18,21 @@ const getCmpNameFromPath = (path, suffix) => {
 };
 
 export default {
-  install(app, options) {
-    /* 获取平台展示的数据，放入到缓存中 */
+  /**
+   * 获取平台展示的数据，放入到缓存中
+   */
+  initPlatform(app, options) {
     const platformStore = usePlatformStore();
     const platformMap = import.meta.glob("/src/platform/index.json", { eager: true });
     Object.entries(platformMap).map(([path, component]) => {
       platformStore.setPlatformComponents(component.default.components);
       platformStore.setPlatformTemplates(component.default.templates);
     });
-
-    /* 设计器组件 */
+  },
+  /**
+   * 初始化设计器组件
+   */
+  initWidget(app, options) {
     // 注册设计器组件
     const widgets = import.meta.glob("/src/platform*/widgets/*-widget/index.vue", { eager: true });
     Object.entries(widgets).map(([path, component]) => {
@@ -44,23 +49,20 @@ export default {
     });
     // 设置到全局中，可以根据组件名称获取对应的组件配置
     app.config.globalProperties.$widgetConfigs = $widgetConfigs;
-
-    /* 设计器属性编辑器 */
-    // 注册属性编辑器组件
-    const props = import.meta.glob(
-      ["/src/components/designer/props/*-editor/index.vue", "/src/platform*/props/*-editor/index.vue"],
-      { eager: true },
-    );
+  },
+  /**
+   * 初始化元素属性编辑器
+   */
+  initProps(app, options) {
+    // 注册元素属性编辑器组件
+    const props = import.meta.glob("/src/platform*/props/*-editor/index.vue", { eager: true });
     Object.entries(props).map(([path, component]) => {
       let componentName = component.default.name || toPascalCase(getCmpNameFromPath(path, "-editor"));
       app.component(componentName, component.default);
     });
 
     // 获取属性编辑器的配置
-    const propConfigs = import.meta.glob(
-      ["/src/components/designer/props/*-editor/index.json", "/src/platform*/props/*-editor/index.json"],
-      { eager: true },
-    );
+    const propConfigs = import.meta.glob("/src/platform*/props/*-editor/index.json", { eager: true });
     const $propConfigs = {}; // 绑定到全局的比属性编辑器配置集合
     Object.entries(propConfigs).map(([path, component]) => {
       let componentName = toPascalCase(getCmpNameFromPath(path, "-editor"));
@@ -71,5 +73,15 @@ export default {
     });
     // 设置到全局中，可以根据属性名称获取对应的属性配置
     app.config.globalProperties.$propConfigs = $propConfigs;
+  },
+  /**
+   * 暴漏插件install方法
+   */
+  install(app, options) {
+    this.initPlatform(app, options);
+    this.initWidget(app, options);
+    this.initProps(app, options);
+
+    console.log("所有配置", app.config.globalProperties);
   },
 };

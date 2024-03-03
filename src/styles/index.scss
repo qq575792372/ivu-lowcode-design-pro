@@ -278,7 +278,7 @@ div:focus {
   }
 
   // 设计器组件元素样式
-  .widget-wrapper {
+  .widget-wrap {
     // 调这个margin加大间距，可以更好拖入一点
     margin-bottom: 4px;
     position: relative;
@@ -406,7 +406,7 @@ div:focus {
 }
 
 // 属性绑定变量弹框样式
-.props-binder-dialog {
+.prop-binder-dialog {
   .el-dialog__body {
     padding: var(--cmp-padding);
   }
@@ -421,10 +421,20 @@ div:focus {
       flex: 1;
       border-right: solid 1px var(--border-standard-color);
 
-      .code-editor {
-        border: none;
+      // 代码编辑器
+      .binder-editor-code {
+        position: relative;
+        .code-editor {
+          border: none;
+        }
+        .el-button{
+          position: absolute;
+          right:8px;
+          bottom:8px;
+        }
       }
 
+      // 执行结果
       .binder-editor-result {
         border-top: solid 1px var(--border-standard-color);
         padding: var(--cmp-padding);
@@ -437,7 +447,6 @@ div:focus {
         }
 
         .binder-editor-result-value {
-          color: var(--primary-color);
           font-size: 12px;
           overflow: auto;
         }
@@ -448,10 +457,12 @@ div:focus {
       width: 360px;
       margin-left: var(--cmp-margin);
 
-     .el-collapse {
-       border: none;
+      .el-collapse {
+        border: none;
+
         .el-collapse-item {
           border: none;
+
           .el-collapse-item__header {
             height: var(--cmp-large-size);
             color: var(--text-content-color);

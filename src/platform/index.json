@@ -2,6 +2,23 @@
   "components": {
     "base": [
       {
+        "name": "basic",
+        "label": "基础",
+        "icon": "Tickets",
+        "children": [
+          {
+            "name": "text",
+            "label": "文本",
+            "icon": "Tickets"
+          },
+          {
+            "name": "button",
+            "label": "按钮",
+            "icon": "Tickets"
+          }
+        ]
+      },
+      {
         "name": "container",
         "label": "容器",
         "icon": "Tickets",
@@ -23,11 +40,6 @@
         "label": "表单",
         "icon": "Tickets",
         "children": [
-          {
-            "name": "button",
-            "label": "按钮",
-            "icon": "Tickets"
-          },
           {
             "name": "input",
             "label": "输入框",

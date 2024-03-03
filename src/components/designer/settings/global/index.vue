@@ -1,21 +1,21 @@
 <template>
   <div class="global-container">
     <el-form-item label="全局组件大小">
-      <el-radio-group v-model="widgetConfig.globalSize">
+      <el-radio-group v-model="globalConfig.globalSize">
         <el-radio-button label="small">小</el-radio-button>
         <el-radio-button label="">默认</el-radio-button>
         <el-radio-button label="large">大</el-radio-button>
       </el-radio-group>
     </el-form-item>
     <el-form-item label="表单标签位置">
-      <el-radio-group v-model="widgetConfig.globalLabelPosition">
+      <el-radio-group v-model="globalConfig.globalLabelPosition">
         <el-radio-button label="left">左</el-radio-button>
         <el-radio-button label="right">右</el-radio-button>
       </el-radio-group>
     </el-form-item>
     <el-form-item label="表单标签宽度">
       <el-input-number
-        v-model="widgetConfig.globalLabelWidth"
+        v-model="globalConfig.globalLabelWidth"
         placeholder="请输入"
         :min="0"
         :max="999"
@@ -24,27 +24,27 @@
       />
     </el-form-item>
     <el-form-item label="主题样式">
-      <el-select v-model="widgetConfig.globalTheme" placeholder="请输入">
+      <el-select v-model="globalConfig.globalTheme" placeholder="请输入">
         <el-option label="默认" value="default" />
         <el-option label="火焰红" value="fire-hot" />
       </el-select>
     </el-form-item>
     <el-form-item label="全局CSS">
-      <el-button type="primary" :plain="!widgetConfig.globalCss" icon="Edit" @click="showGlobalCssDialog">
+      <el-button type="primary" :plain="!globalConfig.globalCss" icon="Edit" @click="showGlobalCssDialog">
         编辑
       </el-button>
     </el-form-item>
     <el-collapse-item title="全局变量" name="globalVars">
       <el-form-item label="全局变量">
-        <el-button type="primary" :plain="!widgetConfig.globalVars" icon="Edit" @click="showGlobalVarsDialog">
+        <el-button type="primary" :plain="!globalConfig.globalVars" icon="Edit" @click="showGlobalVarsDialog">
           编辑
         </el-button>
       </el-form-item>
     </el-collapse-item>
     <el-collapse-item title="全局函数" name="globalFns">
-      <template v-if="widgetConfig.globalFns.length">
+      <template v-if="globalConfig.globalFns.length">
         <el-form-item
-          v-for="(fn, fnIndex) in widgetConfig.globalFns"
+          v-for="(fn, fnIndex) in globalConfig.globalFns"
           :key="fnIndex"
           :label="fn.label"
           class="fns-wrapper"
@@ -80,7 +80,7 @@
     </el-collapse-item>
     <el-collapse-item title="全局事件" name="globalEvents">
       <el-form-item
-        v-for="(event, eventIndex) in widgetConfig.globalEvents"
+        v-for="(event, eventIndex) in globalConfig.globalEvents"
         :key="eventIndex"
         :label="event.name"
         :label-width="110"
@@ -92,9 +92,9 @@
       </el-form-item>
     </el-collapse-item>
     <el-collapse-item title="全局动作" name="globalActions">
-      <template v-if="widgetConfig.globalActions.length">
+      <template v-if="globalConfig.globalActions.length">
         <el-form-item
-          v-for="(action, actionIndex) in widgetConfig.globalActions"
+          v-for="(action, actionIndex) in globalConfig.globalActions"
           :key="actionIndex"
           :label="action.label"
           class="actions-wrapper"
@@ -276,12 +276,14 @@ defineOptions({ name: "Global" });
 // props
 const props = defineProps({
   designer: { type: Object, default: () => ({}) },
+  globalConfig: { type: Object, default: null },
 });
 
-// 获取全局配置的hooks
+// 使用全局配置的hooks
 const { getGlobalEventFn } = useGlobal({ props });
+
 // 设计器中全局的数据配置，通过计算属性可以监听到改变
-const widgetConfig = computed(() => props.designer.widgetConfig);
+const globalConfig = computed(() => props.globalConfig);
 
 /* 全局css */
 const globalCssDialog = ref({
@@ -291,10 +293,10 @@ const globalCssDialog = ref({
 });
 const showGlobalCssDialog = () => {
   globalCssDialog.value.visible = true;
-  globalCssDialog.value.data = widgetConfig.value.globalCss;
+  globalCssDialog.value.data = globalConfig.value.globalCss;
 };
 const handleSureGlobalCss = () => {
-  widgetConfig.value.globalCss = globalCssDialog.value.data;
+  globalConfig.value.globalCss = globalCssDialog.value.data;
   globalCssDialog.value.visible = false;
   ElMessage({
     type: "success",
@@ -303,6 +305,25 @@ const handleSureGlobalCss = () => {
 };
 
 /* 全局变量 */
+// 测试数据
+/* {
+  "unitOid": 123,
+  "unitName": "单位1",
+  "deptOid": 456,
+  "deptName": "部门1",
+  "personInfo": {
+  "userId": 123,
+    "userName": "admin",
+    "auth": [
+    { "id": 1, "name": "管理员权限1" },
+    { "id": 2, "name": "管理员权限2" }
+  ]
+},
+  "tableData": [
+  { "id": 1, "name": "人员1" },
+  { "id": 2, "name": "人员2" }
+]
+} */
 // 弹框
 const globalVarsDialog = ref({
   visible: false,
@@ -312,11 +333,11 @@ const globalVarsDialog = ref({
 // 显示
 const showGlobalVarsDialog = () => {
   globalVarsDialog.value.visible = true;
-  globalVarsDialog.value.data = JSON.stringify(widgetConfig.value.globalVars, null, " ");
+  globalVarsDialog.value.data = JSON.stringify(globalConfig.value.globalVars || {}, null, "  ");
 };
 // 确定
 const handleSureGlobalVars = () => {
-  widgetConfig.value.globalVars = JSON.parse(globalVarsDialog.value.data);
+  globalConfig.value.globalVars = JSON.parse(globalVarsDialog.value.data);
   globalVarsDialog.value.visible = false;
   ElMessage({
     type: "success",
@@ -374,9 +395,7 @@ const handleRemoveGlobalFns = (fnIndex) => {
     cancelButtonText: "取消",
     type: "warning",
   }).then(() => {
-    widgetConfig.value.globalFns.splice(fnIndex, 1);
-    /*     // 缓存全局动作列表
-    setGlobalFns(widgetConfig.value.globalFns); */
+    globalConfig.value.globalFns.splice(fnIndex, 1);
     ElMessage({
       type: "success",
       message: "删除成功",
@@ -391,7 +410,7 @@ const handleSureGlobalFns = () => {
       // 添加
       if (globalFnsDialog.value.type === "add") {
         // 校验是否已经存在动作名称
-        let hasFnName = widgetConfig.value.globalFns.some((v, i) => v.name === globalFnsDialog.value.form.name);
+        let hasFnName = globalConfig.value.globalFns.some((v, i) => v.name === globalFnsDialog.value.form.name);
         if (hasFnName) {
           ElMessage({
             type: "error",
@@ -399,17 +418,14 @@ const handleSureGlobalFns = () => {
           });
           return;
         }
-        console.log(333, globalFnsDialog.value.form);
-        widgetConfig.value.globalFns.push(globalFnsDialog.value.form);
+        globalConfig.value.globalFns.push(globalFnsDialog.value.form);
       }
       // 编辑
       if (globalFnsDialog.value.type === "edit") {
-        widgetConfig.value.globalFns[globalFnsDialog.value.actionIndex] = globalFnsDialog.value.form;
+        globalConfig.value.globalFns[globalFnsDialog.value.actionIndex] = globalFnsDialog.value.form;
       }
       // 操作结果
       globalFnsDialog.value.visible = false;
-      /*       // 缓存全局动作列表
-      setGlobalFns(widgetConfig.value.globalFns); */
       ElMessage({
         type: "success",
         message: "操作成功",
@@ -434,7 +450,7 @@ const showGlobalEventsDialog = (event, eventIndex) => {
 };
 // 确定
 const handleSureGlobalEvents = () => {
-  widgetConfig.value.globalEvents[globalEventsDialog.value.eventIndex].code = globalEventsDialog.value.data;
+  globalConfig.value.globalEvents[globalEventsDialog.value.eventIndex].code = globalEventsDialog.value.data;
   globalEventsDialog.value.visible = false;
   ElMessage({
     type: "success",
@@ -492,7 +508,7 @@ const handleRemoveGlobalActions = (actionIndex) => {
     cancelButtonText: "取消",
     type: "warning",
   }).then(() => {
-    widgetConfig.value.globalActions.splice(actionIndex, 1);
+    globalConfig.value.globalActions.splice(actionIndex, 1);
     ElMessage({
       type: "success",
       message: "删除成功",
@@ -507,7 +523,7 @@ const handleSureGlobalActions = () => {
       // 添加
       if (globalActionsDialog.value.type === "add") {
         // 校验是否已经存在动作名称
-        let hasActionName = widgetConfig.value.globalActions.some(
+        let hasActionName = globalConfig.value.globalActions.some(
           (v, i) => v.name === globalActionsDialog.value.form.name,
         );
         if (hasActionName) {
@@ -517,11 +533,11 @@ const handleSureGlobalActions = () => {
           });
           return;
         }
-        widgetConfig.value.globalActions.push(globalActionsDialog.value.form);
+        globalConfig.value.globalActions.push(globalActionsDialog.value.form);
       }
       // 编辑
       if (globalActionsDialog.value.type === "edit") {
-        widgetConfig.value.globalActions[globalActionsDialog.value.actionIndex] = globalActionsDialog.value.form;
+        globalConfig.value.globalActions[globalActionsDialog.value.actionIndex] = globalActionsDialog.value.form;
       }
       // 操作结果
       globalActionsDialog.value.visible = false;

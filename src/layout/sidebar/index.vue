@@ -356,8 +356,7 @@ let handleProjectTemplateChange = (val) => {
 
 /**
  * 拖拽的组件数据
- * @param index 拖拽组件的下标
-
+ * @param {Object} target 拖拽的组件
  */
 const onClone = (target) => {
   // 拖拽时根据名称获取到对应的设计组件信息

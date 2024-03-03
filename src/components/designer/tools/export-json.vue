@@ -44,7 +44,7 @@ const handleClick = () => {
   dialog.value.jsonData = JSON.stringify(
     {
       widgets: props.designer.widgets,
-      widgetConfig: props.designer.widgetConfig,
+      globalConfig: props.designer.globalConfig,
     },
     null,
     " ",

@@ -2,14 +2,15 @@ import { computed } from "vue";
 import useGlobal from "@/hooks/global";
 
 /**
- * 设计器中数据源配置的hooks
+ * 数据源的hooks
  */
 export default ({ props, emits }) => {
-  // 获得设计器中全局的hooks
+  // 使用全局配置的hooks
   const { getGlobalProperties } = useGlobal({ props, emits });
   const { $request, $message } = getGlobalProperties();
+
   // 获得数据源列表
-  const dataSources = computed(() => props.designer.widgetConfig.dataSources);
+  const dataSources = computed(() => props.globalConfig.dataSources);
 
   /**
    * 发送请求
@@ -19,9 +20,12 @@ export default ({ props, emits }) => {
    */
   const requestData = async (dsName, localDsv = {}) => {
     let dataSource = getDataSource(dsName);
+    console.log("dataSource", dataSource);
     try {
       let requestConfig = _buildRequestConfig(dataSource, localDsv);
+      console.log("requestConfig", requestConfig);
       let result = await $request.request(requestConfig);
+
       let responseFn = new Function("result", "DSV", dataSource.responseCode);
       return responseFn.call(null, result, localDsv);
     } catch (error) {
@@ -49,6 +53,7 @@ export default ({ props, emits }) => {
 
     // 处理url
     if (dataSource.urlType === "String") {
+      config.url = String(dataSource.url);
     } else if (dataSource.urlType === "VarFx") {
       let fn = new Function("DSV", "return " + String(dataSource.url));
       config.url = fn(DSV);

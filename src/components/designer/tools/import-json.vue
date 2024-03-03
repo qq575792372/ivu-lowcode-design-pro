@@ -46,7 +46,7 @@ const dialog = ref({
  */
 const handleClick = () => {
   dialog.value.visible = true;
-  dialog.value.jsonData = JSON.stringify(props.designer.defaultWidgetTemplate, null, " ");
+  dialog.value.jsonData = JSON.stringify(props.designer.defaultWidgetTemplate, null, "  ");
 };
 
 /**

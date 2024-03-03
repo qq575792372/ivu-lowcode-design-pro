@@ -5,9 +5,9 @@
         <el-scrollbar>
           <el-form :label-width="100" label-position="left" class="custom-form" size="small">
             <el-collapse v-model="cmpConfigActiveNames" class="custom-collapse">
-              <Props :designer :widget />
-              <Events :designer :widget />
-              <Actions :designer :widget />
+              <Props :designer :global-config="props.designer.globalConfig" :widget />
+              <Events :designer :global-config="props.designer.globalConfig" :widget />
+              <Actions :designer :global-config="props.designer.globalConfig" :widget />
             </el-collapse>
           </el-form>
         </el-scrollbar>
@@ -15,7 +15,7 @@
       <el-tab-pane label="数据源" name="data-sources">
         <el-scrollbar>
           <el-form :label-width="100" label-position="left" class="custom-form" size="small">
-            <DataSources :designer :widget />
+            <DataSources :designer :global-config="props.designer.globalConfig" :widget />
           </el-form>
         </el-scrollbar>
       </el-tab-pane>
@@ -23,7 +23,7 @@
         <el-scrollbar>
           <el-form :label-width="100" label-position="left" class="custom-form" size="small">
             <el-collapse v-model="globalActiveNames" class="custom-collapse">
-              <Global :designer :widget />
+              <Global :designer :global-config="props.designer.globalConfig" :widget />
             </el-collapse>
           </el-form>
         </el-scrollbar>
@@ -60,7 +60,7 @@ const widget = computed(() => {
 
 // 监听设计器的数据源和全局配置的改变，并存入到缓存
 watch(
-  props.designer.widgetConfig,
+  props.designer.globalConfig,
   (val) => {
     // 设置设计器中组件和全局配置的缓存
     props.designer.setDesignerCache();

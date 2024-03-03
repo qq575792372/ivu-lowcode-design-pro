@@ -5,39 +5,42 @@ const useDesignStore = defineStore("design", {
     return {
       // 设计器组件列表
       widgets: [],
+
       // 全局变量对象
-      globalVars: {},
+      globalVars: null,
       // 全局函数列表
       globalFns: [],
       // 全局动作列表
       globalActions: [],
       // 全局数据源列表
       dataSources: [],
+
       // 当前选择的组件id
       selectedId: null,
       // 当前选择的组件
       selectedWidget: null,
+
       // 历史数据
       historyData: null,
     };
   },
   getters: {
     // 设计器组件列表
-    getWidgets: (state) => state.widgets || [],
+    getWidgets: (state) => state.widgets,
     // 全局变量对象
-    getGlobalVars: (state) => state.globalVars || [],
+    getGlobalVars: (state) => state.globalVars,
     // 全局函数列表
-    getGlobalFns: (state) => state.globalFns || [],
+    getGlobalFns: (state) => state.globalFns,
     // 全局动作列表
-    getGlobalActions: (state) => state.globalActions || [],
+    getGlobalActions: (state) => state.globalActions,
     // 全局数据源列表
-    getDataSources: (state) => state.dataSources || [],
+    getDataSources: (state) => state.dataSources,
     // 当前选择的组件id
     getSelectedId: (state) => state.selectedId,
     // 当前选择的组件
     getSelectedWidget: (state) => state.selectedWidget,
     // 历史数据
-    getHistoryData: (state) => state.historyData || [],
+    getHistoryData: (state) => state.historyData,
   },
   actions: {
     // 设计器组件列表
@@ -72,10 +75,14 @@ const useDesignStore = defineStore("design", {
     setHistoryData(historyData) {
       this.historyData = historyData;
     },
-    // 重置设计器store中缓存的对象为初始状态
+    // 重置设计器store中缓存的对象为初始状态（只清空元素列表、选中元素、历史列表）
     resetDesigner() {
       // 如果只window.sessionStore.clear()是不会清空本地的，pinia的缓存可以从内存中读取再次赋值防止被误清空
-      this.$reset();
+      // this.$reset(); // 重置所有状态数据
+      this.widgets = [];
+      this.selectedId = null;
+      this.selectedWidget = null;
+      this.historyData = null;
     },
   },
   persist: {

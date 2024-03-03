@@ -38,7 +38,7 @@ const dialog = ref({
  */
 const handleClick = () => {
   dialog.value.visible = true;
-  dialog.value.data = cloneDeep({ widgets: props.designer.widgets, widgetConfig: props.designer.widgetConfig });
+  dialog.value.data = cloneDeep({ widgets: props.designer.widgets, globalConfig: props.designer.globalConfig });
 };
 </script>
 <style lang="scss" scoped></style>

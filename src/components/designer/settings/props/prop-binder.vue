@@ -1,48 +1,63 @@
 <template>
   <!--属性绑定的组件，在这里双向绑定自定义属性的值，以及执行的变量，表达式等-->
-  <div class="props-binder-wrapper">
+  <div class="prop-binder-wrapper">
     <component
       :is="props.item.componentName"
       v-model="props.widget.props[props.item.name]"
       :item="props.item"
       :designer
       :widget
-      class="props-editor"
+      class="prop-editor"
     />
-    <el-button class="props-fx" type="text" text plain @click="handleClick">ƒx</el-button>
+    <el-button class="prop-fx" type="text" text plain @click="handleClick">ƒx</el-button>
   </div>
 
-  <!--绑定变量和表达式-->
+  <!--绑定属性弹框-->
   <el-dialog
     v-if="dialog.visible"
     v-model="dialog.visible"
     :title="dialog.title"
     append-to-body
     draggable
-    class="props-binder-dialog"
-    width="940px"
+    class="prop-binder-dialog"
+    width="960px"
     :close-on-click-modal="false"
   >
     <div class="binder-content">
       <div class="binder-editor">
         <el-alert type="warning" :closable="false">
-          从右侧选择绑定的表达式到左侧，绑定的属性会自动解析表达式的值。
+          <div>1.从右侧选择绑定的表达式到左侧，解析器会自动计算表达式的结果。</div>
+          <div>2.也可以在代码编辑器中输入字符串或者表达式，点击执行按钮，解析器会自动计算结果。</div>
         </el-alert>
-        <CodeEditor v-model="dialog.bindValue" lang="html" height="240px" />
+        <div class="binder-editor-code">
+          <CodeEditor v-model="dialog.bindValue" lang="html" height="240px" />
+          <el-button type="success" icon="CaretRight" @click="handleExecute">执行</el-button>
+        </div>
+
         <div class="binder-editor-result">
           <div class="binder-editor-result-title">
-            <el-icon class="success-color margin-right-4" :size="18">
+            <el-icon v-if="dialog.bindError" class="error-color margin-right-4" :size="18">
+              <CircleCloseFilled />
+            </el-icon>
+            <el-icon v-else class="success-color margin-right-4" :size="18">
               <CircleCheckFilled />
             </el-icon>
             当前运行结果
           </div>
-          <div class="binder-editor-result-value">{{ dialog.bindResult }}</div>
+          <div class="binder-editor-result-value">
+            <span v-if="dialog.bindError" class="error-color">dd{{ dialog.bindError }}</span>
+            <span v-else class="success-color">{{ dialog.bindResult }}</span>
+          </div>
         </div>
       </div>
       <div class="binder-data">
         <el-scrollbar>
           <el-collapse v-model="activeNames">
-            <el-collapse-item title="全局变量（$globalVars）" name="globalVars">
+            <el-collapse-item name="globalVars">
+              <template #title>
+                <span class="text-title-color">全局变量</span>
+                <span class="text-disabled-color">（$globalVars）</span>
+              </template>
               <el-tree
                 ref="globalVarsRef"
                 :data="globalVars"
@@ -51,12 +66,16 @@
                 @node-click="handleNodeClick('$globalVars', $event)"
               >
                 <template #default="{ node, data }">
-                  {{ data.label }}
-                  <span class="text-desc-color">（{{ data.desc }}）</span>
+                  <span class="text-content-color">{{ data.label }}</span>
+                  <span class="text-disabled-color">（{{ data.desc }}）</span>
                 </template>
               </el-tree>
             </el-collapse-item>
-            <el-collapse-item title="全局函数（$globalFns）" name="globalFns">
+            <el-collapse-item name="globalFns">
+              <template #title>
+                <span class="text-title-color">全局函数</span>
+                <span class="text-disabled-color">（$globalFns）</span>
+              </template>
               <el-tree
                 ref="globalFnsRef"
                 :data="globalFns"
@@ -65,12 +84,16 @@
                 @node-click="handleNodeClick('$globalFns', $event)"
               >
                 <template #default="{ node, data }">
-                  {{ data.label }}
-                  <span class="text-desc-color">（{{ data.desc }}）</span>
+                  <span class="text-content-color">{{ data.label }}</span>
+                  <span class="text-disabled-color">（{{ data.desc }}）</span>
                 </template>
               </el-tree>
             </el-collapse-item>
-            <el-collapse-item title="数据源（$dataSources）" name="dataSources">
+            <el-collapse-item name="dataSources">
+              <template #title>
+                <span class="text-title-color">数据源</span>
+                <span class="text-disabled-color">（$dataSources）</span>
+              </template>
               <el-tree
                 ref="dataSourcesRef"
                 :data="dataSources"
@@ -79,8 +102,8 @@
                 @node-click="handleNodeClick('$dataSources', $event)"
               >
                 <template #default="{ node, data }">
-                  {{ data.label }}
-                  <span class="text-desc-color">（{{ data.desc }}）</span>
+                  <span class="text-content-color">{{ data.label }}</span>
+                  <span class="text-disabled-color">（{{ data.desc }}）</span>
                 </template>
               </el-tree>
             </el-collapse-item>
@@ -99,24 +122,27 @@
 <script setup>
 import { ref, toRef, computed } from "vue";
 import { isObject, isArray } from "@lime-util/util";
-import useProps from "@/hooks/props";
+import useWidget from "@/hooks/widget";
+import { ElMessage } from "element-plus";
 import CodeEditor from "@/components/code-editor/index.vue";
 
-defineOptions({ name: "PropsBinder" });
+defineOptions({ name: "PropBinder" });
 // props
 const props = defineProps({
   designer: { type: Object, default: () => ({}) },
+  globalConfig: { type: Object, default: null },
   widget: { type: Object, default: () => ({}) },
   item: { type: Object, default: () => ({}) },
 });
 
-const { getPropResult } = useProps({ props });
+const { getPropResult } = useWidget({ props });
 
 // 绑定变量弹框
 const dialog = ref({
   visible: false,
   bindValue: "", // 绑定表达式值
   bindResult: "", // 绑定值运行的结果
+  bindError: "", // 运行的错误结果
 });
 
 // 打开的标签页
@@ -168,13 +194,13 @@ const formatGlobalVars = (data, parentPath) => {
   return res;
 };
 const globalVars = computed(() => {
-  return formatGlobalVars(props.designer.widgetConfig.globalVars);
+  return formatGlobalVars(props.globalConfig.globalVars);
 });
 
 // 全局函数
 const globalFns = computed(() => {
   // 转为树形结构
-  return props.designer.widgetConfig.globalFns.map((v) => {
+  return props.globalConfig.globalFns.map((v) => {
     return {
       label: v.name,
       value: v.name,
@@ -186,7 +212,7 @@ const globalFns = computed(() => {
 // 数据源
 const dataSources = computed(() => {
   // 转为树形结构
-  return props.designer.widgetConfig.dataSources.map((v) => {
+  return props.globalConfig.dataSources.map((v) => {
     return {
       label: v.name,
       value: v.name,
@@ -208,25 +234,53 @@ const handleClick = () => {
  */
 const handleNodeClick = async (type, data) => {
   dialog.value.bindValue = `${type}.${data.value}`;
-  dialog.value.bindResult = getPropResult(dialog.value.bindValue);
+  dialog.value.bindResult = await getPropResult(dialog.value.bindValue).catch((error) => {
+    dialog.value.bindError = error;
+    dialog.value.bindResult = "";
+    throw new Error(error);
+  });
+  dialog.value.bindError = "";
+};
+
+/**
+ * 代码编辑器中执行
+ */
+const handleExecute = async () => {
+  dialog.value.bindResult = await getPropResult(dialog.value.bindValue).catch((error) => {
+    dialog.value.bindError = error;
+    dialog.value.bindResult = "";
+    ElMessage({
+      type: "error",
+      message: "运行结果错误，请重新尝试",
+    });
+    throw new Error(error);
+  });
+  dialog.value.bindError = "";
 };
 
 // 确定
 const handleSure = () => {
-  props.widget.props[props.item.name] = dialog.value.bindValue;
+  if (dialog.value.bindError) {
+    ElMessage({
+      type: "error",
+      message: "运行结果错误，请重新尝试",
+    });
+    return;
+  }
+  props.widget.props[props.item.name] = dialog.value.bindResult;
   dialog.value.visible = false;
 };
 </script>
 <style scoped lang="scss">
-.props-binder-wrapper {
+.prop-binder-wrapper {
   display: flex;
 
-  .props-editor {
+  .prop-editor {
     flex: 1;
     margin-right: var(--sp4);
   }
 
-  .props-fx {
+  .prop-fx {
     margin-left: auto;
   }
 }

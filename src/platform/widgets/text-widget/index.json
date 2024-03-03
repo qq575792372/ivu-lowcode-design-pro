@@ -1,0 +1,26 @@
+{
+  "type": "text",
+  "label": "文本",
+  "widgets": [],
+  "props": {
+    "name": "",
+    "value": "text",
+    "className": ""
+  },
+  "events": [
+  ],
+  "actions": [
+    {
+      "name": "changeLargeSize",
+      "label": "放大字体",
+      "enable": true,
+      "code": ""
+    },
+    {
+      "name": "changeSmallSize",
+      "label": "缩小字体",
+      "enable": true,
+      "code": ""
+    }
+  ]
+}
