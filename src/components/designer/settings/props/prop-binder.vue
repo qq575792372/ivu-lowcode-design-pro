@@ -149,34 +149,6 @@ const dialog = ref({
 const activeNames = ref(["globalVars", "globalFns", "dataSources"]);
 
 // 全局变量
-/*
-{
-  "unitOid": 12,
-  "unitName": "单位111111",
-  "deptOid": 13,
-  "deptName": "机构1",
-  "personInfo": {
-    "userId": 12,
-    "userName": "小明",
-    "age": 20,
-    "test1": {
-      "test1Id": 1,
-      "test1Name": "ddd"
-    },
-    "test2": [{ "id": 1, "name": "2" }]
-  },
-  "tableData": [
-    {
-      "id": 1,
-      "name": "test1"
-    },
-    {
-      "id": 2,
-      "name": "test2"
-    }
-  ]
-}
- */
 // 将全局变量中的对象格式化为el-tree需要的数据
 const formatGlobalVars = (data, parentPath) => {
   let res = [];

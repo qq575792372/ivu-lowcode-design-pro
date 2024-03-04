@@ -200,7 +200,9 @@ export function createDesigner(vueInstance) {
      * 获得当前设计器组件的ref实例
      * @param typeName
      */
-    getWidgetRef(typeName) {},
+    getWidgetRef(typeName) {
+      console.log("getWidgetRef", typeName, vueInstance);
+    },
     /**
      * 选中父组件
      */

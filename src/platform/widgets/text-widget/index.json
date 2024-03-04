@@ -5,10 +5,9 @@
   "props": {
     "name": "",
     "value": "text",
-    "className": ""
+    "className": "my-text"
   },
-  "events": [
-  ],
+  "events": [],
   "actions": [
     {
       "name": "changeLargeSize",

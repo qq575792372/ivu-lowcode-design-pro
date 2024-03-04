@@ -5,10 +5,7 @@
   "props": {
     "name": "",
     "value": "button",
-    "className": "custom-button-primary",
-    "dsEnable": false,
-    "dsName": "",
-    "options": []
+    "className": "custom-button-primary"
   },
   "events": [
     {
@@ -28,7 +25,7 @@
       "name": "customButtonAction",
       "label": "自定义按钮动作",
       "enable": true,
-      "code": "/*这里动作内容*/ console.log('触发自定义按钮动作',widget);"
+      "code": "console.log('触发自定义按钮动作',widget);"
     }
   ]
 }

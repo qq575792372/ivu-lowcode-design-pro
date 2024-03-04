@@ -378,7 +378,7 @@ const showAddGlobalFnsDialog = () => {
     enable: true,
     code: "",
   };
-  globalFnsFormRef.value.resetFields();
+  globalFnsFormRef.value && globalFnsFormRef.value.resetFields();
 };
 // 修改
 const showEditGlobalFnsDialog = (fn, fnIndex) => {

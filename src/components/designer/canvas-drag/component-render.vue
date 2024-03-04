@@ -39,6 +39,7 @@ const widgetProps = computed(() => {
 const widgetEvents = computed(() => {
   let events = {};
   for (let event of props.widget.events || []) {
+    props.designer.getWidgetRef(props.widget.type);
     events[event.name] = new Function(event.args, event.code);
   }
   return events;

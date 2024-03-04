@@ -359,12 +359,15 @@ let handleProjectTemplateChange = (val) => {
  * @param {Object} target 拖拽的组件
  */
 const onClone = (target) => {
+  console.log(999, target);
   // 拖拽时根据名称获取到对应的设计组件信息
   let newWidget = JSON.parse(JSON.stringify(props.designer.getWidget(target.name)));
+  console.log(111, newWidget);
   // 生成唯一名称
   let uniqueKey = getGenerateId(target.name);
   newWidget.id = uniqueKey;
   newWidget.props.name = uniqueKey;
+
   return newWidget;
 };
 </script>

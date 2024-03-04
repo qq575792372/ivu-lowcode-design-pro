@@ -87,7 +87,7 @@ const useDesignStore = defineStore("design", {
   },
   persist: {
     key: "LOWCODE_DESIGN", // 缓存key
-    storage: window.sessionStorage, // 缓存方式
+    storage: window.localStorage, // 缓存方式
   },
 });
 
