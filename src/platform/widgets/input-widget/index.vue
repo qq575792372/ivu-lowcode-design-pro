@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <el-input v-model="modelValue" placeholder="ddd" />
-  </div>
+  <el-input v-model="modelValue" placeholder="ddd" />
 </template>
 <script setup>
 import { ref } from "vue";

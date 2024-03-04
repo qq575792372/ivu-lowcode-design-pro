@@ -1,5 +1,4 @@
 <template>
-  {{ widget.events }}
   <el-button @click="handleClick">{{ props.className }}</el-button>
 </template>
 <script setup>

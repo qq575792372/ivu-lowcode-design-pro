@@ -16,9 +16,9 @@
         "row",
         "rowIndex"
       ],
-      "code": "/*这里事件内容*/"
+      "code": "/*这里事件内容*/",
+      "action": ""
     }
   ],
-  "actions": [
-  ]
+  "actions": []
 }
