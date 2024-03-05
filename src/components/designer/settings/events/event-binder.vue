@@ -30,12 +30,8 @@
       <el-tab-pane label="动作" name="actions">
         <el-checkbox-group v-model="dialog.eventActions">
           <el-collapse v-model="actionActionNames">
-            <el-collapse-item
-              v-for="(acMap, acIndex) of allActionMap"
-              :key="acIndex"
-              :name="acMap.name"
-              :title="acMap.label"
-            >
+            <el-collapse-item v-for="(acMap, acIndex) of allActionMap" :key="acMap.name" :name="acMap.name">
+              <template #title>{{ acMap.label }}（{{ acMap.name }}）</template>
               <el-checkbox
                 v-for="(action, actionIndex) in acMap.actions"
                 :key="actionIndex"
