@@ -44,6 +44,6 @@ app.config.globalProperties.$confirm = ElMessageBox.confirm;
 app.config.globalProperties.$prompt = ElMessageBox.prompt;
 // 绑定axios的
 app.config.globalProperties.$request = request;
-
+console.log(311, app);
 // 挂载实例
 app.mount("#app");

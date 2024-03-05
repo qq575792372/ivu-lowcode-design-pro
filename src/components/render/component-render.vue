@@ -6,17 +6,18 @@
       :is="subWidget.type + '-widget'"
       :ref="subWidget.props.name + '_ref'"
       :widget="subWidget"
+      :widget-ref-map="widgetRefMap"
       :parent-widget="props.parentWidget"
       v-bind="widgetProps(subWidget)"
       v-on="widgetEvents(subWidget)"
     >
       <!--递归嵌套组件渲染-->
-      <ComponentRender :parent-widget="subWidget" :widgets="subWidget.widgets" />
+      <ComponentRender :parent-widget="subWidget" :widget-ref-map="widgetRefMap" :widgets="subWidget.widgets" />
     </component>
   </div>
 </template>
 <script setup>
-import { computed } from "vue";
+import { ref, computed, getCurrentInstance } from "vue";
 
 defineOptions({
   name: "ComponentRender",
@@ -24,6 +25,8 @@ defineOptions({
 
 // props
 const props = defineProps({
+  // 渲染器对象，在渲染模式中起作用
+  render: { type: Object, default: () => ({}) },
   // 设计器全局配置
   globalConfig: { type: Object, default: null },
   // 设计元素列表
@@ -34,13 +37,19 @@ const props = defineProps({
   parentWidget: { type: Object, default: null },
 });
 
+// // 绑定到的渲染组件实例
+
+const { proxy } = getCurrentInstance();
+
 // 绑定组件属性
 const widgetProps = computed(() => {
   return (widget) => {
+    setTimeout(() => {
+      props.render.widgetRefMap.push(proxy);
+    }, 300);
     return widget.props || {};
   };
 });
-
 // 绑定组件事件以及动作
 const widgetEvents = computed(() => {
   return (widget) => {
@@ -57,7 +66,10 @@ const widgetEvents = computed(() => {
         });
         codeList = codeList.concat(`\n// 绑定组件动作`).concat(actionList);
       }
-      events[event.name] = new Function(event.args, codeList.join("\n")).bind(null, null);
+      events[event.name] = new Function(event.args, codeList.join("\n")).bind(
+        props.render.widgetRefMap,
+        props.render.widgetRefMap,
+      );
       console.log(333, events[event.name]);
     }
     return events;
