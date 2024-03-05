@@ -1,6 +1,6 @@
 <template>
   <div class="render-container">
-    <ComponentRender :designer="render" :parent-widgets="widgets" />
+    <ComponentRender :widgets="widgets" :global-config="globalConfig" />
   </div>
 </template>
 <script setup>
@@ -14,12 +14,9 @@ import {
   onBeforeUnmount,
   onActivated,
   onDeactivated,
-  getCurrentInstance,
-  reactive,
 } from "vue";
 import useGlobal from "@/hooks/global";
 import ComponentRender from "./component-render.vue";
-import { createRender } from "@/components/render/render";
 
 defineOptions({
   name: "Render",
@@ -28,18 +25,13 @@ defineOptions({
 // props
 const props = defineProps({
   data: { type: Object, default: () => ({}) },
-  designer: { type: Object, default: () => ({}) },
 });
 
-// 创建渲染器，并初始化
-const { proxy } = getCurrentInstance();
-const render = reactive(createRender(proxy));
-render.initRender(props.data);
-
-// 计算属性
+// 渲染的元素列表
 const widgets = computed(() => {
   return props.data.widgets;
 });
+// 全局配置
 const globalConfig = computed(() => {
   return props.data.globalConfig;
 });
@@ -64,8 +56,6 @@ onBeforeUpdate(() => {
   executeGlobalEventFn(globalConfig.value.globalEvents, "onBeforeUpdate");
 });
 onBeforeUnmount(() => {
-  // 清空渲染器
-  render.clearRender();
   executeGlobalEventFn(globalConfig.value.globalEvents, "onBeforeUnmount");
 });
 onActivated(() => {
