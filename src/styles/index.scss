@@ -413,48 +413,60 @@ div:focus {
 
   .binder-content {
     display: flex;
-    height: 360px;
     overflow: hidden;
     border: solid 1px var(--border-standard-color);
 
+    // 绑定的代码执行器
     .binder-editor {
       flex: 1;
+      overflow: hidden;
       border-right: solid 1px var(--border-standard-color);
 
       // 代码编辑器
       .binder-editor-code {
         position: relative;
+
         .code-editor {
           border: none;
         }
-        .el-button{
+
+        .el-button {
           position: absolute;
-          right:8px;
-          bottom:8px;
+          right: 8px;
+          bottom: 8px;
         }
       }
 
       // 执行结果
       .binder-editor-result {
         border-top: solid 1px var(--border-standard-color);
-        padding: var(--cmp-padding);
 
         .binder-editor-result-title {
           font-weight: bold;
           display: flex;
           align-items: center;
-          margin-bottom: var(--cmp-margin);
+          height: 32px;
+          font-size: 14px;
+          background: var(--bg-light-color);
+          border-bottom: solid 1px var(--border-standard-color);
+          box-sizing: border-box;
+          padding: 0 var(--cmp-padding);
         }
 
         .binder-editor-result-value {
           font-size: 12px;
           overflow: auto;
+          padding:var(--cmp-padding);
+          height: 100px;
+          word-break: break-all;
         }
       }
     }
 
+    // 绑定的数据
     .binder-data {
       width: 360px;
+      flex-shrink: 0;
       margin-left: var(--cmp-margin);
 
       .el-collapse {

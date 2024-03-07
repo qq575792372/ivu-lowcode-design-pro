@@ -6,7 +6,6 @@
       :is="subWidget.type + '-widget'"
       :ref="subWidget.props.name + '_ref'"
       :widget="subWidget"
-      :widget-ref-map="widgetRefMap"
       :parent-widget="props.parentWidget"
       v-bind="widgetProps(subWidget)"
       v-on="widgetEvents(subWidget)"
@@ -17,7 +16,7 @@
   </div>
 </template>
 <script setup>
-import { ref, computed, getCurrentInstance } from "vue";
+import { ref, computed, getCurrentInstance, onMounted } from "vue";
 
 defineOptions({
   name: "ComponentRender",
@@ -44,9 +43,11 @@ const { proxy } = getCurrentInstance();
 // 绑定组件属性
 const widgetProps = computed(() => {
   return (widget) => {
-    setTimeout(() => {
-      props.render.widgetRefMap.push(proxy);
-    }, 300);
+    if (widget.id) {
+      if (props.render.widgetRefMap) {
+        props.render.widgetRefMap[widget.props.name] = proxy;
+      }
+    }
     return widget.props || {};
   };
 });
@@ -62,18 +63,20 @@ const widgetEvents = computed(() => {
       }
       if (event.action) {
         let actionList = event.action.map((act) => {
-          return `console.log('当前this',this); this.$refs.${act}();`;
+          console.log(111, act);
+          // return `console.log('当前this',this); this.$refs.${act}();`;
+          return `console.log('当前this',this); this.${act}();`;
         });
         codeList = codeList.concat(`\n// 绑定组件动作`).concat(actionList);
       }
-      events[event.name] = new Function(event.args, codeList.join("\n")).bind(
-        props.render.widgetRefMap,
-        props.render.widgetRefMap,
-      );
-      console.log(333, events[event.name]);
+      events[event.name] = new Function(event.args, codeList.join("\n")).bind(props.render.widgetRefMap);
     }
     return events;
   };
+});
+
+onMounted(() => {
+  console.log("on", props.render.widgetRefMap);
 });
 </script>
 <style lang="scss" scoped></style>

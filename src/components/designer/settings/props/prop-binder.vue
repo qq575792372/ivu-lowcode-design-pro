@@ -20,7 +20,7 @@
     append-to-body
     draggable
     class="prop-binder-dialog"
-    width="960px"
+    width="980px"
     :close-on-click-modal="false"
   >
     <div class="binder-content">

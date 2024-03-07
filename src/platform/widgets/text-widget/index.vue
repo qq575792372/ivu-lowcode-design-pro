@@ -5,6 +5,7 @@
 </template>
 <script setup>
 import { ref } from "vue";
+
 defineOptions({
   name: "TextWidget",
 });
@@ -35,6 +36,12 @@ const changeLargeSize = () => {
 const changeSmallSize = () => {
   fontSize.value = fontSize.value - 2;
 };
+
+// 导出动作
+defineExpose({
+  changeLargeSize,
+  changeSmallSize,
+});
 </script>
 <style lang="scss" scoped>
 span {

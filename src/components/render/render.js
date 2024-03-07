@@ -11,7 +11,7 @@ export function createRender(vueInstance) {
 
     // 设计器组件列表
     widgets: [],
-    widgetRefMap: [],
+    widgetRefMap: {},
     // 设计器配置
     globalConfig: null,
 
@@ -20,7 +20,6 @@ export function createRender(vueInstance) {
      */
     initRender(data) {
       this.widgets = data.widgets;
-      console.log("ddd");
       this.globalConfig = data.globalConfig;
     },
     /**

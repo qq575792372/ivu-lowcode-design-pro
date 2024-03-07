@@ -35,7 +35,6 @@ const props = defineProps({
   data: { type: Object, default: () => ({}) },
 });
 
-const widgetRefMap = ref([]);
 // 创建渲染器，并初始化
 const { proxy } = getCurrentInstance();
 const render = reactive(createRender(proxy));
