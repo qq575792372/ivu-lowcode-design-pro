@@ -1,10 +1,11 @@
 <template>
   <span @click="handleClick">{{ props.value }}</span>
-  <el-button @click="changeLargeSize">加大</el-button>
-  <el-button @click="changeSmallSize">减小</el-button>
+  <!--  <el-button @click="changeLargeSize">加大</el-button>
+  <el-button @click="changeSmallSize">减小</el-button>-->
 </template>
 <script setup>
 import { ref } from "vue";
+
 defineOptions({
   name: "TextWidget",
 });
@@ -35,6 +36,11 @@ const changeLargeSize = () => {
 const changeSmallSize = () => {
   fontSize.value = fontSize.value - 2;
 };
+
+defineExpose({
+  changeLargeSize,
+  changeSmallSize,
+});
 </script>
 <style lang="scss" scoped>
 span {

@@ -31,8 +31,9 @@ export default ({ props, emits }) => {
    * @returns {Function} 返回事件创建后的函数
    */
   const executeGlobalEventFn = (globalEvents, eventName) => {
-    let eventFn = getGlobalEventFn(globalEvents, eventName);
-    return eventFn();
+    /*     let eventFn = getGlobalEventFn(globalEvents, eventName);
+    return eventFn(); */
+    return getGlobalEventFn(globalEvents, eventName);
   };
 
   // 全局动作

@@ -1,5 +1,5 @@
 <template>
-  <div class="designer-container">
+  <div class="designer">
     <div class="widget-canvas">
       <!--在设计器入口传入设计器数据-->
       <CanvasDrag :designer :widgets="props.designer.widgets" :global-config="props.designer.globalConfig" />
@@ -35,7 +35,7 @@ watch(
 );
 </script>
 <style lang="scss" scoped>
-.designer-container {
+.designer {
   overflow: hidden;
   height: 100%;
 
