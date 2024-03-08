@@ -1,7 +1,7 @@
 <template>
   <span @click="handleClick">{{ props.value }}</span>
-  <el-button @click="changeLargeSize">加大</el-button>
-  <el-button @click="changeSmallSize">减小</el-button>
+  <!--  <el-button @click="changeLargeSize">加大</el-button>
+  <el-button @click="changeSmallSize">减小</el-button>-->
 </template>
 <script setup>
 import { ref } from "vue";
@@ -37,7 +37,6 @@ const changeSmallSize = () => {
   fontSize.value = fontSize.value - 2;
 };
 
-// 导出动作
 defineExpose({
   changeLargeSize,
   changeSmallSize,
