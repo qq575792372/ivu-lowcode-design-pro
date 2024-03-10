@@ -1,4 +1,4 @@
-import { computed, ref, watchEffect, readonly } from "vue";
+import { computed, ref, toRef, watchEffect, readonly } from "vue";
 import useGlobal from "@/hooks/global";
 import useDataSources from "@/hooks/data-sources";
 
@@ -39,23 +39,35 @@ export default function ({ props, emits }) {
     // 数据源
     else if (propValue.includes("$dataSources")) {
       let bindValue = propValue.split(".")[1];
-      // 获取请求的结果
-      const getResponseData = (bindValue) => {
-        let propValue = ref(null);
-        watchEffect(async (onCleanup) => {
-          propValue.value = await requestData(
-            bindValue,
-            {
-              myId: 123,
-              myName: "myName",
-            },
-            vueInstance,
-            globalConfig.value.globalVars,
-          );
-        });
-        return readonly(propValue);
-      };
-      return getResponseData(bindValue);
+      let responseValue = null;
+      /*       // 获取请求的结果
+            const getResponseData = (bindValue) => {
+              let propValue = ref(null);
+              watchEffect(async (onCleanup) => {
+                propValue.value = await requestData(
+                  bindValue,
+                  {
+                    myId: 123,
+                    myName: "myName",
+                  },
+                  vueInstance,
+                  globalConfig.value.globalVars,
+                );
+              });
+              return readonly(propValue);
+            };
+            return getResponseData(bindValue); */
+      watchEffect(async () => {
+        responseValue = await requestData(
+          bindValue,
+          {
+            myId: 123,
+            myName: "myName",
+          },
+          vueInstance,
+        );
+      });
+      return responseValue;
     }
     // 普通值，返回自身
     else {

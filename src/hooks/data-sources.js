@@ -11,6 +11,8 @@ export default function ({ props, emits }) {
 
   // 获得数据源列表
   const dataSources = computed(() => props.globalConfig.dataSources);
+  // 全局配置
+  const globalConfig = computed(() => props.globalConfig || {});
 
   /**
    * 发送请求
@@ -20,19 +22,19 @@ export default function ({ props, emits }) {
    * @param {Object} $globalVars 全局变量
    * @returns {Promise} 返回执行后的数据
    */
-  const requestData = async function (dsName, localDsv = {}, vueInstance, $globalVars) {
+  const requestData = async function (dsName, localDsv = {}, vueInstance) {
     let dataSource = getDataSource(dsName);
     try {
-      let requestConfig = _buildRequestConfig(dataSource, localDsv, vueInstance, $globalVars);
+      let requestConfig = _buildRequestConfig(dataSource, localDsv, vueInstance, globalConfig.value.globalVars);
       let result = await $request.request(requestConfig);
       let responseFn = new Function(...["result", "DSV", "$globalVars"], dataSource.responseCode).bind(vueInstance);
-      return responseFn.call(null, result, localDsv, $globalVars);
+      return responseFn.call(null, result, localDsv, globalConfig.value.globalVars);
     } catch (error) {
       let responseErrorFn = new Function(
         ...["error", "DSV", "$globalVars", "$message"],
         dataSource.responseErrorCode,
       ).bind(vueInstance);
-      responseErrorFn.call(null, error, localDsv, $globalVars, $message);
+      responseErrorFn.call(null, error, localDsv, globalConfig.value.globalVars, $message);
     }
   };
 
