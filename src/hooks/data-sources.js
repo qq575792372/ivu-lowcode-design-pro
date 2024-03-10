@@ -4,7 +4,7 @@ import useGlobal from "@/hooks/global";
 /**
  * 数据源的hooks
  */
-export default ({ props, emits }) => {
+export default function ({ props, emits }) {
   // 使用全局配置的hooks
   const { getGlobalProperties } = useGlobal({ props, emits });
   const { $request, $message } = getGlobalProperties();
@@ -16,29 +16,31 @@ export default ({ props, emits }) => {
    * 发送请求
    * @param {String} dsName 数据源名称
    * @param {Object} localDsv 本地参数数据变量DSV
+   * @param {Vue} vueInstance 绑定的入口vue实例
+   * @param {Object} $globalVars 全局变量
    * @returns {Promise} 返回执行后的数据
    */
-  const requestData = async (dsName, localDsv = {}) => {
+  const requestData = async function (dsName, localDsv = {}, vueInstance, $globalVars) {
     let dataSource = getDataSource(dsName);
-    console.log("dataSource", dataSource);
     try {
-      let requestConfig = _buildRequestConfig(dataSource, localDsv);
-      console.log("requestConfig", requestConfig);
+      let requestConfig = _buildRequestConfig(dataSource, localDsv, vueInstance, $globalVars);
       let result = await $request.request(requestConfig);
-
-      let responseFn = new Function("result", "DSV", dataSource.responseCode);
-      return responseFn.call(null, result, localDsv);
+      let responseFn = new Function(...["result", "DSV", "$globalVars"], dataSource.responseCode).bind(vueInstance);
+      return responseFn.call(null, result, localDsv, $globalVars);
     } catch (error) {
-      let responseErrorFn = new Function("error", "DSV", "$message", dataSource.responseErrorCode);
-      responseErrorFn.call(null, error, localDsv, $message);
+      let responseErrorFn = new Function(
+        ...["error", "DSV", "$globalVars", "$message"],
+        dataSource.responseErrorCode,
+      ).bind(vueInstance);
+      responseErrorFn.call(null, error, localDsv, $globalVars, $message);
     }
   };
 
   /**
    * 通过名称获得数据源配置
-   * {String} dsName 数据源名称
+   * @param {String} dsName 数据源名称
    */
-  const getDataSource = (dsName) => {
+  const getDataSource = function (dsName) {
     return dataSources.value.find((v) => v.name === dsName);
   };
 
@@ -46,53 +48,58 @@ export default ({ props, emits }) => {
    * 构建请求配置
    * @param {Object} dataSource 数据源配置
    * @param {Object} DSV 数据源变量（data source var)
-   * @returns {Promise}
+   * @param {Vue} vueInstance 绑定的入口vue实例
+   * @param {Object} $globalVars 全局变量
+   * @returns {Object} 返回构建后的请求配置
    */
-  const _buildRequestConfig = (dataSource, DSV = {}) => {
+  const _buildRequestConfig = function (dataSource, DSV = {}, vueInstance, $globalVars) {
     let config = {};
 
     // 处理url
     if (dataSource.urlType === "String") {
       config.url = String(dataSource.url);
     } else if (dataSource.urlType === "VarFx") {
-      let fn = new Function("DSV", "return " + String(dataSource.url));
-      config.url = fn(DSV);
+      let fn = new Function(...["DSV", "$globalVars"], "return " + String(dataSource.url)).bind(vueInstance);
+      config.url = fn(DSV, $globalVars);
     }
 
     // 处理method
     config.method = dataSource.method;
 
     // 处理headers
-    let headers = _getAssembleAxiosConfig(dataSource.headers, DSV);
+    let headers = _getAssembleAxiosConfig(dataSource.headers, DSV, vueInstance, $globalVars);
     if (headers) {
       config.headers = headers;
     }
 
     // 处理params
-    let params = _getAssembleAxiosConfig(dataSource.params, DSV);
+    let params = _getAssembleAxiosConfig(dataSource.params, DSV, vueInstance, $globalVars);
     if (params) {
       config.params = params;
     }
 
     // 处理data
-    let data = _getAssembleAxiosConfig(dataSource.data, DSV);
+    let data = _getAssembleAxiosConfig(dataSource.data, DSV, vueInstance, $globalVars);
     if (data) {
       config.data = data;
     }
 
     // 处理请求requestCode
-    let requestFn = new Function("config", "DSV", dataSource.requestCode);
+    let requestFn = new Function(...["config", "DSV", "$globalVars"], dataSource.requestCode).bind(vueInstance);
 
     // 返回最终的请求配置
-    return requestFn.call(null, config, DSV);
+    return requestFn.call(null, config, DSV, $globalVars);
   };
 
   /**
-   * 获得组装后的请求配置参数
-   * @param {Array} data 要组装的请求参数对象
+   * 获得不同请求参数类型组装后的配置
+   * @param {Array} data 要组装的请求参数类型，如url、headers、params、data等
    * @param {Object} DSV 数据源变量（data source var)
+   * @param {Vue} vueInstance 绑定的入口vue实例
+   * @param {Object} $globalVars 全局变量
+   * @returns {Object} 返回组装后的请求配置参数
    */
-  const _getAssembleAxiosConfig = (data, DSV = {}) => {
+  const _getAssembleAxiosConfig = function (data, DSV = {}, vueInstance, $globalVars) {
     if (!data || data.length <= 0) return;
 
     // 组装数据
@@ -104,11 +111,9 @@ export default ({ props, emits }) => {
         result[hd.name] = Number(hd.value);
       } else if (hd.type === "Boolean") {
         result[hd.name] = Boolean(hd.value);
-      } else if (hd.type === "Array") {
-        result[hd.name] = hd.value;
       } else if (hd.type === "VarFx") {
-        let fn = new Function("DSV", "return " + hd.value);
-        result[hd.name] = fn(DSV);
+        let fn = new Function(...["DSV", "$globalVars"], "return " + hd.value).bind(vueInstance);
+        result[hd.name] = fn(DSV, $globalVars);
       } else {
         console.error("data source not support type!");
         return;
@@ -120,4 +125,4 @@ export default ({ props, emits }) => {
   return {
     requestData,
   };
-};
+}

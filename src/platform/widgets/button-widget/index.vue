@@ -19,7 +19,6 @@ const props = defineProps({
 });
 
 const handleClick = () => {
-  props.widget.props.className = "ddd";
   emits("custom-click", props.widget);
 };
 </script>

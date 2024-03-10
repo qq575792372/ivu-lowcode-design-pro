@@ -9,7 +9,7 @@
       :widget
       class="prop-editor"
     />
-    <el-button class="prop-fx" type="text" text plain @click="handleClick">ƒx</el-button>
+    <el-button class="prop-fx" type="text" text plain @click="showDialog">ƒx</el-button>
   </div>
 
   <!--绑定属性弹框-->
@@ -23,29 +23,31 @@
     width="980px"
     :close-on-click-modal="false"
   >
+    {{ globalConfig.globalVars }}
     <div class="binder-content">
       <div class="binder-editor">
         <el-alert type="warning" :closable="false">
           <div>1.从右侧选择绑定的表达式到左侧，解析器会自动计算表达式的结果。</div>
           <div>2.也可以在代码编辑器中输入字符串或者表达式，点击执行按钮，解析器会自动计算结果。</div>
+          <div>3.当前绑定的全局变量、全局函数、数据源只会绑定表达式，在预览渲染时候才真正起作用。</div>
         </el-alert>
         <div class="binder-editor-code">
           <CodeEditor v-model="dialog.bindValue" lang="html" height="240px" />
-          <el-button type="success" icon="CaretRight" @click="handleExecute">执行</el-button>
+          <el-button type="success" icon="CaretRight" @click="executeBindValue">执行</el-button>
         </div>
 
         <div class="binder-editor-result">
           <div class="binder-editor-result-title">
-            <el-icon v-if="dialog.bindError" class="error-color margin-right-4" :size="18">
+            <el-icon v-if="dialog.bingErrorMsg" class="error-color margin-right-4" :size="18">
               <CircleCloseFilled />
             </el-icon>
             <el-icon v-else class="success-color margin-right-4" :size="18">
               <CircleCheckFilled />
             </el-icon>
-            当前运行结果
+            当前运行结果预览
           </div>
-          <div class="binder-editor-result-value">
-            <span v-if="dialog.bindError" class="error-color">dd{{ dialog.bindError }}</span>
+          <div v-loading="dialog.bindResultLoading" class="binder-editor-result-value">
+            <span v-if="dialog.bingErrorMsg" class="error-color">dd{{ dialog.bingErrorMsg }}</span>
             <span v-else class="success-color">{{ dialog.bindResult }}</span>
           </div>
         </div>
@@ -120,13 +122,14 @@
   </el-dialog>
 </template>
 <script setup>
-import { ref, toRef, computed } from "vue";
-import { isObject, isArray } from "@lime-util/util";
+import { ref, watch, computed } from "vue";
+import { isObject } from "@lime-util/util";
 import useWidget from "@/hooks/widget";
 import { ElMessage } from "element-plus";
 import CodeEditor from "@/components/code-editor/index.vue";
 
 defineOptions({ name: "PropBinder" });
+
 // props
 const props = defineProps({
   designer: { type: Object, default: () => ({}) },
@@ -135,20 +138,28 @@ const props = defineProps({
   item: { type: Object, default: () => ({}) },
 });
 
-const { getPropResult } = useWidget({ props });
+const { getPropValue } = useWidget({ props });
 
 // 绑定变量弹框
 const dialog = ref({
   visible: false,
-  bindValue: "", // 绑定表达式值
-  bindResult: "", // 绑定值运行的结果
-  bindError: "", // 运行的错误结果
+  bindValue: "", // 绑定表达式的值
+  bindResult: "", // 绑定表达式运行的结果
+  bindResultLoading: false, // 执行表达式运行的loading
+  bingErrorMsg: "", // 绑定表达式运行错误信息
 });
 
 // 打开的标签页
 const activeNames = ref(["globalVars", "globalFns", "dataSources"]);
 
-// 全局变量
+// 展示弹框
+const showDialog = () => {
+  dialog.value.visible = true;
+  dialog.value.bindResultLoading = false;
+  dialog.value.title = props.item.label;
+};
+
+/* 全局变量 */
 // 将全局变量中的对象格式化为el-tree需要的数据
 const formatGlobalVars = (data, parentPath) => {
   let res = [];
@@ -169,7 +180,7 @@ const globalVars = computed(() => {
   return formatGlobalVars(props.globalConfig.globalVars);
 });
 
-// 全局函数
+/* 全局函数 */
 const globalFns = computed(() => {
   // 转为树形结构
   return props.globalConfig.globalFns.map((v) => {
@@ -181,7 +192,7 @@ const globalFns = computed(() => {
   });
 });
 
-// 数据源
+/* 数据源 */
 const dataSources = computed(() => {
   // 转为树形结构
   return props.globalConfig.dataSources.map((v) => {
@@ -193,53 +204,55 @@ const dataSources = computed(() => {
   });
 });
 
-// 弹框绑定
-const handleClick = () => {
-  dialog.value.visible = true;
-  dialog.value.title = props.item.label;
-};
-
-/**
- * 右侧绑定的节点点击事件
- * @param type 类型
- * @param data 点击的数据
- */
-const handleNodeClick = async (type, data) => {
+// 右侧绑定的节点点击事件
+const handleNodeClick = (type, data) => {
   dialog.value.bindValue = `${type}.${data.value}`;
-  dialog.value.bindResult = await getPropResult(dialog.value.bindValue).catch((error) => {
-    dialog.value.bindError = error;
-    dialog.value.bindResult = "";
-    throw new Error(error);
-  });
-  dialog.value.bindError = "";
+  // 执行属性绑定值
+  executeBindValue();
 };
 
-/**
- * 代码编辑器中执行
- */
-const handleExecute = async () => {
-  dialog.value.bindResult = await getPropResult(dialog.value.bindValue).catch((error) => {
-    dialog.value.bindError = error;
+// 执行属性绑定值
+const executeBindValue = async () => {
+  try {
+    dialog.value.bindResultLoading = true;
+    let bindResult = getPropValue.bind(props.designer.vueInstance)(dialog.value.bindValue);
+    // 如果绑定的是数据源，则加loading等待效果
+    if (dialog.value.bindValue.includes("$dataSources")) {
+      watch(
+        () => bindResult,
+        () => {
+          dialog.value.bindResult = bindResult;
+          dialog.value.bindResultLoading = false;
+        },
+        { deep: true },
+      );
+    } else {
+      dialog.value.bindResult = bindResult;
+      dialog.value.bindResultLoading = false;
+    }
+
+    dialog.value.bingErrorMsg = "";
+  } catch (error) {
+    dialog.value.bingErrorMsg = error;
     dialog.value.bindResult = "";
+    dialog.value.bindResultLoading = false;
     ElMessage({
       type: "error",
       message: "运行结果错误，请重新尝试",
     });
-    throw new Error(error);
-  });
-  dialog.value.bindError = "";
+  }
 };
 
-// 确定
+// 绑定确定
 const handleSure = () => {
-  if (dialog.value.bindError) {
+  if (dialog.value.bingErrorMsg) {
     ElMessage({
       type: "error",
       message: "运行结果错误，请重新尝试",
     });
     return;
   }
-  props.widget.props[props.item.name] = dialog.value.bindResult;
+  props.widget.props[props.item.name] = dialog.value.bindValue;
   dialog.value.visible = false;
 };
 </script>

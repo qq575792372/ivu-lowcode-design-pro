@@ -60,7 +60,7 @@
     v-model="dialog.visible"
     :title="dialog.title"
     append-to-body
-    width="960px"
+    width="65%"
     class="data-source-dialog"
     :show-close="false"
     :close-on-click-modal="false"
@@ -76,7 +76,10 @@
       </div>
     </template>
     <el-alert type="warning" :closable="false">
-      数据源中变量或表达式的参数名是DSV（data-source-var)，用来获取调用数据源传递的数据，例如：`${DSV.xx}`
+      <div>
+        1.请求地址、请求头（headers）、请求参数（params）、请求数据（data）中变量或表达式可用的参数：DSV：数据源变量(data-source-var)，在组件中手动调用数据源时传入；&nbsp;$globalVars：全局变量；
+      </div>
+      <div>2.当选择变量或表达式时，会自动添加字符串模板符号“`”。</div>
     </el-alert>
     <el-form ref="dataSourceFormRef" :model="dialog.form" :rules="dialog.formRules" label-width="140px" size="small">
       <el-form-item label="名称" prop="name">
@@ -85,7 +88,7 @@
       <el-form-item label="请求地址" prop="url">
         <el-input v-model="dialog.form.url">
           <template #append>
-            <el-select v-model="dialog.form.urlType" style="width: 120px">
+            <el-select v-model="dialog.form.urlType" style="width: 120px" @change="handleChangeUrlType">
               <el-option label="字符串" value="String" />
               <el-option label="变量或表达式" value="VarFx" />
             </el-select>
@@ -123,11 +126,10 @@
               :prop="`headers.${hdIndex}.type`"
               :rules="[{ required: true, message: '请选择', trigger: 'change' }]"
             >
-              <el-select v-model="hd.type" placeholder="请选择">
+              <el-select v-model="hd.type" placeholder="请选择" @change="handleChangeHeaderType($event, hdIndex)">
                 <el-option label="字符串类型" value="String" />
                 <el-option label="数字类型" value="Number" />
                 <el-option label="布尔类型" value="Boolean" />
-                <el-option label="数组类型" value="Array" />
                 <el-option label="变量或表达式" value="VarFx" />
               </el-select>
             </el-form-item>
@@ -164,11 +166,10 @@
               :prop="`params.${pmIndex}.type`"
               :rules="[{ required: true, message: '请选择', trigger: 'change' }]"
             >
-              <el-select v-model="pm.type" placeholder="请选择">
+              <el-select v-model="pm.type" placeholder="请选择" @change="handleChangeParamType($event, pmIndex)">
                 <el-option label="字符串类型" value="String" />
                 <el-option label="数字类型" value="Number" />
                 <el-option label="布尔类型" value="Boolean" />
-                <el-option label="数组类型" value="Array" />
                 <el-option label="变量或表达式" value="VarFx" />
               </el-select>
             </el-form-item>
@@ -205,12 +206,10 @@
               :prop="`data.${dtIndex}.type`"
               :rules="[{ required: true, message: '请选择', trigger: 'change' }]"
             >
-              <el-select v-model="dt.type" placeholder="请选择">
+              <el-select v-model="dt.type" placeholder="请选择" @change="handleChangeDataType($event, dtIndex)">
                 <el-option label="字符串类型" value="String" />
                 <el-option label="数字类型" value="Number" />
                 <el-option label="布尔类型" value="Boolean" />
-                <el-option label="数组类型" value="Array" />
-                <el-option label="文件类型" value="File" />
                 <el-option label="变量或表达式" value="VarFx" />
               </el-select>
             </el-form-item>
@@ -232,17 +231,23 @@
       </el-form-item>
       <el-tabs v-model="activeName" type="border-card">
         <el-tab-pane label="请求配置（request）" name="requestCode">
-          <el-alert type="info" :closable="false">(config,&nbsp;DSV)&nbsp;=>&nbsp;{</el-alert>
+          <el-alert type="info" :closable="false">
+            (config,&nbsp;DSV,&nbsp;$globalVars)&nbsp;=>&nbsp;{&nbsp;//&nbsp;config：请求的配置，控制请求数据和请求头等；&nbsp;DSV：数据源变量(data-source-var)，在组件中手动调用数据源时传入；&nbsp;$globalVars：全局变量；
+          </el-alert>
           <CodeEditor v-model="dialog.form.requestCode" />
           <el-alert type="info" :closable="false">}</el-alert>
         </el-tab-pane>
         <el-tab-pane label="响应处理（response）" name="responseCode">
-          <el-alert type="info" :closable="false">(result,&nbsp;DSV)&nbsp;=>&nbsp;{</el-alert>
+          <el-alert type="info" :closable="false">
+            (result,&nbsp;DSV,&nbsp;$globalVars)&nbsp;=>&nbsp;{&nbsp;//&nbsp;result：响应的结果；&nbsp;DSV：数据源变量(data-source-var)，在组件中手动调用数据源时传入；&nbsp;$globalVars：全局变量；
+          </el-alert>
           <CodeEditor v-model="dialog.form.responseCode" />
           <el-alert type="info" :closable="false">}</el-alert>
         </el-tab-pane>
         <el-tab-pane label="错误处理（error）" name="responseErrorCode">
-          <el-alert type="info" :closable="false">(error,&nbsp;DSV,&nbsp;$message)&nbsp;=>&nbsp;{</el-alert>
+          <el-alert type="info" :closable="false">
+            (error,&nbsp;DSV,&nbsp;$globalVars,&nbsp;$message)&nbsp;=>&nbsp;{&nbsp;//&nbsp;error：错误的结果；&nbsp;DSV：数据源变量(data-source-var)，在组件中手动调用数据源时传入；&nbsp;$globalVars：全局变量；&nbsp;$message：消息提示ElMessage组件实例；
+          </el-alert>
           <CodeEditor v-model="dialog.form.responseErrorCode" />
           <el-alert type="info" :closable="false">}</el-alert>
         </el-tab-pane>
@@ -326,6 +331,71 @@ const showEditDialog = (dataSource, dataSourceIndex) => {
   dialog.value.form = JSON.parse(JSON.stringify(dataSource));
 };
 /**
+ * 改变类型时，切换请求链接支持表达式的字符串方式
+ * @param {String} type 选择的类型
+ */
+const handleChangeUrlType = (type) => {
+  if (type === "VarFx") {
+    dialog.value.form.url = `\`${dialog.value.form.url}\``;
+  } else {
+    dialog.value.form.url = dialog.value.form.url.replace(/`/g, "");
+  }
+};
+/**
+ * 改变类型时，切换请求头支持表达式的字符串方式
+ * @param type
+ * @param {String} type 选择的类型
+ * @param {Number} hdIndex 数据的下标
+ */
+const handleChangeHeaderType = (type, hdIndex) => {
+  let value = dialog.value.form.headers[hdIndex].value;
+  if (type === "VarFx") {
+    dialog.value.form.headers[hdIndex].value = `\`${value}\``;
+  } else if (type === "String") {
+    dialog.value.form.headers[hdIndex].value = String(value).replace(/`/g, "");
+  } else {
+    dialog.value.form.headers[hdIndex].value = window[dialog.value.form.headers[hdIndex].type](
+      String(value).replace(/`/g, ""),
+    );
+  }
+};
+/**
+ * 改变类型时，切换请求参数支持表达式的字符串方式
+ * @param type
+ * @param {String} type 选择的类型
+ * @param {Number} pmIndex 数据的下标
+ */
+const handleChangeParamType = (type, pmIndex) => {
+  let value = dialog.value.form.params[pmIndex].value;
+  if (type === "VarFx") {
+    dialog.value.form.params[pmIndex].value = `\`${value}\``;
+  } else if (type === "String") {
+    dialog.value.form.params[pmIndex].value = String(value).replace(/`/g, "");
+  } else {
+    dialog.value.form.params[pmIndex].value = window[dialog.value.form.params[pmIndex].type](
+      String(value).replace(/`/g, ""),
+    );
+  }
+};
+/**
+ * 改变类型时，切换请求数据支持表达式的字符串方式
+ * @param type
+ * @param {String} type 选择的类型
+ * @param {Number} dtIndex 数据的下标
+ */
+const handleChangeDataType = (type, dtIndex) => {
+  let value = dialog.value.form.data[dtIndex].value;
+  if (type === "VarFx") {
+    dialog.value.form.data[dtIndex].value = `\`${value}\``;
+  } else if (type === "String") {
+    dialog.value.form.data[dtIndex].value = String(value).replace(/`/g, "");
+  } else {
+    dialog.value.form.data[dtIndex].value = window[dialog.value.form.data[dtIndex].type](
+      String(value).replace(/`/g, ""),
+    );
+  }
+};
+/**
  * 保存
  */
 const handleSave = () => {
@@ -353,8 +423,6 @@ const handleSave = () => {
 
       // 结果
       dialog.value.visible = false;
-      /*     // 缓存全局数据源列表
-      setDataSources(dataSources.value); */
       ElMessage({
         type: "success",
         message: "操作成功",

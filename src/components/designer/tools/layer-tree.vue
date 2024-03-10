@@ -48,7 +48,6 @@ const handleClick = () => {
 };
 // 节点点击
 const handleNodeClick = (node) => {
-  console.log(11, node);
   props.designer.setSelected(node);
 };
 </script>

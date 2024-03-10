@@ -1,22 +1,27 @@
-import { computed, onMounted, defineComponent, defineProps, h, ref, resolveComponent } from "vue";
-import { toPascalCase } from "@lime-util/util";
+import { computed, ref, defineComponent, h, resolveComponent } from "vue";
 import useGlobal from "@/hooks/global";
+import useWidget from "@/hooks/widget";
 
 /**
  * 预览渲染的hooks
  * @param props
  */
-export default ({ props }) => {
+export default function ({ props }) {
   // 使用全局配置的hooks
-  const { executeGlobalEventFn } = useGlobal({ props });
+  const { executeGlobalEvent, getGlobalAction, executeGlobalAction } = useGlobal({ props });
+  // 使用组件的hooks
+  const { getPropValue } = useWidget({ props });
+
+  // 当前入口组件的vue实例
+  let vueInstance = null;
 
   // 渲染的元素列表
   const widgets = computed(() => {
-    return props.data.widgets;
+    return props.widgets;
   });
   // 全局配置
   const globalConfig = computed(() => {
-    return props.data.globalConfig;
+    return props.globalConfig;
   });
 
   /**
@@ -25,8 +30,12 @@ export default ({ props }) => {
    * @param {Object} widget 当前组件
    * @returns {Object} 返回当前组件的属性
    */
-  const getWidgetProps = (vueInstance, widget) => {
-    return widget.props;
+  const getWidgetProps = function (vueInstance, widget) {
+    let bindProps = {};
+    for (let propName in widget.props) {
+      bindProps[propName] = getPropValue(widget.props[propName], vueInstance);
+    }
+    return bindProps;
   };
   /**
    * 获得组件的事件
@@ -34,28 +43,46 @@ export default ({ props }) => {
    * @param {Object} widget 当前组件
    * @returns {Object} 返回当前组件的事件
    */
-  const getWidgetEvents = (vueInstance, widget) => {
+  const getWidgetEvents = function (vueInstance, widget) {
     let events = {};
     for (let event of widget.events || []) {
       // 绑定的事件名称，格式为onXx的才可以绑定
       let eventName = `on${event.name.charAt(0).toUpperCase() + event.name.slice(1)}`;
       // 执行代码的集合
-      let codeList = [];
+      let codeList = ["// 执行组件绑定的自定义事件"];
+
       // 事件代码
       if (event.code) {
         codeList.push(event.code);
       }
+
       // 动作代码
       if (event.action) {
-        let actionList = event.action.map((code) => {
-          return `this.$refs.${code}();`;
-        });
-        codeList = codeList.concat(`\n// 绑定组件动作`).concat(actionList);
+        // 全局动作
+        let globalActionList = event.action
+          .filter((code) => code.includes("$globalActions"))
+          .map((code) => {
+            let actionName = code.split(".")[1];
+            return `this.executeGlobalAction('${actionName}');`;
+          });
+        // 组件动作
+        let actionList = event.action
+          .filter((code) => !code.includes("$globalActions"))
+          .map((code) => {
+            // 获取要绑定组件的实例名
+            let sourceWidgetRefName = code && code.split(".")[0];
+            return `this.$refs.${sourceWidgetRefName} && this.$refs.${code}();`;
+          });
+        codeList = codeList
+          .concat(`\n// 执行组件绑定的全局动作代码`)
+          .concat(globalActionList)
+          .concat(`\n// 执行组件绑定的组件动作方法`)
+          .concat(actionList);
       }
+
       // 组装最终的事件
       events[eventName] = new Function(event.args, codeList.join("\n")).bind(vueInstance);
-
-      console.log(33, events[eventName]);
+      console.log("events[eventName]", events[eventName]);
     }
     return events;
   };
@@ -65,7 +92,7 @@ export default ({ props }) => {
    * @param {Array} widgets 组件列表
    * @returns {Array} 返回render生成的组件列表
    */
-  const getComponents = (vueInstance, widgets) => {
+  const getComponents = function (vueInstance, widgets) {
     return widgets.map((widget) => {
       // 当前组件的实例
       let component = resolveComponent(widget.type + "-widget");
@@ -90,33 +117,39 @@ export default ({ props }) => {
   // 返回生成的组件
   return defineComponent({
     mounted() {
-      console.log(globalConfig.value.globalEvents, this);
-      executeGlobalEventFn(globalConfig.value.globalEvents, "onMounted");
+      vueInstance = this;
+      this.executeGlobalEvent("onMounted", this);
     },
     updated() {
-      executeGlobalEventFn(globalConfig.value.globalEvents, "onUpdated");
+      this.executeGlobalEvent("onUpdated", this);
     },
     unmounted() {
-      executeGlobalEventFn(globalConfig.value.globalEvents, "onUnmounted");
+      this.executeGlobalEvent("onUnmounted", this);
     },
     beforeMount() {
-      executeGlobalEventFn(globalConfig.value.globalEvents, "onBeforeMount");
+      this.executeGlobalEvent("onBeforeMount", this);
     },
     beforeUpdate() {
-      executeGlobalEventFn(globalConfig.value.globalEvents, "onBeforeUpdate");
+      this.executeGlobalEvent("onBeforeUpdate", this);
     },
     beforeUnmount() {
-      executeGlobalEventFn(globalConfig.value.globalEvents, "onBeforeUnmount");
+      this.executeGlobalEvent("onBeforeUnmount", this);
     },
     activated() {
-      executeGlobalEventFn(globalConfig.value.globalEvents, "onActivated");
+      this.executeGlobalEvent("onActivated", this);
     },
     deactivated() {
-      executeGlobalEventFn(globalConfig.value.globalEvents, "onDeactivated");
+      this.executeGlobalEvent("onDeactivated", this);
+    },
+    methods: {
+      executeGlobalEvent: (eventName) =>
+        executeGlobalEvent(globalConfig.value.globalEvents, eventName, vueInstance, globalConfig.value.globalVars),
+      executeGlobalAction: (actionName) =>
+        executeGlobalAction(globalConfig.value.globalActions, actionName, vueInstance, globalConfig.value.globalVars),
     },
     // 渲染函数
     render() {
       return h("div", {}, { default: () => getComponents(this, widgets.value) });
     },
   });
-};
+}

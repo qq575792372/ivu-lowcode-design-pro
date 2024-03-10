@@ -71,10 +71,8 @@ const props = defineProps({
   item: { type: Object, default: () => ({}) },
 });
 
-// 使用组件动作的hooks
-const {} = useWidget({ props });
 // 使用全局的hooks
-const { getGlobalActions, getFlatWidgets } = useGlobal({ props });
+const { getFlatWidgets } = useGlobal({ props });
 
 // 弹框
 const dialog = ref({
@@ -96,7 +94,7 @@ const allActionMap = computed(() => {
     global: {
       name: "$globalActions",
       label: "全局动作",
-      actions: getGlobalActions().map((v) => {
+      actions: props.globalConfig.globalActions.map((v) => {
         return {
           ...v,
           value: `$globalActions.${v.name}`,

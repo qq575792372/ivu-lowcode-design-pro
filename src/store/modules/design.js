@@ -10,6 +10,8 @@ const useDesignStore = defineStore("design", {
       globalVars: null,
       // 全局函数列表
       globalFns: [],
+      // 全局事件列表
+      globalEvents: [],
       // 全局动作列表
       globalActions: [],
       // 全局数据源列表
@@ -31,6 +33,8 @@ const useDesignStore = defineStore("design", {
     getGlobalVars: (state) => state.globalVars,
     // 全局函数列表
     getGlobalFns: (state) => state.globalFns,
+    // 全局事件列表
+    getGlobalEvents: (state) => state.globalEvents,
     // 全局动作列表
     getGlobalActions: (state) => state.globalActions,
     // 全局数据源列表
@@ -54,6 +58,10 @@ const useDesignStore = defineStore("design", {
     // 全局函数列表
     setGlobalFns(globalFns) {
       this.globalFns = globalFns;
+    },
+    // 全局事件列表
+    setGlobalEvents(globalEvents) {
+      this.globalEvents = globalEvents;
     },
     // 全局动作列表
     setGlobalActions(globalActions) {

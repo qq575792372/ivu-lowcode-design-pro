@@ -62,10 +62,12 @@ declare module 'vue' {
     Props: typeof import('./src/components/designer/settings/props/index.vue')['default']
     Redo: typeof import('./src/components/designer/tools/redo.vue')['default']
     Render: typeof import('./src/components/render/index.vue')['default']
-    Render1: typeof import('./src/components/render1/index.vue')['default']
     SvgIcon: typeof import('./src/components/svg-icon/index.vue')['default']
     Tools: typeof import('./src/components/designer/tools/index.vue')['default']
     Undo: typeof import('./src/components/designer/tools/undo.vue')['default']
     VEasyForm: typeof import('./src/components/v-easy-form/index.vue')['default']
+  }
+  export interface ComponentCustomProperties {
+    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }

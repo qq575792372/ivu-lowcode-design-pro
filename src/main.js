@@ -7,7 +7,7 @@ const app = createApp(App);
 // element-plus需要手动引入的样式
 import "element-plus/es/components/message/style/css";
 import "element-plus/theme-chalk/el-message-box.css";
-import { ElMessage } from "element-plus";
+import { ElMessage, ElMessageBox } from "element-plus";
 
 // 使用 element-plus 图标
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
@@ -44,6 +44,5 @@ app.config.globalProperties.$confirm = ElMessageBox.confirm;
 app.config.globalProperties.$prompt = ElMessageBox.prompt;
 // 绑定axios的
 app.config.globalProperties.$request = request;
-console.log(311, app);
 // 挂载实例
 app.mount("#app");

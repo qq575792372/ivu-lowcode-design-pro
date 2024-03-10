@@ -11,6 +11,10 @@ import ace from "ace-builds";
 // ace的语言扩展工具
 import "ace-builds/src-noconflict/ext-language_tools";
 
+// ace的语法检查
+import workerJsonUrl from "ace-builds/src-noconflict/worker-json?url";
+import workerJavascriptUrl from "ace-builds/src-noconflict/worker-javascript?url";
+
 // ace的主题
 import "ace-builds/src-noconflict/theme-chrome";
 import "ace-builds/src-noconflict/theme-github";
@@ -66,7 +70,7 @@ const props = defineProps({
   // 是否开启语法检查
   useWorker: {
     type: Boolean,
-    default: true,
+    default: false,
   },
   // 是否显示外边框
   hasBorder: {
@@ -101,7 +105,7 @@ const props = defineProps({
   // 是否显示折叠部件
   showFoldWidgets: {
     type: Boolean,
-    default: false,
+    default: true,
   },
   // 是否高亮选中行
   highlightActiveLine: {
@@ -221,10 +225,12 @@ onMounted(() => {
   // 切换自动换行
   editor.getSession().setUseWrapMode(true);
 
-  // 配置语法
+  // 配置语法检查
+  ace.config.setModuleUrl("ace/mode/json_worker", workerJsonUrl);
+  ace.config.setModuleUrl("ace/mode/javascript_worker", workerJavascriptUrl);
+  // 配置语法自动提示
   ace.config.loadModule("ace/ext/language_tools", (langTools) => {
     langTools.addCompleter({
-      // 自定义语法补全
       getCompletions(editor, session, pos, prefix, callback) {
         callback(null, completions);
       },

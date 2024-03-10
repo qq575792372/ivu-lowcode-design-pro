@@ -78,19 +78,6 @@
         </div>
       </template>
     </el-collapse-item>
-    <el-collapse-item title="全局事件" name="globalEvents">
-      <el-form-item
-        v-for="(event, eventIndex) in globalConfig.globalEvents"
-        :key="eventIndex"
-        :label="event.name"
-        :label-width="110"
-        class="events-wrapper"
-      >
-        <el-button type="primary" :plain="!event.code" icon="Edit" @click="showGlobalEventsDialog(event, eventIndex)">
-          编辑
-        </el-button>
-      </el-form-item>
-    </el-collapse-item>
     <el-collapse-item title="全局动作" name="globalActions">
       <template v-if="globalConfig.globalActions.length">
         <el-form-item
@@ -133,6 +120,19 @@
         </div>
       </template>
     </el-collapse-item>
+    <el-collapse-item title="全局事件" name="globalEvents">
+      <el-form-item
+        v-for="(event, eventIndex) in globalConfig.globalEvents"
+        :key="eventIndex"
+        :label="event.name"
+        :label-width="110"
+        class="events-wrapper"
+      >
+        <el-button type="primary" :plain="!event.code" icon="Edit" @click="showGlobalEventsDialog(event, eventIndex)">
+          编辑
+        </el-button>
+      </el-form-item>
+    </el-collapse-item>
   </div>
 
   <!--弹框操作-->
@@ -164,8 +164,10 @@
     width="960px"
     :close-on-click-modal="false"
   >
-    <el-alert type="info" :closable="false">变量保存在globalVars中，以JSON对象形式存在。</el-alert>
-    <CodeEditor v-model="globalVarsDialog.data" />
+    <el-alert type="warning" :closable="false">
+      变量会保存在全局globalConfig的globalVars中，以JSON对象形式存在，允许在事件、动作、数据源等多处地方用$globalVars名称调用，并且支持双向绑定修改。
+    </el-alert>
+    <CodeEditor v-model="globalVarsDialog.data" lang="json" />
     <template #footer>
       <div class="text-align-center">
         <el-button type="primary" @click="handleSureGlobalVars">确定</el-button>
@@ -201,29 +203,15 @@
         <el-switch v-model="globalFnsDialog.form.enable" />
       </el-form-item>
     </el-form>
+    <el-alert type="info" :closable="false">
+      $globalFns.{{ globalFnsDialog.form.name }}&nbsp;($globalVars)&nbsp;{&nbsp;//&nbsp;$globalVars：全局变量
+    </el-alert>
     <CodeEditor v-model="globalFnsDialog.form.code" />
+    <el-alert type="info" :closable="false">}</el-alert>
     <template #footer>
       <div class="text-align-center">
         <el-button type="primary" @click="handleSureGlobalFns">确定</el-button>
         <el-button @click="globalFnsDialog.visible = false">取消</el-button>
-      </div>
-    </template>
-  </el-dialog>
-  <!--全局事件-->
-  <el-dialog
-    v-if="globalEventsDialog.visible"
-    v-model="globalEventsDialog.visible"
-    :title="globalEventsDialog.title"
-    append-to-body
-    draggable
-    width="960px"
-    :close-on-click-modal="false"
-  >
-    <CodeEditor v-model="globalEventsDialog.data" />
-    <template #footer>
-      <div class="text-align-center">
-        <el-button type="primary" @click="handleSureGlobalEvents">确定</el-button>
-        <el-button @click="globalEventsDialog.visible = false">取消</el-button>
       </div>
     </template>
   </el-dialog>
@@ -255,11 +243,37 @@
         <el-switch v-model="globalActionsDialog.form.enable" />
       </el-form-item>
     </el-form>
+    <el-alert type="info" :closable="false">
+      $globalActions.{{ globalActionsDialog.form.name }}&nbsp;($globalVars)&nbsp;{&nbsp;//&nbsp;$globalVars：全局变量
+    </el-alert>
     <CodeEditor v-model="globalActionsDialog.form.code" />
+    <el-alert type="info" :closable="false">}</el-alert>
     <template #footer>
       <div class="text-align-center">
         <el-button type="primary" @click="handleSureGlobalActions">确定</el-button>
         <el-button @click="globalActionsDialog.visible = false">取消</el-button>
+      </div>
+    </template>
+  </el-dialog>
+  <!--全局事件-->
+  <el-dialog
+    v-if="globalEventsDialog.visible"
+    v-model="globalEventsDialog.visible"
+    :title="globalEventsDialog.title"
+    append-to-body
+    draggable
+    width="960px"
+    :close-on-click-modal="false"
+  >
+    <el-alert type="info" :closable="false">
+      $globalEvents.{{ globalEventsDialog.eventName }}&nbsp;($globalVars)&nbsp;{&nbsp;//&nbsp;$globalVars：全局变量
+    </el-alert>
+    <CodeEditor v-model="globalEventsDialog.data" />
+    <el-alert type="info" :closable="false">}</el-alert>
+    <template #footer>
+      <div class="text-align-center">
+        <el-button type="primary" @click="handleSureGlobalEvents">确定</el-button>
+        <el-button @click="globalEventsDialog.visible = false">取消</el-button>
       </div>
     </template>
   </el-dialog>
@@ -278,9 +292,6 @@ const props = defineProps({
   designer: { type: Object, default: () => ({}) },
   globalConfig: { type: Object, default: null },
 });
-
-// 使用全局配置的hooks
-const { getGlobalEventFn } = useGlobal({ props });
 
 // 设计器中全局的数据配置，通过计算属性可以监听到改变
 const globalConfig = computed(() => props.globalConfig);
@@ -434,30 +445,6 @@ const handleSureGlobalFns = () => {
   });
 };
 
-/* 全局事件 */
-// 弹框
-const globalEventsDialog = ref({
-  visible: false,
-  title: "全局事件",
-  eventIndex: null,
-  data: "",
-});
-// 显示
-const showGlobalEventsDialog = (event, eventIndex) => {
-  globalEventsDialog.value.visible = true;
-  globalEventsDialog.value.eventIndex = eventIndex;
-  globalEventsDialog.value.data = event.code;
-};
-// 确定
-const handleSureGlobalEvents = () => {
-  globalConfig.value.globalEvents[globalEventsDialog.value.eventIndex].code = globalEventsDialog.value.data;
-  globalEventsDialog.value.visible = false;
-  ElMessage({
-    type: "success",
-    message: "操作成功",
-  });
-};
-
 /* 全局动作 */
 // 弹框
 const globalActionsDialog = ref({
@@ -546,6 +533,32 @@ const handleSureGlobalActions = () => {
         message: "操作成功",
       });
     }
+  });
+};
+
+/* 全局事件 */
+// 弹框
+const globalEventsDialog = ref({
+  visible: false,
+  title: "全局事件",
+  eventIndex: null,
+  eventName: "",
+  data: "",
+});
+// 显示
+const showGlobalEventsDialog = (event, eventIndex) => {
+  globalEventsDialog.value.visible = true;
+  globalEventsDialog.value.eventIndex = eventIndex;
+  globalEventsDialog.value.eventName = event.name;
+  globalEventsDialog.value.data = event.code;
+};
+// 确定
+const handleSureGlobalEvents = () => {
+  globalConfig.value.globalEvents[globalEventsDialog.value.eventIndex].code = globalEventsDialog.value.data;
+  globalEventsDialog.value.visible = false;
+  ElMessage({
+    type: "success",
+    message: "操作成功",
   });
 };
 </script>

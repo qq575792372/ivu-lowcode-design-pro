@@ -50,7 +50,7 @@ export function createDesigner(vueInstance) {
             label: "全局自定义动作1",
             enable: true,
             global: true,
-            code: "/*这里动作内容*/ console.log('触发全局自定义动作1');",
+            code: "console.log('触发全局自定义动作1');",
           },
         ],
         dataSources: [],
@@ -108,6 +108,8 @@ export function createDesigner(vueInstance) {
       designerStore.setGlobalVars(this.globalConfig.globalVars);
       // 全局函数列表
       designerStore.setGlobalFns(this.globalConfig.globalFns);
+      // 全局事件列表
+      designerStore.setGlobalEvents(this.globalConfig.globalEvents);
       // 全局动作列表
       designerStore.setGlobalActions(this.globalConfig.globalActions);
       // 全局数据源列表
@@ -134,6 +136,10 @@ export function createDesigner(vueInstance) {
       // 获取全局函数列表
       if (designerStore.getGlobalFns.length) {
         this.globalConfig.globalFns = designerStore.getGlobalFns;
+      }
+      // 获取全局事件列表
+      if (designerStore.getGlobalEvents.length) {
+        this.globalConfig.globalEvents = designerStore.getGlobalEvents;
       }
       // 获取全局动作列表
       if (designerStore.getGlobalActions.length) {
@@ -194,15 +200,14 @@ export function createDesigner(vueInstance) {
      */
     getWidget(typeName) {
       let widgetName = typeName + "-widget";
+      console.log("getWidget", vueInstance.$widgetConfigs);
       return vueInstance.$widgetConfigs[widgetName];
     },
     /**
      * 获得当前设计器组件的ref实例
      * @param typeName
      */
-    getWidgetRef(typeName) {
-      console.log("getWidgetRef", typeName, vueInstance);
-    },
+    getWidgetRef(typeName) {},
     /**
      * 选中父组件
      */

@@ -1,4 +1,5 @@
 <template>
+  {{ data.globalConfig.globalVars }}
   <component :is="render" class="render" />
 </template>
 <script setup>
@@ -16,6 +17,6 @@ const props = defineProps({
 
 // 使用预览渲染的hooks
 const render = shallowRef(null);
-render.value = useRender({ props });
+render.value = useRender({ props: { widgets: props.data.widgets, globalConfig: props.data.globalConfig } });
 </script>
 <style scoped lang="scss"></style>

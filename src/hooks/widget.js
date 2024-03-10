@@ -1,13 +1,13 @@
-import { computed, ref } from "vue";
+import { computed, ref, watchEffect, readonly } from "vue";
 import useGlobal from "@/hooks/global";
 import useDataSources from "@/hooks/data-sources";
 
 /**
  * 组件的hooks
  */
-export default ({ props, emits }) => {
+export default function ({ props, emits }) {
   // 使用全局配置的hooks
-  const { executeGlobalEventFn } = useGlobal({ props, emits });
+  const { executeGlobalFn } = useGlobal({ props, emits });
   // 使用数据源的hooks
   const { requestData } = useDataSources({ props, emits });
 
@@ -16,21 +16,15 @@ export default ({ props, emits }) => {
 
   // 组件属性
   /**
-   * 通过元素属性名获取绑定的值
-   * @description 该方法会返回解析后的值，在页面中直接使用
-   * @param {[String]} propName 属性名称
-   * @returns {Object} 返回该元素属性解析后的值
-   */
-  const getPropValue = (propName) => {
-    return computed(() => getPropResult(props.widget.props[propName]));
-  };
-  /**
-   * 解析绑定的值的结果
+   * 获得元素属性绑定值的解析结果
    * @description 会解析属性绑定的类型，包括变量，表达式，函数
    * @param {String} propValue 属性的值
-   * @returns {Object} 返回值解析后的结果
+   * @returns {[String,Number,Object,Null,Undefined]} 返回值解析后的结果
    */
-  const getPropResult = async (propValue) => {
+  const getPropValue = function (propValue) {
+    // 绑定的入口vue实例
+    let vueInstance = this;
+
     // 全局变量
     if (propValue.includes("$globalVars")) {
       // 通过对象取值路径获取值
@@ -39,15 +33,31 @@ export default ({ props, emits }) => {
     }
     // 全局函数
     else if (propValue.includes("$globalFns")) {
-      let bindValue = propValue.split(".")[1]; // 获取到函数名称
-      return executeGlobalEventFn(globalConfig.value.globalFns, bindValue);
+      let bindValue = propValue.split(".")[1];
+      return executeGlobalFn(globalConfig.value.globalFns, bindValue, vueInstance, globalConfig.value.globalVars);
     }
     // 数据源
     else if (propValue.includes("$dataSources")) {
-      let bindValue = propValue.split(".")[1]; // 获取到数据源名称
-      return await requestData(bindValue); // 获取到异步接口数据
+      let bindValue = propValue.split(".")[1];
+      // 获取请求的结果
+      const getResponseData = (bindValue) => {
+        let propValue = ref(null);
+        watchEffect(async (onCleanup) => {
+          propValue.value = await requestData(
+            bindValue,
+            {
+              myId: 123,
+              myName: "myName",
+            },
+            vueInstance,
+            globalConfig.value.globalVars,
+          );
+        });
+        return readonly(propValue);
+      };
+      return getResponseData(bindValue);
     }
-    // 普通值
+    // 普通值，返回自身
     else {
       return propValue;
     }
@@ -55,94 +65,55 @@ export default ({ props, emits }) => {
 
   // 组件事件
   /**
-   * 获得元素指定事件的配置
+   * 获得元素的事件配置
    * @param {Object} widget 元素对象
    * @param {String} eventName 事件名
-   * @returns {Object} 返回该元素指定的事件
+   * @returns {Object} 返回元素的事件配置
    */
-  const getEvent = (widget, eventName) => {
+  const getEvent = function (widget, eventName) {
     return widget.events.find((v) => v.name === eventName);
   };
   /**
-   * 获得元素指定事件的函数
+   * 执行元素的事件
    * @param {Object} widget 元素对象
    * @param {String} eventName 事件名
-   * @returns {Function} 返回创建后的函数
+   * @returns {Function} 返回执行后的函数
    */
-  const getEventFn = (widget, eventName) => {
+  const executeEvent = function (widget, eventName) {
     let event = getEvent(widget, eventName);
-    return event && new Function(...event.args, event.code);
-  };
-  /**
-   * 执行元素指定的事件
-   * @param {Object} widget 元素对象
-   * @param {String} eventName 事件名
-   * @returns {Function} 返回创建后的函数
-   */
-  const executeEvent = (widget, eventName) => {
-    let eventFn = getEventFn(widget, eventName);
+    let eventFn = new Function(...event.args, event.code);
     return eventFn(widget);
-  };
-  /**
-   * 执行元素指定事件的动作
-   * @param {Object} widget 元素对象
-   * @param {String} eventName 事件名
-   * @returns {Function} 返回创建后的函数
-   */
-  const executeEventAction = (widget, eventName) => {
-    let event = getEvent(widget, eventName);
-    // 遍历执行该事件对应的动作
-    event.action &&
-      event.action.forEach((actionName) => {
-        /*  let currentAction = allActionList.value.find((v) => v.name === actionName);
-if (currentAction) {
- let actionFn = new Function("widget", currentAction.code);
- actionFn(widget);
-} */
-      });
   };
 
   // 组件动作
   /**
-   * 获得元素指定动作的配置
+   * 获得元素的动作配置
    * @param {Object} widget 元素对象
    * @param {String} actionName 动作名
-   * @returns {Object} 返回该元素指定的动作
+   * @returns {Object} 返回元素的动作配置
    */
-  const getAction = (widget, actionName) => {
+  const getAction = function (widget, actionName) {
     return widget.actions.find((v) => v.name === actionName);
   };
   /**
-   * 获得元素的动作
+   * 执行元素的动作
    * @param {Object} widget 元素对象
    * @param {String} actionName 动作名
-   * @returns {Function} 返回创建后的函数
+   * @returns {Function} 返回执行后的函数
    */
-  const getActionFn = (widget, actionName) => {
+  const executeAction = function (widget, actionName) {
     let action = getAction(widget, actionName);
     return action && new Function("widget", action.code);
-  };
-  /**
-   * 获得元素的动作列表
-   * @param {Object} widget 元素对象
-   * @returns {Object} 返回该元素的动作列表
-   */
-  const getActions = (widget) => {
-    return widget.actions;
   };
 
   return {
     // 组件属性
     getPropValue,
-    getPropResult,
     // 组件事件
     getEvent,
-    getEventFn,
     executeEvent,
-    executeEventAction,
     // 组件动作
     getAction,
-    getActionFn,
-    getActions,
+    executeAction,
   };
-};
+}
