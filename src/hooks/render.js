@@ -1,4 +1,5 @@
-import { computed, ref, defineComponent, h, resolveComponent } from "vue";
+import { computed, h, resolveComponent } from "vue";
+import { defineComponent } from "@vue/composition-api";
 import useGlobal from "@/hooks/global";
 import useWidget from "@/hooks/widget";
 
@@ -8,7 +9,7 @@ import useWidget from "@/hooks/widget";
  */
 export default function ({ props }) {
   // 使用全局配置的hooks
-  const { executeGlobalEvent, getGlobalAction, executeGlobalAction } = useGlobal({ props });
+  const { executeGlobalEvent, executeGlobalAction } = useGlobal({ props });
   // 使用组件的hooks
   const { getPropValue } = useWidget({ props });
 
