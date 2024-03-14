@@ -1,0 +1,10 @@
+{
+  "type": "simple-container",
+  "label": "普通容器",
+  "widgets": [],
+  "props": {
+    "name": "",
+    "className": "",
+    "displayType": ""
+  }
+}

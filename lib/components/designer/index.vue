@@ -1,0 +1,49 @@
+<template>
+  <div class="designer">
+    <div class="widget-canvas">
+      <!--在设计器入口传入设计器数据-->
+      <CanvasDrag :designer :widgets="props.designer.widgets" :global-config="props.designer.globalConfig" />
+    </div>
+  </div>
+</template>
+<script setup>
+import { watch } from "vue";
+import { useDesignerStore } from "@/store";
+import CanvasDrag from "./canvas-drag/index.vue";
+
+defineOptions({
+  name: "Design",
+});
+
+// props
+const props = defineProps({ designer: { type: Object, default: () => ({}) } });
+
+// 获取到设计器的store
+const designerStore = useDesignerStore();
+
+// 监听设计器widgets列表
+watch(
+  () => props.designer.widgets,
+  (val) => {
+    // 缓存设计器的widgets列表
+    designerStore.setWidgets(val);
+  },
+  {
+    deep: true,
+    immediate: true,
+  },
+);
+</script>
+<style lang="scss" scoped>
+.designer {
+  overflow: hidden;
+  height: 100%;
+
+  .widget-canvas {
+    height: 100%;
+    overflow: auto;
+    padding: var(--cmp-padding);
+    backface-visibility: hidden;
+  }
+}
+</style>

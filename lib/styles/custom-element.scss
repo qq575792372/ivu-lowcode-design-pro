@@ -1,0 +1,59 @@
+/**
+ * 自定义element组件样式，覆盖默认
+ * 组件大小：default=32px, large=40px, small=24px
+ */
+
+/* el-input */
+.el-input {
+  box-sizing: border-box;
+
+  .el-input__wrapper {
+    box-shadow: none;
+    border-style: solid;
+    border-width: 1px;
+    border-color: var(--border-standard-color);
+    transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+    border-radius: 2px;
+    outline: 0;
+
+    &:hover {
+      box-shadow: none;
+      border-color: var(--primary-color);
+    }
+
+    &.is-focus {
+      /* update: el-input增加聚焦效果 */
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 2px rgba(45, 140, 240, 0.2);
+      border-width: 1px;
+      border-style: solid;
+    }
+  }
+
+  // 禁用
+  &.is-disabled {
+    .el-input__wrapper {
+      box-shadow: none;
+
+      &:hover {
+        box-shadow: none;
+        border-color: var(--border-standard-color);
+      }
+    }
+  }
+}
+
+/* el-button */
+.el-button1 {
+  transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+  box-shadow: none;
+  border-radius: 2px !important;
+  // background-color: $--primary-color !important;
+  // border-color: $--primary-color !important;
+  &:focus {
+    /* update: el-input增加聚焦效果 */
+    border-width: 1px;
+    border-style: solid;
+    box-shadow: 0 0 0 2px rgba(45, 140, 240, 0.2);
+  }
+}
