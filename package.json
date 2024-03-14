@@ -17,10 +17,12 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@arco-design/web-vue": "^2.54.6",
     "@element-plus/icons-vue": "^2.3.1",
     "@lime-util/util": "^3.2.8",
     "@vue/composition-api": "^1.7.2",
     "ace-builds": "^1.32.6",
+    "ant-design-vue": "^4.1.2",
     "axios": "^1.6.7",
     "consola": "^3.2.3",
     "element-plus": "^2.6.1",
@@ -28,7 +30,10 @@
     "glob": "^10.3.10",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",
+    "primevue": "^3.49.1",
     "rollup-plugin-vue": "^6.0.0",
+    "tdesign-vue-next": "^1.9.0",
+    "vant": "^4.8.5",
     "vue": "^3.4.21",
     "vue-draggable-plus": "^0.3.5"
   },
