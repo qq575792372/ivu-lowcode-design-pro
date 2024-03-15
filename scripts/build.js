@@ -1,9 +1,11 @@
-console.log(3333);
 import path from "path";
 import { fileURLToPath } from "url";
 import vue from "rollup-plugin-vue";
 import postcss from "rollup-plugin-postcss";
+import commonjs from "rollup-plugin-commonjs";
 import fs from "fs-extra";
+
+import { defineConfig, build } from "vite";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -14,20 +16,54 @@ function resolve(dir) {
   return path.resolve(__dirname, dir);
 }
 
-const buildComponents = async () => {
-  return {
-    input: ["src/components"],
-    output: {
-      dir: "es/",
+/* build({
+  plugins: [vue(), postcss()],
+  build: {
+    lib: {
+      entry: resolve("../src/components/easy-form/index.vue"),
+      name: "EasyForm",
+      formats: ["es"],
     },
-    plugins: [vue(), postcss()],
-  };
-};
-const test = {
-  input: [resolve("../src/components/render/index.js")],
+    outDir: "easy-form-dist",
+    rollupOptions: {
+      external: ["vue"],
+      globals: {
+        vue: "Vue",
+      },
+    },
+  },
+}); */
+
+export default defineConfig({
+  plugins: [vue(), postcss()],
+  build: {
+    lib: {
+      entry: resolve("../src/components/index.js"),
+      name: "components",
+      formats: ["es"],
+    },
+    outDir: "easy-form-dist",
+    output: {
+      preserveModules: true,
+    },
+    rollupOptions: {
+      external: ["vue"],
+      globals: {
+        vue: "Vue",
+      },
+    },
+  },
+});
+/*
+export default {
+  input: resolve("../src/components/easy-form/index.js"),
   output: {
     dir: "es/",
+    format: "es",
+    preserveModules: true,
+    preserveModulesRoot: "src",
   },
+  externals: ["vue"],
   plugins: [vue(), postcss()],
 };
-export default [test];
+*/
