@@ -1,18 +1,30 @@
+/**
+ * 打包的步骤
+ * 1.清空原有的dist目录
+ * 2.创建dist/lowcode目录
+ * 3.创建dist/lowcode/src目录，把components、widgets、lang、utils、hooks、themes复制过来，并把components和widgets合并一起
+ * 4.在dist/lowcode下创建入口index.js文件，遍历
+ * 4.用rollup开始构建，以下都是基于上面dist/src中的产物开始编译构建
+ */
+
+
 import path from "path";
 import { fileURLToPath } from "url";
 import vue from "@vitejs/plugin-vue";
-/* import vue from "rollup-plugin-vue"; */
 import postcss from "rollup-plugin-postcss";
 import { defineConfig, build } from "vite";
 
 const __filename = fileURLToPath(import.meta.url); /*  */
 const __dirname = path.dirname(__filename);
 
-const outputDir = "../lib";
-
-function resolve(dir) {
+// 输出的root路径
+const outputRoot = "src";
+// 输出文件名
+const outputDir = "lib";
+// 转换路径
+const resolve = function(dir) {
   return path.resolve(__dirname, dir);
-}
+};
 
 /* build({
   build: {
@@ -57,7 +69,7 @@ export default defineConfig({
           preserveModules: true,
           dir: "dist/es",
           exports: undefined",
-          preserveModulesRoot: "src",
+          preserveModulesRoot: "src"
         },
         {
           format: "cjs",
@@ -65,11 +77,11 @@ export default defineConfig({
           preserveModules: true,
           dir: "dist/lib",
           exports: "named",
-          preserveModulesRoot: "src",
-        },
-      ],
-    },
-  },
+          preserveModulesRoot: "src"
+        }
+      ]
+    }
+  }
 });
 
 /*

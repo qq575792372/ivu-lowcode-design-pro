@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     Actions: typeof import('./src/components/designer/settings/actions/index.vue')['default']
+    Button: typeof import('./src/components/button/index.vue')['default']
     CanvasDrag: typeof import('./src/components/designer/canvas-drag/index.vue')['default']
     Clear: typeof import('./src/components/designer/tools/clear.vue')['default']
     CodeEditor: typeof import('./src/components/code-editor/index.vue')['default']
@@ -15,6 +16,7 @@ declare module 'vue' {
     ComponentRender1: typeof import('./src/components/designer/component-render1.vue')['default']
     DataSources: typeof import('./src/components/designer/settings/data-sources/index.vue')['default']
     Designer: typeof import('./src/components/designer/index.vue')['default']
+    EasyForm: typeof import('./src/components/easy-form/index.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElInput: typeof import('element-plus/es')['ElInput']
     EventBinder: typeof import('./src/components/designer/settings/events/event-binder.vue')['default']
@@ -33,6 +35,5 @@ declare module 'vue' {
     SvgIcon: typeof import('./src/components/svg-icon/index.vue')['default']
     Tools: typeof import('./src/components/designer/tools/index.vue')['default']
     Undo: typeof import('./src/components/designer/tools/undo.vue')['default']
-    VEasyForm: typeof import('./src/components/v-easy-form/index.vue')['default']
   }
 }
