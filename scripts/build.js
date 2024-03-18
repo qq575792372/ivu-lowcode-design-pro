@@ -7,12 +7,15 @@
  * 4.用rollup开始构建，以下都是基于上面dist/src中的产物开始编译构建
  */
 
-
 import path from "path";
 import { fileURLToPath } from "url";
 import vue from "@vitejs/plugin-vue";
+import glob from "fast-glob";
 import postcss from "rollup-plugin-postcss";
 import { defineConfig, build } from "vite";
+import esbuild from "rollup-plugin-esbuild";
+import { nodeResolve } from "@rollup/plugin-node-resolve";
+import { rollup } from "rollup";
 
 const __filename = fileURLToPath(import.meta.url); /*  */
 const __dirname = path.dirname(__filename);
@@ -22,43 +25,51 @@ const outputRoot = "src";
 // 输出文件名
 const outputDir = "lib";
 // 转换路径
-const resolve = function(dir) {
+const resolve = function (dir) {
   return path.resolve(__dirname, dir);
 };
-
-/* build({
+const files = await glob.globSync("src/components/*/index.js");
+console.log(333, files);
+const bundle = await build({
   build: {
+    plugins: [vue(), postcss()],
+    lib: {
+      entry: [resolve("../src/components/button/index.js")],
+      // entry: ["../src/components/*/index.js"]
+    },
+    outDir: "es",
     rollupOptions: {
-      plugins: [vue({ css: true, compileTemplate: true }), postcss()],
       external: ["vue"],
-      input: [resolve("../src/components/index.js")],
       output: [
         {
           format: "es",
           entryFileNames: "[name].js",
-          /!*         preserveModules: true,
-          preserveModulesRoot: "src", *!/
+          preserveModules: true,
           dir: "dist/es",
+          exports: undefined,
+          preserveModulesRoot: "src",
         },
-        /!*         {
+        {
           format: "cjs",
           entryFileNames: "[name].cjs",
-          dir: "dist/lib",
           preserveModules: true,
+          dir: "dist/lib",
+          exports: "named",
           preserveModulesRoot: "src",
-        }, *!/
+        },
       ],
     },
   },
-}); */
+});
 
-export default defineConfig({
+console.log(111, bundle);
+/* export default defineConfig({
   plugins: [vue(), postcss()],
   build: {
-    /*     lib: {
+    /!*     lib: {
       entry: resolve("../src/components/index.js"),
       formats: ["es", "cjs"],
-    }, */
+    }, *!/
     rollupOptions: {
       external: ["vue"],
       input: resolve("../src/components/index.js"),
@@ -82,7 +93,7 @@ export default defineConfig({
       ]
     }
   }
-});
+}); */
 
 /*
 export default {
@@ -101,4 +112,30 @@ export default {
   externals: ["vue"],
   plugins: [vue(), postcss()],
 };
+*/
+/*
+
+const bundle = await rollup({
+  input: [resolve("../src/components/index.js")],
+  externals: ["vue"],
+  plugins: [vue(), postcss(), nodeResolve(), esbuild()],
+  treeshake: false,
+});
+
+bundle.write({
+  dir: "dist/es",
+  format: "es",
+  exports: "named", // 输出多个文件
+  preserveModules: true,
+  preserveModulesRoot: "src",
+  entryFileNames: `[name].mjs`,
+});
+bundle.write({
+  dir: "dist/cjs",
+  format: "cjs",
+  exports: "named", // 输出多个文件
+  preserveModules: true,
+  preserveModulesRoot: "src",
+  entryFileNames: `[name].cjs`,
+});
 */

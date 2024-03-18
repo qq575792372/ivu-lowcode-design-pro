@@ -17,8 +17,6 @@ declare module 'vue' {
     DataSources: typeof import('./src/components/designer/settings/data-sources/index.vue')['default']
     Designer: typeof import('./src/components/designer/index.vue')['default']
     EasyForm: typeof import('./src/components/easy-form/index.vue')['default']
-    ElButton: typeof import('element-plus/es')['ElButton']
-    ElInput: typeof import('element-plus/es')['ElInput']
     EventBinder: typeof import('./src/components/designer/settings/events/event-binder.vue')['default']
     Events: typeof import('./src/components/designer/settings/events/index.vue')['default']
     ExportJson: typeof import('./src/components/designer/tools/export-json.vue')['default']
