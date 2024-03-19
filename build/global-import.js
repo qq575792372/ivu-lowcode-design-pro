@@ -1,4 +1,4 @@
-import { globSync } from "glob";
+import glob from "fast-glob";
 
 const importList = [
   "import useGlobal from '/src/hooks/global.js'",
@@ -29,10 +29,11 @@ export function toPascalCase(value) {
   }
 }
 
-export default function GlobalImportPlugin() {
+export default async function GlobalImportPlugin() {
   const virtualModuleId = "virtual:global-import";
   const resolvedVirtualModuleId = "\0" + virtualModuleId;
-  const widgets = globSync("./src/platform*/widgets/*-widget/index.vue");
+  const widgets = await glob("./src/platform*/widgets/*-widget/index.vue");
+  console.log(111, widgets);
   widgets.forEach((dir) => {
     dir = dir.replaceAll("\\", "/");
     const cmpName = toPascalCase(dir.replace(/.*\/([^/]+)\/[^/]+\.vue$/, "$1"));

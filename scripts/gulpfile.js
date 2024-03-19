@@ -12,9 +12,9 @@ function resolve(dir) {
   return path.resolve(__dirname, dir);
 }
 
-async function clean(cb) {
+async function clean() {
+  console.log("删除啦");
   fs.removeSync(resolve(outputDir));
-  return cb();
 }
 
 /**
@@ -41,6 +41,9 @@ async function buildOutput(cb) {
 /**
  * 生成install入口文件
  */
-async function generateEntry() {}
+async function generateEntry() {
+  console.log("generateEntry");
+}
 
-gulp.task("default", gulp.series(clean, buildOutput, generateEntry));
+export default gulp.series(clean, gulp.parallel(generateEntry));
+// gulp.task("default", gulp.series(clean));
