@@ -15,17 +15,16 @@ import { defineConfig, build } from "vite";
 import esbuild from "rollup-plugin-esbuild";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 import { rollup } from "rollup"; */
-import * as util from "../scripts/utils";
+import { pathResolve } from "../scripts/utils/index.js";
 
-console.log(111, util);
-
-/* // 输出的root路径
+// root根路径
 export const root = pathResolve("../");
-// 输出的root路径
+export const outputSrc = pathResolve(root, "src");
+
+// 输出
 export const outputRoot = "dist";
-// 输出文件名
 export const outputDir = "lowcode";
-// 输出 */
+console.log(111, outputSrc);
 
 /* const files = await glob.globSync("src/components/!*!/index.js");
 console.log(333, files);
