@@ -34,7 +34,7 @@ app.use(SvgIcon);
 // 引入样式主文件
 import "@/styles/index.scss";
 // 引入主题样式
-import "@/theme/default.scss";
+import "@/theme/index.scss";
 
 /* 绑定全局变量 */
 // 绑定element-plus的
