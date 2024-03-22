@@ -3,13 +3,13 @@
  * @description 引入主题覆盖element-plus默认，声明不同类型的变量
  */
 
-// 主题-亮色
-@import './light.scss';
+// 默认主题色
+@import './default.scss';
 
 // 引入element-plus变量
 @import './element-plus.scss';
 
-/* 系统变量 */
+/* 全局变量 */
 :root {
   // 常规字体
   --font-size-12: 12px;
@@ -28,16 +28,17 @@
   // 字重
   --font-weight-400: 400;
   --font-weight-500: 500;
+  --font-weight-600: 600;
   --font-weight-700: 700;
   --font-weight-bold: bold;
 
-  // 常规间距
+  // 常规间距/高度
   --sp4: 4px;
   --sp8: 8px;
   --sp12: 12px;
   --sp16: 16px;
   --sp24: 24px;
-  // 大间距
+  // 大间距/高度
   --sp32: 32px;
   --sp40: 40px;
   --sp48: 48px;
@@ -45,9 +46,10 @@
   --sp64: 64px;
 
   // 圆角
-  --border-radius-none: 0;
   --border-radius: 2px;
-  --border-radius-round: 32px;
+  --border-radius-small: 2px;
+  --border-radius-large: 4px;
+  --border-radius-round: 24px;
   --border-radius-circle: 50%;
 
   // 动作时间
@@ -60,23 +62,23 @@
 /* 组件变量 */
 :root {
   // 组件尺寸-default
-  --cmp-size: 32px; // 组件大小，一般用在输入框，按钮等高度
-  --cmp-padding: 8px; // 组件内边距
-  --cmp-margin: 8px; // 组件外边距
+  --cmp-size: var(--sp32); // 组件大小，一般用在输入框，按钮等高度
+  --cmp-padding: var(--sp12); // 组件内边距
+  --cmp-margin: var(--sp12); // 组件外边距
   --cmp-font-size: var(--font-size-14); // 组件文字大小
-  --cmp-border-radius: 2px; // 组件圆角
+  --cmp-border-radius: var(--border-radius);; // 组件圆角
 
   // 组件尺寸-large
-  --cmp-large-size: 40px;
-  --cmp-large-padding: 12px;
-  --cmp-large-margin: 12px;
-  --cmp-large-font-size: var(--font-size-16);
-  --cmp-large-border-radius: 4px;
+  --cmp-size-large: var(--sp40);
+  --cmp-padding-large: var(--sp16);
+  --cmp-margin-large: var(--sp16);
+  --cmp-font-size-large: var(--font-size-16);
+  --cmp-border-radius-large: var(--border-radius-large);
 
   // 组件尺寸-small
-  --cmp-small-size: 24px;
-  --cmp-small-padding: 4px;
-  --cmp-small-margin: 4px;
-  --cmp-small-font-size: var(--font-size-12);
-  --cmp-small-border-radius: 2px;
+  --cmp-size-small: var(--sp24);
+  --cmp-padding-small: var(--sp4);
+  --cmp-margin-small: var(--sp4);
+  --cmp-font-size-small: var(--font-size-12);
+  --cmp-border-radius-small: var(--border-radius-small);
 }

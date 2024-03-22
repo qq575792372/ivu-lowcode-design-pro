@@ -1,119 +1,101 @@
 /**
- * 默认主题
+ * default主题
+ * @description 主题可以分为 light明亮 和 dark暗黑 两种模式
  */
+// default主题-亮色
 :root,
-:root[theme-mode='light'] {
-  // 主题色
-  --primary-color: var(--primary-light-color-6);
-  --info-color: var(--info-light-color-6);
-  --success-color: var(--success-light-color-6);
-  --warning-color: var(--warning-light-color-6);
-  --danger-color: var(--danger-light-color-6);
+:root[theme-color="default"][theme-mode='light'] {
+  // 主题色（默认取第6个色度）
+  --primary-color: var(--primary-color-6);
+  --info-color: var(--info-color-6);
+  --success-color: var(--success-color-6);
+  --warning-color: var(--warning-color-6);
+  --danger-color: var(--danger-color-6);
 
   // 主要颜色-色板
-  --primary-light-color-1: #e7f2fe;
-  --primary-light-color-2: #bad9fa;
-  --primary-light-color-3: #8dc1f6;
-  --primary-light-color-4: #5fa8f3;
-  --primary-light-color-5: #328fef;
-  --primary-light-color-6: #1c83ee;
-  --primary-light-color-7: #1974d4;
-  --primary-light-color-8: #1666ba;
-  --primary-light-color-9: #1358a1;
-  --primary-light-color-10: #104a87;
+  --primary-color-1: #ebf8ff;
+  --primary-color-2: #c2e8ff;
+  --primary-color-3: #99d5ff;
+  --primary-color-4: #70bfff;
+  --primary-color-5: #46a3fa;
+  --primary-color-6: #1c83ee;
+  --primary-color-7: #0e61c7;
+  --primary-color-8: #0345a1;
+  --primary-color-9: #002f7a;
+  --primary-color-10: #001d54;
   // 主要颜色-功能色
-  --primary-hover-color: var(--primary-light-color-5);
-  --primary-focus-color: var(--primary-light-color-7);
-  --primary-active-color: var(--primary-light-color-8);
-  --primary-disabled-color: var(--primary-light-color-2);
-  --primary-light-color: var(--primary-light-color-1);
-  --primary-light-hover-color: var(--primary-light-color-2);
-  --primary-deep-color: var(--primary-light-color-8);
-  --primary-deep-hover-color: var(--primary-light-color-9);
+  --primary-hover-color: var(--primary-color-5);
+  --primary-focus-color: var(--primary-color-7);
+  --primary-active-color: var(--primary-color-8);
+  --primary-disabled-color: var(--primary-color-2);
 
   // 信息颜色-色板
-  --info-light-color-1: #dcdee2;
-  --info-light-color-2: #c0c4cc;
-  --info-light-color-3: #a9b4bb;
-  --info-light-color-4: #808e96;
-  --info-light-color-5: #5c6771;
-  --info-light-color-6: #495057;
-  --info-light-color-7: #404447;
-  --info-light-color-8: #323638;
-  --info-light-color-9: #282b2e;
-  --info-light-color-10: #282b2e;
+  --info-color-1: #F7F8FA;
+  --info-color-2: #F2F3F5;
+  --info-color-3: #E5E6EB;
+  --info-color-4: #C9CDD4;
+  --info-color-5: #A9AEB8;
+  --info-color-6: #86909C;
+  --info-color-7: #6B7785;
+  --info-color-8: #4E5969;
+  --info-color-9: #272E3B;
+  --info-color-10: #1D2129;
   // 信息颜色-功能色
-  --info-hover-color: var(--info-light-color-5);
-  --info-focus-color: var(--info-light-color-7);
-  --info-active-color: var(--info-light-color-8);
-  --info-disabled-color: var(--info-light-color-2);
-  --info-light-color: var(--info-light-color-1);
-  --info-light-hover-color: var(--info-light-color-2);
-  --info-deep-color: var(--info-light-color-8);
-  --info-deep-hover-color: var(--info-light-color-9);
+  --info-hover-color: var(--info-color-5);
+  --info-focus-color: var(--info-color-7);
+  --info-active-color: var(--info-color-8);
+  --info-disabled-color: var(--info-color-2);
 
   // 成功颜色-色板
-  --success-light-color-1: #e8f8e6;
-  --success-light-color-2: #bceab5;
-  --success-light-color-3: #90dc84;
-  --success-light-color-4: #63ce53;
-  --success-light-color-5: #37c022;
-  --success-light-color-6: #22ba0a;
-  --success-light-color-7: #1c9908;
-  --success-light-color-8: #178007;
-  --success-light-color-9: #136605;
-  --success-light-color-10: #0e4d04;
+  --success-color-1: #e8fae1;
+  --success-color-2: #b7eda4;
+  --success-color-3: #90e077;
+  --success-color-4: #69d44e;
+  --success-color-5: #44c72a;
+  --success-color-6: #22ba0a;
+  --success-color-7: #0f9400;
+  --success-color-8: #076e00;
+  --success-color-9: #024700;
+  --success-color-10: #002100;
   // 成功颜色-功能色
-  --success-hover-color: var(--success-light-color-5);
-  --success-focus-color: var(--success-light-color-7);
-  --success-active-color: var(--success-light-color-8);
-  --success-disabled-color: var(--success-light-color-2);
-  --success-light-color: var(--success-light-color-1);
-  --success-light-hover-color: var(--success-light-color-2);
-  --success-deep-color: var(--success-light-color-8);
-  --success-deep-hover-color: var(--success-light-color-9);
+  --success-hover-color: var(--success-color-5);
+  --success-focus-color: var(--success-color-7);
+  --success-active-color: var(--success-color-8);
+  --success-disabled-color: var(--success-color-2);
 
   // 警告颜色-色板
-  --warning-light-color-1: #fef2e8;
-  --warning-light-color-2: #fad8ba;
-  --warning-light-color-3: #f6be8d;
-  --warning-light-color-4: #f3a560;
-  --warning-light-color-5: #ef8b33;
-  --warning-light-color-6: #ee7f1d;
-  --warning-light-color-7: #d17b2f;
-  --warning-light-color-8: #ba6e2c;
-  --warning-light-color-9: #a3622a;
-  --warning-light-color-10: #8a5323;
+  --warning-color-1: #fff8eb;
+  --warning-color-2: #ffe7c2;
+  --warning-color-3: #ffd399;
+  --warning-color-4: #ffbc70;
+  --warning-color-5: #faa046;
+  --warning-color-6: #ee7f1d;
+  --warning-color-7: #c75e0e;
+  --warning-color-8: #a14203;
+  --warning-color-9: #7a2d00;
+  --warning-color-10: #541c00;
   // 警告颜色-功能色
-  --warning-hover-color: var(--warning-light-color-5);
-  --warning-focus-color: var(--warning-light-color-7);
-  --warning-active-color: var(--warning-light-color-8);
-  --warning-disabled-color: var(--warning-light-color-2);
-  --warning-light-color: var(--warning-light-color-1);
-  --warning-light-hover-color: var(--warning-light-color-2);
-  --warning-deep-color: var(--warning-light-color-8);
-  --warning-deep-hover-color: var(--warning-light-color-9);
+  --warning-hover-color: var(--warning-color-5);
+  --warning-focus-color: var(--warning-color-7);
+  --warning-active-color: var(--warning-color-8);
+  --warning-disabled-color: var(--warning-color-2);
 
   // 错误颜色-色板
-  --danger-light-color-1: #fee7e8;
-  --danger-light-color-2: #fababc;
-  --danger-light-color-3: #f68d91;
-  --danger-light-color-4: #f35f65;
-  --danger-light-color-5: #ef3239;
-  --danger-light-color-6: #ee1c24;
-  --danger-light-color-7: #cc181f;
-  --danger-light-color-8: #b3151b;
-  --danger-light-color-9: #991217;
-  --danger-light-color-10: #800f13;
+  --danger-color-1: #ffedeb;
+  --danger-color-2: #ffc8c2;
+  --danger-color-3: #ffa099;
+  --danger-color-4: #ff7570;
+  --danger-color-5: #fa4646;
+  --danger-color-6: #ee1c24;
+  --danger-color-7: #c70e1a;
+  --danger-color-8: #a10313;
+  --danger-color-9: #7a0010;
+  --danger-color-10: #54000e;
   // 错误颜色-功能色
-  --danger-hover-color: var(--danger-light-color-5);
-  --danger-focus-color: var(--danger-light-color-7);
-  --danger-active-color: var(--danger-light-color-8);
-  --danger-disabled-color: var(--danger-light-color-2);
-  --danger-light-color: var(--danger-light-color-1);
-  --danger-light-hover-color: var(--danger-light-color-2);
-  --danger-deep-color: var(--danger-light-color-8);
-  --danger-deep-hover-color: var(--danger-light-color-9);
+  --danger-hover-color: var(--danger-color-5);
+  --danger-focus-color: var(--danger-color-7);
+  --danger-active-color: var(--danger-color-8);
+  --danger-disabled-color: var(--danger-color-2);
 
   // 文字颜色
   --text-title-color: #282b2e; // 文字标题
@@ -125,29 +107,33 @@
 
   // 边框颜色
   --border-color: #dcdee2; // 常规
-  --border-light-color: #f8f9fa; // 浅
+  --border-light-color: #f2f3f5; // 浅
   --border-deep-color: #c9cdd4; // 深
-  // 边框颜色-功能色
-  --border-disabled-color: #dcdee2; // 禁用常规
-  --border-light-disabled-color: #f8f9fa; // 禁用浅
-  --border-deep-disabled-color: #c9cdd4; // 禁用深
+  --border-heavy-color: #86909C; // 重
 
-  // 背景色
-  --bg-color: #f8f9fa; // 常规
-  --bg-light-color: #f9f9f9; // 浅
-  --bg-deep-color: #e5e6eb; // 深
+  // 背景颜色
+  --bg-color: #ffffff; // 常规
   --bg-white-color: #ffffff; // 白
-  --bg-dark-color: #121314; // 黑
-  // 背景色-功能色
-  --bg-disabled-color: #f3f3f3; // 禁用常规
-  --bg-light-disabled-color: #f5f5f5; // 禁用浅
-  --bg-deep-disabled-color: #dcdee2; // 禁用深
+  --bg-dark-color: #1D2129; // 黑
+  --bg-page-color: #f8f9fa; // 页面背景
+
+  // 填充颜色
+  --fill-color: #f5f7f9; // 常规
+  --fill-light-color: #f8f9fa; // 浅
+  --fill-deep-color: #e5e6eb; // 深
+  --fill-heavy-color: #c9cdd4; // 重
+  // 填充颜色-功能色
+  --fill-hover-color: #f2f3f5; // 常规-hover
+  --fill-active-color: #f2f3f5; // 常规-active
+  --fill-light-hover-color: #f5f7f9; // 浅-hover
+  --fill-light-active-color: #f5f7f9; // 浅-active
+  --fill-deep-hover-color: #c9cdd4; // 深-hover
+  --fill-deep-active-color: #c9cdd4; // 深-active
+  --fill-heavy-hover-color: #86909C; // 重-hover
+  --fill-heavy-active-color: #86909C; // 重-active
 
   // 投影色
   --shadow: 0px 4px 8px rgba(28, 131, 238, 0.12); // 常规
   --shadow-light: 0px 4px 8px rgba(28, 131, 238, 0.12); // 浅
   --shadow-deep: 0px 4px 8px rgba(28, 131, 238, 0.12); // 深
-
-  // 其他
-  --bg-scroller-color: #eee; // 滚动条背景色
 }

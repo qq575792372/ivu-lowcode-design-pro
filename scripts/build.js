@@ -17,13 +17,13 @@ import { nodeResolve } from "@rollup/plugin-node-resolve";
 import { rollup } from "rollup"; */
 import { pathResolve } from "../scripts/utils/index.js";
 
-// root根路径
-export const root = pathResolve("../");
-export const outputSrc = pathResolve(root, "src");
+// root
+export const root = pathResolve("../", "../");
 
 // 输出
 export const outputRoot = "dist";
 export const outputDir = "lowcode";
+export const outputSrc = pathResolve(root, "src");
 console.log(111, outputSrc);
 
 /* const files = await glob.globSync("src/components/!*!/index.js");
