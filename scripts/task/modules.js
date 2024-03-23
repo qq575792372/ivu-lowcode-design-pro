@@ -7,7 +7,6 @@ import postcss from "rollup-plugin-postcss";
 import { generateExternal, pathResolve } from "../utils/index.js";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 import { outputCjs, root, outputDir, outputEsm, outputSrc, inputSrc } from "../utils/paths.js";
-import { rollup } from "rollup";
 import alias from "@rollup/plugin-alias";
 
 /**
@@ -28,7 +27,7 @@ export async function buildModules(done) {
           },
           {
             find: "@",
-            replacement: pathResolve(inputSrc, "./"),
+            replacement: pathResolve(outputSrc, "./"),
           },
         ],
       }),
@@ -60,5 +59,7 @@ export async function buildModules(done) {
       },
     },
   });
+
+  // 结束回调
   done();
 }

@@ -17,5 +17,5 @@ export default gulp.series(
   generateCmpSingleEntry,
   generateCmpAllEntry,
   buildModules,
-  /*   cleanSrc, */
+  cleanSrc,
 );
