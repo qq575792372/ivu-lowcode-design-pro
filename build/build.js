@@ -18,6 +18,7 @@ const __dirname = path.dirname(__filename);
  */
 export async function runBuild() {
   await build({
+    publicDir: false,
     plugins: [
       GlobalImportPlugin(),
       AutoImport({

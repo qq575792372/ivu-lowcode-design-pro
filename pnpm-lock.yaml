@@ -14,6 +14,9 @@ dependencies:
   '@lime-util/util':
     specifier: ^3.2.8
     version: 3.2.8
+  '@rollup/plugin-alias':
+    specifier: ^5.1.0
+    version: 5.1.0(rollup@4.13.0)
   '@rollup/plugin-node-resolve':
     specifier: ^15.2.3
     version: 15.2.3(rollup@4.13.0)
@@ -93,7 +96,7 @@ dependencies:
     specifier: ^4.7.0
     version: 4.7.0(vue@3.4.21)
   vue:
-    specifier: ^3.4.21
+    specifier: ^3.3.8
     version: 3.4.21(typescript@4.9.5)
   vue-draggable-plus:
     specifier: ^0.3.5
@@ -155,7 +158,7 @@ devDependencies:
     specifier: ^0.26.0
     version: 0.26.0(rollup@4.13.0)(vue@3.4.21)
   vite:
-    specifier: ^5.1.4
+    specifier: ^5.0.0
     version: 5.1.4(@types/node@18.11.18)(sass@1.71.1)
   vite-plugin-eslint:
     specifier: ^1.8.1
@@ -2016,6 +2019,19 @@ packages:
 
   /@popperjs/core@2.11.8:
     resolution: {integrity: sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==}
+    dev: false
+
+  /@rollup/plugin-alias@5.1.0(rollup@4.13.0):
+    resolution: {integrity: sha512-lpA3RZ9PdIG7qqhEfv79tBffNaoDuukFDrmhLqg9ifv99u/ehn+lOg30x2zmhf8AQqQUZaMk/B9fZraQ6/acDQ==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      rollup: ^1.20.0||^2.0.0||^3.0.0||^4.0.0
+    peerDependenciesMeta:
+      rollup:
+        optional: true
+    dependencies:
+      rollup: 4.13.0
+      slash: 4.0.0
     dev: false
 
   /@rollup/plugin-node-resolve@15.2.3(rollup@4.13.0):
@@ -7354,6 +7370,11 @@ packages:
     resolution: {integrity: sha512-JA//kQgZtbuY83m+xT+tXJkmJncGMTFT+C+g2h2R9uxkYIrE2yy9sgmcLhCnw57/WSD+Eh3J97FPEDFnbXnDUg==}
     dependencies:
       is-arrayish: 0.3.2
+    dev: false
+
+  /slash@4.0.0:
+    resolution: {integrity: sha512-3dOsAHXXUkQTpOYcoAxLIorMTp4gIQr5IW3iVb7A7lFIp0VHhnynm9izx6TssdrIcVIESAlVjtnO2K8bg+Coew==}
+    engines: {node: '>=12'}
     dev: false
 
   /slice-ansi@5.0.0:

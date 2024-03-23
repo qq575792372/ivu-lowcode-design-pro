@@ -1,5 +1,5 @@
 import { computed } from "vue";
-import useGlobal from "@/hooks/global";
+import useGlobal from "./global";
 
 /**
  * 数据源的hooks
@@ -19,7 +19,6 @@ export default function ({ props, emits }) {
    * @param {String} dsName 数据源名称
    * @param {Object} localDsv 本地参数数据变量DSV
    * @param {Vue} vueInstance 绑定的入口vue实例
-   * @param {Object} $globalVars 全局变量
    * @returns {Promise} 返回执行后的数据
    */
   const requestData = async function (dsName, localDsv = {}, vueInstance) {

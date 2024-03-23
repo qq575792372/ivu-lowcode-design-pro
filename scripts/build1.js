@@ -7,7 +7,6 @@
  * 4.用rollup开始构建，以下都是基于上面dist/src中的产物开始编译构建
  */
 
-import path from "path";
 import { fileURLToPath } from "url";
 import vue from "@vitejs/plugin-vue";
 import glob from "fast-glob";
@@ -16,28 +15,23 @@ import { defineConfig, build } from "vite";
 import esbuild from "rollup-plugin-esbuild";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 import { rollup } from "rollup";
+import { pathResolve } from "./utils/index.js";
 
-const __filename = fileURLToPath(import.meta.url); /*  */
-const __dirname = path.dirname(__filename);
+// root
+export const root = pathResolve("../", "../");
 
-// 输出的root路径
-const outputRoot = "src";
-// 输出文件名
-const outputDir = "lib";
-// 转换路径
-const resolve = function (dir) {
-  return path.resolve(__dirname, dir);
-};
-const files = await glob.globSync("src/components/*/index.js");
-console.log(333, files);
-const bundle = await build({
+// 输出
+export const outputDir = pathResolve(root, "dist");
+export const outputSrc = pathResolve(root, outputDir, "src");
+export const outputEsm = pathResolve(root, outputDir, "es");
+export const outputCjs = pathResolve(root, outputDir, "cjs");
+
+await build({
   build: {
     plugins: [vue(), postcss()],
     lib: {
-      entry: [resolve("../src/components/button/index.js")],
-      // entry: ["../src/components/*/index.js"]
+      entry: [pathResolve("../../src/components/index.js")],
     },
-    outDir: "es",
     rollupOptions: {
       external: ["vue"],
       output: [
@@ -53,7 +47,7 @@ const bundle = await build({
           format: "cjs",
           entryFileNames: "[name].cjs",
           preserveModules: true,
-          dir: "dist/lib",
+          dir: "dist/cjs",
           exports: "named",
           preserveModulesRoot: "src",
         },
@@ -62,7 +56,6 @@ const bundle = await build({
   },
 });
 
-console.log(111, bundle);
 /* export default defineConfig({
   plugins: [vue(), postcss()],
   build: {

@@ -5,8 +5,9 @@ const importList = [
   "import useDataSource from '/src/hooks/data-sources.js'",
   "import useWidget from '/src/hooks/widget.js'",
   "import Render from '/src/components/render/index.vue'",
+  "import EasyForm from '/src/components/easy-form/index.vue'",
 ];
-const exportList = ["useGlobal", "useDataSource", "useWidget", "Render"];
+const exportList = ["useGlobal", "useDataSource", "useWidget", "Render", "EasyForm"];
 
 export function toPascalCase(value) {
   // 下划线
@@ -33,7 +34,6 @@ export default async function GlobalImportPlugin() {
   const virtualModuleId = "virtual:global-import";
   const resolvedVirtualModuleId = "\0" + virtualModuleId;
   const widgets = await glob("./src/platform*/widgets/*-widget/index.vue");
-  console.log(111, widgets);
   widgets.forEach((dir) => {
     dir = dir.replaceAll("\\", "/");
     const cmpName = toPascalCase(dir.replace(/.*\/([^/]+)\/[^/]+\.vue$/, "$1"));

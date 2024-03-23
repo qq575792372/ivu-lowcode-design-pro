@@ -1,6 +1,6 @@
 import { computed, ref, toRef, watchEffect, readonly } from "vue";
-import useGlobal from "@/hooks/global";
-import useDataSources from "@/hooks/data-sources";
+import useGlobal from "./global";
+import useDataSources from "./data-sources";
 
 /**
  * 组件的hooks

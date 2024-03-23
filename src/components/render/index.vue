@@ -5,7 +5,7 @@
 <script setup>
 import { shallowRef, getCurrentInstance } from "vue";
 import useRender from "@/hooks/render";
-import { toPascalCase } from "@lime-util/util";
+// import { toPascalCase } from "@lime-util/util";
 
 defineOptions({
   name: "Render",
@@ -29,15 +29,15 @@ const getCmpNameFromPath = (path, suffix) => {
     .shift();
 };
 
-// 注册所有设计器组件
+/* // 注册所有设计器组件
 const app = getCurrentInstance();
 // 注册设计器组件
-const widgets = import.meta.glob("/src/platform*/widgets/*-widget/index.vue", { eager: true });
+const widgets = import.meta.glob("/src/platform*!/widgets/!*-widget/index.vue", { eager: true });
 Object.entries(widgets).map(([path, component]) => {
   // 会优先获取组件内部定义的名称，否则取文件名为组件名
   let componentName = component.default.name || toPascalCase(getCmpNameFromPath(path, "-widget"));
   app.appContext.app.component(componentName, component.default);
-});
+}); */
 
 // 使用预览渲染的hooks
 const render = shallowRef(null);

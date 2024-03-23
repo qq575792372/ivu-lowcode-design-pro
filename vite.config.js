@@ -37,6 +37,8 @@ export default defineConfig(({ command, mode }) => {
       alias: {
         "~": resolve("./"),
         "@": resolve("./src"),
+        /*     "~": "./",
+        "@": "./src", */
       },
     },
 
@@ -61,11 +63,11 @@ export default defineConfig(({ command, mode }) => {
       },
     },
 
-    /* esbuild配置 */
-    esbuild: {
-      pure: ["console.log"], // 删除 console.log
-      drop: ["debugger"], // 删除 debugger
-    },
+    /* esbuild配置，先关闭，调试用 */
+    // esbuild: {
+    //   pure: ["console.log"], // 删除 console.log
+    //   drop: ["debugger"], // 删除 debugger
+    // },
 
     /* 插件配置 */
     plugins: [

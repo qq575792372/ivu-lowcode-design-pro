@@ -1,7 +1,7 @@
 import { computed, h, resolveComponent } from "vue";
 import { defineComponent } from "@vue/composition-api";
-import useGlobal from "@/hooks/global";
-import useWidget from "@/hooks/widget";
+import useGlobal from "./global";
+import useWidget from "./widget";
 
 /**
  * 预览渲染的hooks
