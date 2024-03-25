@@ -4,7 +4,7 @@
 import { build, resolveConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import postcss from "rollup-plugin-postcss";
-import { generateExternal, pathResolve } from "../utils/index.js";
+import { generateExternal, pathResolve, getPackageJson } from "../utils/index.js";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 import { outputCjs, root, outputDir, outputEsm, outputSrc, inputSrc } from "../utils/paths.js";
 import alias from "@rollup/plugin-alias";
@@ -62,4 +62,16 @@ export async function buildModules(done) {
 
   // 结束回调
   done();
+}
+
+/**
+ * 打全量包
+ */
+export async function buildFullBundle() {
+  // 生成声明注释
+  const banner = `/*!
+ * ${getPackageJson().name} v${getPackageJson().version}
+ * Copyright 2023-${new Date().getFullYear()}, ${getPackageJson().author}
+ * Released under the ${getPackageJson().license} License.
+ */`;
 }

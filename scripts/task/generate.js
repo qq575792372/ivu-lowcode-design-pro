@@ -6,6 +6,7 @@ import glob from "fast-glob";
 import { getCmpList } from "../utils/index.js";
 import { root, outputDir, outputSrc } from "../utils/paths.js";
 import { pathResolve } from "../utils/index.js";
+import pkg from "../../package.json" assert { type: "json" };
 
 /**
  * 生产打包目录
@@ -115,4 +116,17 @@ export default { install };`;
 
   // 结束回调
   done();
+}
+
+/**
+ * 生成package.json
+ */
+export async function generatePackageJson(done) {
+  const manifest = pkg;
+  // 设置引入的入口
+  manifest.main = "cjs/index.js";
+  manifest.module = "es/index.js";
+  manifest.unpkg = "dist/lowcode.esm.js";
+  // 生成文件
+  fs.outputFileSync(pathResolve(outputDir, "package.json"), JSON.stringify(manifest, null, 2), "utf-8");
 }

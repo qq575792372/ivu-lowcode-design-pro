@@ -1,0 +1,78 @@
+/**
+ * 平台提供的全局变量
+ * @description 主要包含系统变量和组件变量，在开发组件时统一使用
+ */
+
+/* 系统变量 */
+:root {
+  // 常规字体
+  --font-size-12: 12px;
+  --font-size-14: 14px;
+  --font-size-16: 16px;
+  --font-size-18: 18px;
+  --font-size-20: 20px;
+  // 大字体
+  --font-size-28: 24px;
+  --font-size-32: 32px;
+  --font-size-40: 40px;
+  --font-size-48: 48px;
+  --font-size-56: 56px;
+  --font-size-64: 64px;
+
+  // 字重
+  --font-weight-400: 400;
+  --font-weight-500: 500;
+  --font-weight-600: 600;
+  --font-weight-700: 700;
+  --font-weight-bold: bold;
+
+  // 常规间距/高度
+  --sp4: 4px;
+  --sp8: 8px;
+  --sp12: 12px;
+  --sp16: 16px;
+  --sp24: 24px;
+  // 大间距/高度
+  --sp32: 32px;
+  --sp40: 40px;
+  --sp48: 48px;
+  --sp56: 56px;
+  --sp64: 64px;
+
+  // 圆角
+  --border-radius: 2px;
+  --border-radius-small: 2px;
+  --border-radius-large: 4px;
+  --border-radius-round: 24px;
+  --border-radius-circle: 50%;
+
+  // 动作时间
+  --transition-duration-none: 0s;
+  --transition-duration: 0.2s;
+  --transition-duration-fast: 0.1s;
+  --transition-duration-slow: 0.3s;
+}
+
+/* 组件变量 */
+:root {
+  // 组件尺寸-default
+  --cmp-size: var(--sp32); // 组件大小，一般用在输入框，按钮等高度
+  --cmp-padding: var(--sp12); // 组件内边距
+  --cmp-margin: var(--sp12); // 组件外边距
+  --cmp-font-size: var(--font-size-14); // 组件文字大小
+  --cmp-border-radius: var(--border-radius); // 组件圆角
+
+  // 组件尺寸-large
+  --cmp-size-large: var(--sp40);
+  --cmp-padding-large: var(--sp16);
+  --cmp-margin-large: var(--sp16);
+  --cmp-font-size-large: var(--font-size-16);
+  --cmp-border-radius-large: var(--border-radius-large);
+
+  // 组件尺寸-small
+  --cmp-size-small: var(--sp24);
+  --cmp-padding-small: var(--sp4);
+  --cmp-margin-small: var(--sp4);
+  --cmp-font-size-small: var(--font-size-12);
+  --cmp-border-radius-small: var(--border-radius-small);
+}

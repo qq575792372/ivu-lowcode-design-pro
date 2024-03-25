@@ -1,7 +1,7 @@
 {
   "name": "ivu-admin-pro-plus",
   "version": "1.0.0",
-  "description": "Vue3+Vite+Pnpm+ElementPlus+Pinia+Eslint+Prettier+Husky+lint-staged+commitlint的低代码项目",
+  "description": "Vue3 for low-code platform",
   "author": "GaoShiWei<575792372@qq.com>",
   "type": "module",
   "scripts": {

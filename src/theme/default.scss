@@ -1,10 +1,12 @@
 /**
- * default主题
+ * 平台提供的default主题
  * @description 主题可以分为 light明亮 和 dark暗黑 两种模式
  */
+
+/* 主题变量 */
 // default主题-亮色
 :root,
-:root[theme-color="default"][theme-mode='light'] {
+:root[theme-color='default'][theme-mode='light'] {
   // 主题色（默认取第6个色度）
   --primary-color: var(--primary-color-6);
   --info-color: var(--info-color-6);
@@ -30,16 +32,16 @@
   --primary-disabled-color: var(--primary-color-2);
 
   // 信息颜色-色板
-  --info-color-1: #F7F8FA;
-  --info-color-2: #F2F3F5;
-  --info-color-3: #E5E6EB;
-  --info-color-4: #C9CDD4;
-  --info-color-5: #A9AEB8;
-  --info-color-6: #86909C;
-  --info-color-7: #6B7785;
-  --info-color-8: #4E5969;
-  --info-color-9: #272E3B;
-  --info-color-10: #1D2129;
+  --info-color-1: #f7f8fa;
+  --info-color-2: #f2f3f5;
+  --info-color-3: #e5e6eb;
+  --info-color-4: #c9cdd4;
+  --info-color-5: #a9aeb8;
+  --info-color-6: #86909c;
+  --info-color-7: #6b7785;
+  --info-color-8: #4e5969;
+  --info-color-9: #272e3b;
+  --info-color-10: #1d2129;
   // 信息颜色-功能色
   --info-hover-color: var(--info-color-5);
   --info-focus-color: var(--info-color-7);
@@ -109,12 +111,12 @@
   --border-color: #dcdee2; // 常规
   --border-light-color: #f2f3f5; // 浅
   --border-deep-color: #c9cdd4; // 深
-  --border-heavy-color: #86909C; // 重
+  --border-heavy-color: #86909c; // 重
 
   // 背景颜色
   --bg-color: #ffffff; // 常规
   --bg-white-color: #ffffff; // 白
-  --bg-dark-color: #1D2129; // 黑
+  --bg-dark-color: #1d2129; // 黑
   --bg-page-color: #f8f9fa; // 页面背景
 
   // 填充颜色
@@ -129,11 +131,12 @@
   --fill-light-active-color: #f5f7f9; // 浅-active
   --fill-deep-hover-color: #c9cdd4; // 深-hover
   --fill-deep-active-color: #c9cdd4; // 深-active
-  --fill-heavy-hover-color: #86909C; // 重-hover
-  --fill-heavy-active-color: #86909C; // 重-active
+  --fill-heavy-hover-color: #86909c; // 重-hover
+  --fill-heavy-active-color: #86909c; // 重-active
 
   // 投影色
   --shadow: 0px 4px 8px rgba(28, 131, 238, 0.12); // 常规
   --shadow-light: 0px 4px 8px rgba(28, 131, 238, 0.12); // 浅
   --shadow-deep: 0px 4px 8px rgba(28, 131, 238, 0.12); // 深
 }
+

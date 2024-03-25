@@ -64,6 +64,13 @@ export function getCmpList(components) {
 }
 
 /**
+ * 获得package.json中的信息
+ */
+export function getPackageJson() {
+  return pkg;
+}
+
+/**
  * 获取外部依赖信息
  */
 export function getPackageDependencies() {

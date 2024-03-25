@@ -13,5 +13,6 @@ export const inputSrc = pathResolve(root, "src");
 // 输出
 export const outputDir = pathResolve(root, "dist");
 export const outputSrc = pathResolve(root, outputDir, "src");
+export const outputDist = pathResolve(root, outputDir, "dist");
 export const outputEsm = pathResolve(root, outputDir, "es");
 export const outputCjs = pathResolve(root, outputDir, "cjs");
