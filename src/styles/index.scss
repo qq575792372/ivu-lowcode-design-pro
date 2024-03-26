@@ -120,7 +120,7 @@ div:focus {
     .el-tabs__nav-wrap::after {
       height: 1px;
       z-index: 0;
-      background: var(--primary-color);
+      background: var(--border-color);
     }
 
     .el-tabs__active-bar {

@@ -424,7 +424,7 @@ const onClone = (target) => {
 
     .module {
       padding: 0 12px;
-      background: var(--bg-standard-color);
+      background: var(--fill-color);
 
       .custom-collapse.no-bg {
         .el-collapse-item {
@@ -489,6 +489,10 @@ const onClone = (target) => {
       display: block;
       width: calc(50% - 4px);
       margin-top: 8px;
+      outline: none;
+      border-width: 1px;
+      border-style: solid;
+      border-color: transparent;
 
       .widget-drag-tag {
         display: flex;
