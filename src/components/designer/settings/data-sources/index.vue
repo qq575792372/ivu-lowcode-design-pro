@@ -495,9 +495,9 @@ const handleRemoveData = (dtIndex) => {
 
   // 重新定义数据源卡片样式
   :deep(.data-sources-card) {
-    background: var(--bg-standard-color);
-    border-radius: var(--bg-light-color);
-    border: solid 1px var(--bg-light-color);
+    background: var(--primary-color);
+    border-radius: var(--fill-light-color);
+    border: solid 1px var(--fill-light-color);
     margin-bottom: var(--cmp-margin);
 
     .el-card__header {
@@ -524,19 +524,19 @@ const handleRemoveData = (dtIndex) => {
 
       .data-sources-body {
         background: var(--bg-white-color);
-        border: solid 1px var(--border-standard-color);
+        border: solid 1px var(--primary-color);
         border-bottom: 0;
 
         .data-sources-item {
           display: flex;
-          border-bottom: solid 1px var(--border-standard-color);
+          border-bottom: solid 1px var(--primary-color);
 
           .data-sources-item-title {
             width: 60px;
             flex-shrink: 0;
             padding: var(--sp4) var(--sp8);
-            background: var(--bg-standard-color);
-            border-right: solid 1px var(--border-standard-color);
+            background: var(--primary-color);
+            border-right: solid 1px var(--primary-color);
             color: var(--text-desc-color);
           }
 

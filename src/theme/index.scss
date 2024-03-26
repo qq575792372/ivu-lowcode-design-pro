@@ -1,9 +1,9 @@
 /**
- * 平台主题主入口
+ * 平台主题入口
  */
 
 // 引入平台全局变量，在开发组件时统一使用
-@import "./global-vars.scss";
+@import './global-vars.scss';
 
 /* 引入平台主题，如需新增其他主题，则复制default.scss更改变量即可 */
 // 默认主题色
@@ -12,5 +12,3 @@
 /* 引入平台覆盖UI库的文件，如用的其他UI库，则同样用平台提供的主题变量适配即可 */
 // 覆盖element-plus的变量文件
 @import './element-plus.scss';
-
-

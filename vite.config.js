@@ -37,8 +37,6 @@ export default defineConfig(({ command, mode }) => {
       alias: {
         "~": resolve("./"),
         "@": resolve("./src"),
-        /*     "~": "./",
-        "@": "./src", */
       },
     },
 

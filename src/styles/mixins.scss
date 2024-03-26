@@ -21,7 +21,7 @@
 
 // 滚动条内部条hover样式
 ::-webkit-scrollbar-thumb:hover {
-  border-color: #ebecf1;
+  border-color: var(--fill-deep-color);
   background-color: rgba(81, 90, 110, 0.4);
 }
 

@@ -259,7 +259,7 @@ onBeforeUnmount(() => {
 
 <style scoped lang="scss">
 .code-editor {
-  border-color: var(--border-standard-color);
+  border-color: var(--border-color);
   border-style: solid;
   border-width: 1px;
   border-radius: var(--cmp-border-radius);

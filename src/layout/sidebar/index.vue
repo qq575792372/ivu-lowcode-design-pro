@@ -374,7 +374,7 @@ const onClone = (target) => {
 .sidebar-container {
   height: 100%;
   width: 300px;
-  padding: var(--cmp-large-padding) 0 var(--cmp-large-padding) var(--cmp-large-padding);
+  padding: var(--cmp-padding-large) 0 var(--cmp-padding-large) var(--cmp-padding-large);
 
   // 重新定义tab
   :deep(.custom-tabs) {

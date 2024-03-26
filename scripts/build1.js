@@ -21,10 +21,10 @@ import { pathResolve } from "./utils/index.js";
 export const root = pathResolve("../", "../");
 
 // 输出
-export const outputDir = pathResolve(root, "dist");
-export const outputSrc = pathResolve(root, outputDir, "src");
-export const outputEsm = pathResolve(root, outputDir, "es");
-export const outputCjs = pathResolve(root, outputDir, "cjs");
+export const outputRoot = pathResolve(root, "dist");
+export const outputSrc = pathResolve(root, outputRoot, "src");
+export const outputEsm = pathResolve(root, outputRoot, "es");
+export const outputCjs = pathResolve(root, outputRoot, "cjs");
 
 await build({
   build: {

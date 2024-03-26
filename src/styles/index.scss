@@ -6,21 +6,6 @@
 @import "./mixins.scss";
 @import "./util.scss";
 
-html,
-body {
-  height: 100%;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-  // background: #f5f7f9;
-  color: #333;
-  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
-  sans-serif;
-}
-
-label {
-  font-weight: 500;
-}
 
 html {
   height: 100%;
@@ -30,21 +15,16 @@ html {
 body {
   height: 100%;
   margin: 0;
-  background-color: var(--bg-standard-color);
+  background-color: var(--bg-page-color);
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  font-family: Inter,
-  -apple-system,
-  BlinkMacSystemFont,
-  PingFang SC,
-  Hiragino Sans GB,
-  noto sans,
-  Microsoft YaHei,
-  Helvetica Neue,
-  Helvetica,
-  Arial,
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
   sans-serif;
+}
+
+label {
+  font-weight: 500;
 }
 
 #app {
@@ -140,7 +120,7 @@ div:focus {
     .el-tabs__nav-wrap::after {
       height: 1px;
       z-index: 0;
-      background: var(--border-standard-color);
+      background: var(--primary-color);
     }
 
     .el-tabs__active-bar {
@@ -191,7 +171,7 @@ div:focus {
       font-size: var(--font-size-14);
       font-weight: var(--font-weight-bold);
       color: var(--text-content-color);
-      border-bottom: 1px solid var(--border-standard-color);
+      border-bottom: 1px solid var(--border-color);
 
       .el-icon {
         margin-right: 4px;
@@ -244,7 +224,7 @@ div:focus {
     justify-content: flex-start;
     transition: all 0.15s;
     background: var(--bg-white-color);
-    border: solid 1px var(--border-standard-color);
+    border: solid 1px var(--border-color);
     border-radius: var(--cmp-border-radius);
     font-size: var(--font-size-14);
     color: var(--text-content-color);
@@ -252,7 +232,6 @@ div:focus {
     cursor: default;
 
     &:hover {
-      background: var(--el-tag-bg-color);
       color: var(--primary-color);
       border: solid 1px var(--border-deep-color);
 
@@ -414,13 +393,13 @@ div:focus {
   .binder-content {
     display: flex;
     overflow: hidden;
-    border: solid 1px var(--border-standard-color);
+    border: solid 1px var(--border-color);
 
     // 绑定的代码执行器
     .binder-editor {
       flex: 1;
       overflow: hidden;
-      border-right: solid 1px var(--border-standard-color);
+      border-right: solid 1px var(--border-color);
 
       // 代码编辑器
       .binder-editor-code {
@@ -439,7 +418,7 @@ div:focus {
 
       // 执行结果
       .binder-editor-result {
-        border-top: solid 1px var(--border-standard-color);
+        border-top: solid 1px var(--border-color);
 
         .binder-editor-result-title {
           font-weight: bold;
@@ -448,7 +427,7 @@ div:focus {
           height: 32px;
           font-size: 14px;
           background: var(--bg-light-color);
-          border-bottom: solid 1px var(--border-standard-color);
+          border-bottom: solid 1px var(--border-color);
           box-sizing: border-box;
           padding: 0 var(--cmp-padding);
         }
@@ -456,7 +435,7 @@ div:focus {
         .binder-editor-result-value {
           font-size: 12px;
           overflow: auto;
-          padding:var(--cmp-padding);
+          padding: var(--cmp-padding);
           height: 100px;
           word-break: break-all;
         }
@@ -476,7 +455,7 @@ div:focus {
           border: none;
 
           .el-collapse-item__header {
-            height: var(--cmp-large-size);
+            height: var(--cmp-size-large);
             color: var(--text-content-color);
             font-size: var(--font-size-14);
           }
@@ -488,8 +467,6 @@ div:focus {
               border: none;
             }
           }
-
-
         }
       }
     }

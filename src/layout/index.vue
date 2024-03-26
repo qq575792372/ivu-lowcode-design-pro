@@ -64,7 +64,7 @@ const props = defineProps({
     }
 
     .layout-main {
-      margin: var(--cmp-large-padding);
+      margin: var(--cmp-padding-large);
       background: var(--bg-white-color);
       border-radius: var(--cmp-border-radius);
       padding: 0;
@@ -72,7 +72,7 @@ const props = defineProps({
 
     .layout-setting {
       width: auto;
-      margin: var(--cmp-large-padding) var(--cmp-large-padding) var(--cmp-large-padding) 0;
+      margin: var(--cmp-padding-large) var(--cmp-padding-large) var(--cmp-padding-large) 0;
       background: var(--bg-white-color);
       border-radius: var(--cmp-border-radius);
       padding: 0;

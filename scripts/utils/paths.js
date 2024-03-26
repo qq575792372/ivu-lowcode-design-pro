@@ -11,8 +11,8 @@ export const root = pathResolve("../", "../");
 export const inputSrc = pathResolve(root, "src");
 
 // 输出
-export const outputDir = pathResolve(root, "dist");
-export const outputSrc = pathResolve(root, outputDir, "src");
-export const outputDist = pathResolve(root, outputDir, "dist");
-export const outputEsm = pathResolve(root, outputDir, "es");
-export const outputCjs = pathResolve(root, outputDir, "cjs");
+export const outputRoot = pathResolve(root, "dist");
+export const outputSrc = pathResolve(root, outputRoot, "src");
+export const outputDist = pathResolve(root, outputRoot, "dist");
+export const outputEsm = pathResolve(root, outputRoot, "es");
+export const outputCjs = pathResolve(root, outputRoot, "cjs");

@@ -1,6 +1,6 @@
 import path from "path";
-import pkg from "../../package.json" assert { type: "json" };
 import { fileURLToPath } from "url";
+import pkg from "../../package.json" assert { type: "json" };
 
 /**
  * 路径转换
@@ -15,8 +15,6 @@ export function pathResolve(...dir) {
 
 /**
  * 转化为大驼峰命名
- * @param value
- * @returns {string}
  */
 export function toPascalCase(value) {
   // 下划线

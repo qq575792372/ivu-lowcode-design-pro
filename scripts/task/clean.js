@@ -3,13 +3,13 @@
  */
 import fs from "fs-extra";
 import { pathResolve } from "../utils/index.js";
-import { outputDir, outputSrc } from "../utils/paths.js";
+import { outputRoot, outputSrc } from "../utils/paths.js";
 
 /**
  * 清空项目文件夹
  */
 export const clean = async (done) => {
-  fs.removeSync(pathResolve(outputDir));
+  fs.removeSync(pathResolve(outputRoot));
   done();
 };
 

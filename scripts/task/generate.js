@@ -3,9 +3,10 @@
  */
 import fs from "fs-extra";
 import glob from "fast-glob";
-import { getCmpList } from "../utils/index.js";
-import { root, outputDir, outputSrc } from "../utils/paths.js";
-import { pathResolve } from "../utils/index.js";
+
+import { pathResolve, getCmpList } from "../utils/index.js";
+import { root, outputRoot, outputSrc } from "../utils/paths.js";
+
 import pkg from "../../package.json" assert { type: "json" };
 
 /**
@@ -13,7 +14,7 @@ import pkg from "../../package.json" assert { type: "json" };
  */
 export async function generateOutput(done) {
   // 生成打包根目录 dist
-  await fs.mkdirs(pathResolve(outputDir));
+  await fs.mkdirs(pathResolve(outputRoot));
   // 生成打包根目录下源码目录 src
   await fs.mkdirs(pathResolve(outputSrc));
   // 结束回调
@@ -38,6 +39,23 @@ export async function generateOutputSrc(done) {
   await fs.copy(pathResolve(root, "src/hooks"), pathResolve(outputSrc, "hooks"));
   // 复制 theme 到 src 下
   await fs.copy(pathResolve(root, "src/theme"), pathResolve(outputSrc, "theme"));
+
+  // 结束回调
+  done();
+}
+
+/**
+ * 生成package.json
+ */
+export async function generatePackageJson(done) {
+  const manifest = pkg;
+  // 设置引入的入口
+  manifest.main = "cjs/index.js";
+  manifest.module = "es/index.js";
+  manifest.unpkg = "dist/lowcode.esm.js";
+  // 生成文件
+  fs.outputFileSync(pathResolve(outputRoot, "package.json"), JSON.stringify(manifest, null, 2), "utf-8");
+
   // 结束回调
   done();
 }
@@ -116,17 +134,4 @@ export default { install };`;
 
   // 结束回调
   done();
-}
-
-/**
- * 生成package.json
- */
-export async function generatePackageJson(done) {
-  const manifest = pkg;
-  // 设置引入的入口
-  manifest.main = "cjs/index.js";
-  manifest.module = "es/index.js";
-  manifest.unpkg = "dist/lowcode.esm.js";
-  // 生成文件
-  fs.outputFileSync(pathResolve(outputDir, "package.json"), JSON.stringify(manifest, null, 2), "utf-8");
 }

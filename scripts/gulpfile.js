@@ -7,8 +7,8 @@ import {
   generateCmpSingleEntry,
   generateCmpAllEntry,
   buildModules,
-  cleanSrc,
   buildFullBundle,
+  cleanSrc,
 } from "./task/index.js";
 
 // 导出默认任务

@@ -73,7 +73,7 @@ watch(
   height: 100%;
   width: 320px;
   overflow: hidden;
-  padding: var(--cmp-large-padding) var(--cmp-large-padding) var(--cmp-large-padding) 0;
+  padding: var(--cmp-padding-large) var(--cmp-padding-large) var(--cmp-padding-large) 0;
 
   // 属性配置中重新定义tab样式
   :deep(.custom-tabs) {
