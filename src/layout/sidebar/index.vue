@@ -430,7 +430,7 @@ const onClone = (target) => {
         .el-collapse-item {
           .el-collapse-item__header {
             background: transparent;
-            border-bottom: 1px solid var(--border-standard-color);
+            border-bottom: 1px solid var(--border-color);
             transition: none;
 
             &.is-active {
@@ -463,7 +463,7 @@ const onClone = (target) => {
     cursor: default;
 
     &:not(:last-child) {
-      border-bottom: solid 1px var(--border-standard-color);
+      border-bottom: solid 1px var(--border-color);
     }
 
     .el-icon {
@@ -496,6 +496,10 @@ const onClone = (target) => {
 
       .widget-drag-tag {
         display: flex;
+        &:hover {
+          border-color: var(--primary-color-3);
+          background: var(--primary-color-1);
+        }
       }
     }
   }

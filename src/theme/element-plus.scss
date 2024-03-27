@@ -82,4 +82,13 @@
   --el-component-size: var(--cmp-size);
   --el-component-size-small: var(--cmp-size-small);
   --el-component-size-large: var(--cmp-size-large);
+
+  // 自定义el-button样式
+  .el-button.is-disabled {
+    opacity: 0.6;
+  }
+
+  .el-button--small {
+    border-radius: var(--cmp-border-radius);
+  }
 }
