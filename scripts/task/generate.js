@@ -154,7 +154,7 @@ export * from "./hooks/index.js";
 // 暴漏全局安装的install方法
 const install = function (app) {
   Object.keys(components).forEach(key => {
-    app.use(key, components[key]);
+    app.component(key, components[key]);
   });
 }
 
