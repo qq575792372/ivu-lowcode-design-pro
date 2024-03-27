@@ -50,8 +50,8 @@ export async function generateOutputSrc(done) {
 export async function generatePackageJson(done) {
   const manifest = pkg;
   // 设置引入的入口
-  manifest.main = "cjs/index.js";
-  manifest.module = "es/index.js";
+  manifest.main = "cjs/index.cjs";
+  manifest.module = "es/index.mjs";
   manifest.unpkg = "dist/lowcode.esm.js";
   // 生成文件
   fs.outputFileSync(pathResolve(outputRoot, "package.json"), JSON.stringify(manifest, null, 2), "utf-8");
@@ -61,9 +61,9 @@ export async function generatePackageJson(done) {
 }
 
 /**
- * 生成源码components中每个组件的入口文件
+ * 生成源码src中components中每个组件的入口文件
  */
-export async function generateCmpSingleEntry(done) {
+export async function generateCmpEntry(done) {
   // 获取到components中所有的组件目录
   const components = getCmpList(
     glob.globSync("dist/src/components/*/index.vue", {
@@ -94,7 +94,7 @@ export default ${cmp.name};`;
 }
 
 /**
- * 生成源码components中的入口文件
+ * 生成源码src中components中的入口文件
  */
 export async function generateCmpAllEntry(done) {
   // 获取到components中所有的组件目录
@@ -131,6 +131,39 @@ export default { install };`;
 
   // 生成index.js文件
   fs.outputFileSync(pathResolve(outputSrc, "components/index.js"), entryFileStr, "utf-8");
+
+  // 结束回调
+  done();
+}
+
+/**
+ * 生成源码src中index主入口文件
+ */
+export async function generateMainEntry(done) {
+  // 生成入口的字符串
+  let entryFileStr = `
+// 导入组件列表
+import * as components from "./components/index.js";
+
+// 导出所有组件
+export * from "./components/index.js";
+
+// 导出hooks
+export * from "./hooks/index.js";
+
+// 暴漏全局安装的install方法
+const install = function (app) {
+  Object.keys(components).forEach(key => {
+    app.use(key, components[key]);
+  });
+}
+
+// 导出入口
+export default { install };
+`;
+
+  // 生成index.js文件
+  fs.outputFileSync(pathResolve(outputSrc, "index.js"), entryFileStr, "utf-8");
 
   // 结束回调
   done();

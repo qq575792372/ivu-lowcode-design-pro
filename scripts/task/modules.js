@@ -41,7 +41,7 @@ export async function buildModules(done) {
     ],
     build: {
       lib: {
-        entry: [pathResolve(outputSrc, "components/index.js")],
+        entry: [pathResolve(outputSrc, "index.js")],
       },
       rollupOptions: {
         external: await generateExternal({ full: false }),
@@ -102,7 +102,7 @@ export async function buildFullBundle() {
     ],
     build: {
       lib: {
-        entry: [pathResolve(outputSrc, "components/index.js")],
+        entry: [pathResolve(outputSrc, "index.js")],
       },
       rollupOptions: {
         external: await generateExternal({ full: false }),

@@ -4,8 +4,9 @@ import {
   generateOutput,
   generateOutputSrc,
   generatePackageJson,
-  generateCmpSingleEntry,
+  generateCmpEntry,
   generateCmpAllEntry,
+  generateMainEntry,
   buildModules,
   buildFullBundle,
   cleanSrc,
@@ -17,9 +18,10 @@ export default gulp.series(
   generateOutput,
   generateOutputSrc,
   generatePackageJson,
-  generateCmpSingleEntry,
+  generateCmpEntry,
   generateCmpAllEntry,
+  generateMainEntry,
   buildModules,
   buildFullBundle,
-  cleanSrc,
+  /*   cleanSrc, */
 );
