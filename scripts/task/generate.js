@@ -45,22 +45,6 @@ export async function generateOutputSrc(done) {
 }
 
 /**
- * 生成package.json
- */
-export async function generatePackageJson(done) {
-  const manifest = pkg;
-  // 设置引入的入口
-  manifest.main = "cjs/index.cjs";
-  manifest.module = "es/index.mjs";
-  manifest.unpkg = "dist/lowcode.esm.js";
-  // 生成文件
-  fs.outputFileSync(pathResolve(outputRoot, "package.json"), JSON.stringify(manifest, null, 2), "utf-8");
-
-  // 结束回调
-  done();
-}
-
-/**
  * 生成源码src中components中每个组件的入口文件
  */
 export async function generateCmpEntry(done) {
@@ -107,28 +91,10 @@ export async function generateCmpAllEntry(done) {
   );
   // 遍历所有组件信息，组装入口文件index.js
   let entryFileStr = `// 导入所有组件\n`; // 入口文件的字符串
-  let entryCmpStr = ""; // 入口组件的字符串
-  let entryCmpList = []; // 入口文件的组件列表
   for (let index in components) {
     let cmp = components[index];
-    entryFileStr += `import ${cmp.name} from "./${cmp.path}";\n`;
-    entryCmpStr += `app.component("${cmp.name}", ${cmp.name});${index < components.length - 1 ? "\n  " : "  "}`;
-    entryCmpList.push(cmp.name);
+    entryFileStr += `export { default as ${cmp.name} } from "./${cmp.path}";\n`;
   }
-
-  // 开始拼接导出信息
-  entryFileStr += `
-// 暴漏全局安装的install方法
-const install = function (app) {
-  ${entryCmpStr}
-}\n`;
-  entryFileStr += `
-// 导出按需组件信息
-export { ${entryCmpList.join(",")} };\n`;
-  entryFileStr += `
-// 导出入口
-export default { install };`;
-
   // 生成index.js文件
   fs.outputFileSync(pathResolve(outputSrc, "components/index.js"), entryFileStr, "utf-8");
 
@@ -141,8 +107,7 @@ export default { install };`;
  */
 export async function generateMainEntry(done) {
   // 生成入口的字符串
-  let entryFileStr = `
-// 导入组件列表
+  let entryFileStr = `// 导入组件列表
 import * as components from "./components/index.js";
 
 // 导出所有组件
@@ -151,7 +116,7 @@ export * from "./components/index.js";
 // 导出hooks
 export * from "./hooks/index.js";
 
-// 暴漏全局安装的install方法
+// 全局安装的install方法
 const install = function (app) {
   Object.keys(components).forEach(key => {
     app.component(key, components[key]);
@@ -159,11 +124,38 @@ const install = function (app) {
 }
 
 // 导出入口
-export default { install };
+export default { install, version: "${pkg.version}" };
 `;
 
   // 生成index.js文件
   fs.outputFileSync(pathResolve(outputSrc, "index.js"), entryFileStr, "utf-8");
+
+  // 结束回调
+  done();
+}
+
+/**
+ * 生成package.json
+ */
+export async function generatePackageJson(done) {
+  const manifest = pkg;
+  // 设置引入的入口
+  manifest.main = "cjs/index.cjs";
+  manifest.module = "es/index.mjs";
+  manifest.unpkg = "dist/lowcode.esm.js";
+  // 生成文件
+  fs.outputFileSync(pathResolve(outputRoot, "package.json"), JSON.stringify(manifest, null, 2), "utf-8");
+
+  // 结束回调
+  done();
+}
+
+/**
+ * 生成README.md
+ */
+export async function generateReadme(done) {
+  // 复制文件
+  await fs.copy(pathResolve(root, "README.md"), pathResolve(outputRoot, "README.md"));
 
   // 结束回调
   done();
